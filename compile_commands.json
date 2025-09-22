@@ -1,0 +1,82 @@
+[
+ {
+  "directory": "C:\\Users\\User\\Documents\\Projects\\LibraryManagementSystem",
+  "arguments": [
+   "clang++",
+   "-Wall",
+   "-Wextra",
+   "-Iftxui/include",
+   "-Iinclude",
+   "-std=c++17",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/core/book.cpp",
+   "-o",
+   "bin/obj/core/book.o",
+   "-MF",
+   "bin/obj/core/book.d"
+  ],
+  "file": "src/core/book.cpp"
+ },
+ {
+  "directory": "C:\\Users\\User\\Documents\\Projects\\LibraryManagementSystem",
+  "arguments": [
+   "clang++",
+   "-Wall",
+   "-Wextra",
+   "-Iftxui/include",
+   "-Iinclude",
+   "-std=c++17",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/main.cpp",
+   "-o",
+   "bin/obj/main.o",
+   "-MF",
+   "bin/obj/main.d"
+  ],
+  "file": "src/main.cpp"
+ },
+ {
+  "directory": "C:\\Users\\User\\Documents\\Projects\\LibraryManagementSystem",
+  "arguments": [
+   "clang++",
+   "-Wall",
+   "-Wextra",
+   "-Iftxui/include",
+   "-Iinclude",
+   "-std=c++17",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/core/librarian.cpp",
+   "-o",
+   "bin/obj/core/librarian.o",
+   "-MF",
+   "bin/obj/core/librarian.d"
+  ],
+  "file": "src/core/librarian.cpp"
+ },
+ {
+  "directory": "C:\\Users\\User\\Documents\\Projects\\LibraryManagementSystem",
+  "arguments": [
+   "clang++",
+   "-Wall",
+   "-Wextra",
+   "-Iftxui/include",
+   "-Iinclude",
+   "-std=c++17",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/utils/textField.cpp",
+   "-o",
+   "bin/obj/utils/textField.o",
+   "-MF",
+   "bin/obj/utils/textField.d"
+  ],
+  "file": "src/utils/textField.cpp"
+ }
+]

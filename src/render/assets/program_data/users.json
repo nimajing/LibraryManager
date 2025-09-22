@@ -1,0 +1,28 @@
+{
+    "librarian": [
+        null
+    ],
+    "users": [
+        {
+            "books": null,
+            "username": "alice"
+        },
+        {
+            "books": null,
+            "username": "bob"
+        },
+        {
+            "books": null,
+            "username": "carol"
+        },
+        {
+            "books": null,
+            "username": "dave"
+        },
+        {
+            "books": null,
+            "username": "eve"
+        }
+    ],
+    "version": 1
+}
