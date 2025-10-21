@@ -53,8 +53,8 @@ void MainLayout::HandleUserSelection() {
     summary->SetContent(summaryText);
     editor->SetMode(Editor::Mode::EDIT_USER);
     // TODO: Populate editor fields with user data
-    editor->username = user->getUsername();
-    editor->thumbnail = user->getThumbnail();
+    editor->user.username = user->getUsername();
+    editor->user.thumbnail = user->getThumbnail();
   }
 }
 
@@ -72,8 +72,11 @@ void MainLayout::HandleBookSelection() {
     summary->SetContent(summaryText);
     editor->SetMode(Editor::Mode::EDIT_BOOK);
     // TODO: Populate editor fields with book data
-    editor->title = book->getTitle();
-    editor->isbn = book->getIsbn();
+    editor->book.title = book->getTitle();
+    editor->book.isbn = book->getIsbn();
+    editor->book.authors = book->getAuthors();
+    editor->book.copies = std::to_string(book->getCopies());
+    editor->book.thumbnail = book->getThumbnail();
   }
 }
 

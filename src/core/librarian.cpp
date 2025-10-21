@@ -1,3 +1,4 @@
+#include <iostream>
 #include "core/librarian.h"
 #include "core/book.h"
 #include <algorithm>
@@ -8,30 +9,36 @@ using json = nlohmann::json;
 
 // Initialize static member
 Librarian *Librarian::m_instance = nullptr;
+std::string Librarian::save_location = "assets/program_data/users.json";
 
-Librarian::Librarian() { /*loadUsers();*/ }
+Librarian::Librarian() { loadUsers(); }
+Librarian::~Librarian() { saveUsers(); }
 
-void Librarian::createDataDirectory() {
-  std::filesystem::path dirPath = "assets/program_data";
-  if (!std::filesystem::exists(dirPath)) {
-    std::filesystem::create_directories(dirPath);
-  }
+void CreateDirectories(std::string filename) {
+  std::filesystem::create_directories(std::filesystem::current_path() / std::filesystem::path(filename));
 }
 
 void Librarian::saveUsers() {
-  createDataDirectory();
-  std::ofstream file(USER_DATA_PATH);
+//  CreateDirectories(save_location);
+  std::ofstream file(save_location);
   if (!file.is_open()) {
     throw std::runtime_error("Unable to open file for writing: " +
-                             USER_DATA_PATH);
+                             save_location);
   }
   json data = {
     {"version", 1},
-    {"librarian", {m_books.log()}}};
-  data.push_back({"users", {}});
+    {"librarian", {
+                            {"books", m_books.log()},
+						    {"users", {}}
+                          }
+    }
+  };
   for (const auto &i : m_users) {
-    json user = {{"username", i->getUsername()}, {"books", i->m_books.log()}};
-    data["users"].push_back(user);
+    json user = {
+      {"username", i->getUsername()}, 
+      {"books", i->m_books.log()}
+    };
+    data["librarian"]["users"].push_back(user);
   }
 
   file << data.dump(4);
@@ -39,22 +46,19 @@ void Librarian::saveUsers() {
 }
 
 void Librarian::loadUsers() {
-  createDataDirectory();
-  std::ifstream file(USER_DATA_PATH);
+  std::ifstream file(save_location);
   if (!file.is_open()) {
     saveUsers();
     return;
   }
   json data = json::parse(file);
   if(data.contains("librarian"))
-    m_books.read(data["librarian"]);
-  for (size_t i = 1; i < data.size(); ++i) {
-    addUser(data[i]["username"]);
-    findUser(data[i]["username"])->m_books.read(data[i]["books"].dump());
+    m_books.read(data["librarian"]["books"].dump());
+  for (size_t i = 1; i < data["librarian"]["users"].size(); ++i) {
+    addUser(data["librarian"]["users"][i].value("username", ""));
+    findUser(data["librarian"]["users"][i].value("username", ""))->m_books.read(data["librarian"]["users"][i]["books"].dump());
   }
 }
-
-Librarian::~Librarian() { saveUsers(); }
 
 bool Librarian::addUser(const std::string &username) {
   if (findUser(username) != nullptr) {

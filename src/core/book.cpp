@@ -92,8 +92,8 @@ bool BookManager::read(std::string msg) {
   try {
     json compare = json::parse(msg);
     for (const auto &comp : compare)
-      this->bring({comp["title"], comp["authors"], comp["isbn"], comp["copies"],
-                   comp["thumbnail"]});
+      this->bring({comp.value("title", ""), comp.value("authors", std::vector<std::string>{}), comp.value("isbn", ""), comp.value("copies", 0),
+                   comp.value("thumbnail", "")});
     return true;
   } catch (std::exception) {
     return false;

@@ -9,8 +9,8 @@ class Librarian {
 private:
     static Librarian* m_instance;
     std::vector<std::unique_ptr<User>> m_users;
+    static std::string save_location;
     BookManager m_books;
-    const std::string USER_DATA_PATH = "assets/program_data/users.json";
     
     Librarian();
     
@@ -18,14 +18,14 @@ private:
     Librarian(const Librarian&) = delete;
     Librarian& operator=(const Librarian&) = delete;
 
-    void createDataDirectory();
     void saveUsers();
     void loadUsers();
 
 public:
-    static Librarian* Instance() {
+    static Librarian* Instance(std::string filename = "") {
         if (!m_instance) {
             m_instance = new Librarian();
+            save_location = filename;
         }
         return m_instance;
     }

@@ -15,18 +15,20 @@ public:
   void SetMode(Mode mode);
   void Reset();
   void setReadOnly() { readonly = true; }
-  std::string title, author, isbn, name, email, id;
-  std::string username, thumbnail;
-
+  struct {
+    std::string title, isbn, thumbnail, copies;
+    std::vector<std::string> authors = {};
+  } book;
+  struct {
+    std::string username, thumbnail;
+  } user;
 private:
   Mode currentMode = Mode::SELECT;
   std::vector<ftxui::Component> inputs;
+  std::string title;
   ftxui::Component container;
-  // A stable proxy child held by the Renderer which delegates to `container`.
-  ftxui::Component proxy_child;
   bool readonly;
 
-  // Persistent input fields
   void CreateComponents();
   void UpdateLayout();
 };

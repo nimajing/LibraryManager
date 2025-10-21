@@ -1,28 +1,58 @@
 {
-    "librarian": [
-        null
-    ],
-    "users": [
-        {
-            "books": null,
-            "username": "alice"
-        },
-        {
-            "books": null,
-            "username": "bob"
-        },
-        {
-            "books": null,
-            "username": "carol"
-        },
-        {
-            "books": null,
-            "username": "dave"
-        },
-        {
-            "books": null,
-            "username": "eve"
-        }
-    ],
+    "librarian": {
+        "books": [
+            {
+                "authors": [
+                    "F. Scott Fitzgerald"
+                ],
+                "copies": 0,
+                "isbn": "9780743273565",
+                "thumbnail": "",
+                "title": "The Great Gatsby"
+            },
+            {
+                "authors": [
+                    "George Orwell"
+                ],
+                "copies": 0,
+                "isbn": "9780451524935",
+                "thumbnail": "",
+                "title": "1984"
+            },
+            {
+                "authors": [
+                    "Harper Lee"
+                ],
+                "copies": 0,
+                "isbn": "9780061120084",
+                "thumbnail": "",
+                "title": "To Kill a Mockingbird"
+            },
+            {
+                "authors": [
+                    "Jane Austen"
+                ],
+                "copies": 0,
+                "isbn": "9780141439518",
+                "thumbnail": "",
+                "title": "Pride and Prejudice"
+            },
+            {
+                "authors": [
+                    "Herman Melville"
+                ],
+                "copies": 0,
+                "isbn": "9781503280786",
+                "thumbnail": "",
+                "title": "Moby-Dick"
+            }
+        ],
+        "users": [
+            {
+                "books": null,
+                "username": "eve"
+            }
+        ]
+    },
     "version": 1
 }

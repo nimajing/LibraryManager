@@ -1,82 +1,192 @@
 [
- {
-  "directory": "C:\\Users\\User\\Documents\\Projects\\LibraryManagementSystem",
-  "arguments": [
-   "clang++",
-   "-Wall",
-   "-Wextra",
-   "-Iftxui/include",
-   "-Iinclude",
-   "-std=c++17",
-   "-MMD",
-   "-MP",
-   "-c",
-   "src/core/book.cpp",
-   "-o",
-   "bin/obj/core/book.o",
-   "-MF",
-   "bin/obj/core/book.d"
-  ],
-  "file": "src/core/book.cpp"
- },
- {
-  "directory": "C:\\Users\\User\\Documents\\Projects\\LibraryManagementSystem",
-  "arguments": [
-   "clang++",
-   "-Wall",
-   "-Wextra",
-   "-Iftxui/include",
-   "-Iinclude",
-   "-std=c++17",
-   "-MMD",
-   "-MP",
-   "-c",
-   "src/main.cpp",
-   "-o",
-   "bin/obj/main.o",
-   "-MF",
-   "bin/obj/main.d"
-  ],
-  "file": "src/main.cpp"
- },
- {
-  "directory": "C:\\Users\\User\\Documents\\Projects\\LibraryManagementSystem",
-  "arguments": [
-   "clang++",
-   "-Wall",
-   "-Wextra",
-   "-Iftxui/include",
-   "-Iinclude",
-   "-std=c++17",
-   "-MMD",
-   "-MP",
-   "-c",
-   "src/core/librarian.cpp",
-   "-o",
-   "bin/obj/core/librarian.o",
-   "-MF",
-   "bin/obj/core/librarian.d"
-  ],
-  "file": "src/core/librarian.cpp"
- },
- {
-  "directory": "C:\\Users\\User\\Documents\\Projects\\LibraryManagementSystem",
-  "arguments": [
-   "clang++",
-   "-Wall",
-   "-Wextra",
-   "-Iftxui/include",
-   "-Iinclude",
-   "-std=c++17",
-   "-MMD",
-   "-MP",
-   "-c",
-   "src/utils/textField.cpp",
-   "-o",
-   "bin/obj/utils/textField.o",
-   "-MF",
-   "bin/obj/utils/textField.d"
-  ],
-  "file": "src/utils/textField.cpp"
- }
-]
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/core/librarian.o",
+      "src/core/librarian.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/core/librarian.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/core/librarian.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/core/book.o",
+      "src/core/book.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/core/book.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/core/book.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/main.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/render/editor.o",
+      "src/render/editor.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/render/editor.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/render/editor.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/render/user_explorer.o",
+      "src/render/user_explorer.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/render/user_explorer.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/render/user_explorer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/render/main_layout.o",
+      "src/render/main_layout.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/render/main_layout.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/render/main_layout.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/render/summary.o",
+      "src/render/summary.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/render/summary.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/render/summary.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/render/explorer_base.o",
+      "src/render/explorer_base.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/render/explorer_base.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/render/explorer_base.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/render/book_explorer.o",
+      "src/render/book_explorer.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/render/book_explorer.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/render/book_explorer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-Wextra",
+      "-Iftxui/include",
+      "-Iinclude",
+      "-std=c++17",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "bin/obj/utils/hints.o",
+      "src/utils/hints.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager",
+    "file": "/home/the-lone-cub/LibManager/src/utils/hints.cpp",
+    "output": "/home/the-lone-cub/LibManager/bin/obj/utils/hints.o"
+  }
+]
