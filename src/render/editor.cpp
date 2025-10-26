@@ -30,7 +30,7 @@ void Editor::UpdateLayout() {
     title = "Edit book";
     inputs.push_back(Input(&book.title, "Title"));
     for(size_t i = 0; i < book.authors.size(); ++i) {
-      inputs.push_back(Input(&book.authors[i], std::string("Author ") + std::to_string(i)));
+      inputs.push_back(Input(&book.authors[i], "author"));
     }
     inputs.push_back(Input(&book.isbn, "ISBN"));
     inputs.push_back(Input(&book.copies, "Copies"));

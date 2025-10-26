@@ -1,0 +1,1462 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/animation.o",
+      "src/ftxui/component/animation.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/animation.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/animation.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/button.o",
+      "src/ftxui/component/button.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/button.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/button.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/catch_event.o",
+      "src/ftxui/component/catch_event.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/catch_event.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/catch_event.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/checkbox.o",
+      "src/ftxui/component/checkbox.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/checkbox.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/checkbox.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/collapsible.o",
+      "src/ftxui/component/collapsible.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/collapsible.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/collapsible.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/component.o",
+      "src/ftxui/component/component.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/component.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/component.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/component_options.o",
+      "src/ftxui/component/component_options.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/component_options.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/component_options.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/container.o",
+      "src/ftxui/component/container.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/container.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/container.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/dropdown.o",
+      "src/ftxui/component/dropdown.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/dropdown.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/dropdown.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/event.o",
+      "src/ftxui/component/event.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/event.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/event.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/hoverable.o",
+      "src/ftxui/component/hoverable.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/hoverable.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/hoverable.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/input.o",
+      "src/ftxui/component/input.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/input.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/input.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/loop.o",
+      "src/ftxui/component/loop.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/loop.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/loop.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/maybe.o",
+      "src/ftxui/component/maybe.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/maybe.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/maybe.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/menu.o",
+      "src/ftxui/component/menu.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/menu.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/modal.o",
+      "src/ftxui/component/modal.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/modal.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/modal.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/radiobox.o",
+      "src/ftxui/component/radiobox.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/radiobox.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/radiobox.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/renderer.o",
+      "src/ftxui/component/renderer.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/renderer.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/renderer.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/resizable_split.o",
+      "src/ftxui/component/resizable_split.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/resizable_split.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/resizable_split.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/screen_interactive.o",
+      "src/ftxui/component/screen_interactive.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/screen_interactive.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/screen_interactive.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/slider.o",
+      "src/ftxui/component/slider.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/slider.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/slider.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/terminal_input_parser.o",
+      "src/ftxui/component/terminal_input_parser.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/terminal_input_parser.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/terminal_input_parser.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/util.o",
+      "src/ftxui/component/util.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/util.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/util.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/component/window.o",
+      "src/ftxui/component/window.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/component/window.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/component/window.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/automerge.o",
+      "src/ftxui/dom/automerge.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/automerge.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/automerge.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/blink.o",
+      "src/ftxui/dom/blink.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/blink.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/blink.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/bold.o",
+      "src/ftxui/dom/bold.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/bold.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/bold.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/border.o",
+      "src/ftxui/dom/border.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/border.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/border.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/box_helper.o",
+      "src/ftxui/dom/box_helper.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/box_helper.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/box_helper.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/canvas.o",
+      "src/ftxui/dom/canvas.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/canvas.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/canvas.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/clear_under.o",
+      "src/ftxui/dom/clear_under.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/clear_under.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/clear_under.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/color.o",
+      "src/ftxui/dom/color.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/color.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/color.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/composite_decorator.o",
+      "src/ftxui/dom/composite_decorator.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/composite_decorator.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/composite_decorator.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/dbox.o",
+      "src/ftxui/dom/dbox.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/dbox.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/dbox.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/dim.o",
+      "src/ftxui/dom/dim.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/dim.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/dim.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/flexbox_config.o",
+      "src/ftxui/dom/flexbox_config.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/flexbox_config.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/flexbox_config.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/flexbox.o",
+      "src/ftxui/dom/flexbox.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/flexbox.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/flexbox.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/flexbox_helper.o",
+      "src/ftxui/dom/flexbox_helper.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/flexbox_helper.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/flexbox_helper.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/flex.o",
+      "src/ftxui/dom/flex.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/flex.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/flex.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/focus.o",
+      "src/ftxui/dom/focus.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/focus.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/focus.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/frame.o",
+      "src/ftxui/dom/frame.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/frame.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/frame.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/gauge.o",
+      "src/ftxui/dom/gauge.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/gauge.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/gauge.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/graph.o",
+      "src/ftxui/dom/graph.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/graph.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/graph.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/gridbox.o",
+      "src/ftxui/dom/gridbox.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/gridbox.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/gridbox.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/hbox.o",
+      "src/ftxui/dom/hbox.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/hbox.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/hbox.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/hyperlink.o",
+      "src/ftxui/dom/hyperlink.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/hyperlink.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/hyperlink.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/inverted.o",
+      "src/ftxui/dom/inverted.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/inverted.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/inverted.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/italic.o",
+      "src/ftxui/dom/italic.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/italic.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/italic.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/linear_gradient.o",
+      "src/ftxui/dom/linear_gradient.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/linear_gradient.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/linear_gradient.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/node.o",
+      "src/ftxui/dom/node.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/node.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/node.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/node_decorator.o",
+      "src/ftxui/dom/node_decorator.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/node_decorator.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/node_decorator.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/paragraph.o",
+      "src/ftxui/dom/paragraph.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/paragraph.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/paragraph.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/reflect.o",
+      "src/ftxui/dom/reflect.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/reflect.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/reflect.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/scroll_indicator.o",
+      "src/ftxui/dom/scroll_indicator.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/scroll_indicator.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/scroll_indicator.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/selection.o",
+      "src/ftxui/dom/selection.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/selection.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/selection.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/selection_style.o",
+      "src/ftxui/dom/selection_style.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/selection_style.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/selection_style.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/separator.o",
+      "src/ftxui/dom/separator.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/separator.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/separator.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/size.o",
+      "src/ftxui/dom/size.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/size.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/size.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/spinner.o",
+      "src/ftxui/dom/spinner.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/spinner.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/spinner.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/strikethrough.o",
+      "src/ftxui/dom/strikethrough.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/strikethrough.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/strikethrough.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/table.o",
+      "src/ftxui/dom/table.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/table.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/table.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/text.o",
+      "src/ftxui/dom/text.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/text.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/text.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/underlined.o",
+      "src/ftxui/dom/underlined.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/underlined.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/underlined.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/underlined_double.o",
+      "src/ftxui/dom/underlined_double.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/underlined_double.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/underlined_double.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/util.o",
+      "src/ftxui/dom/util.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/util.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/util.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/dom/vbox.o",
+      "src/ftxui/dom/vbox.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/dom/vbox.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/dom/vbox.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/screen/box.o",
+      "src/ftxui/screen/box.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/screen/box.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/screen/box.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/screen/color.o",
+      "src/ftxui/screen/color.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/screen/color.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/screen/color.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/screen/color_info.o",
+      "src/ftxui/screen/color_info.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/screen/color_info.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/screen/color_info.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/screen/image.o",
+      "src/ftxui/screen/image.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/screen/image.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/screen/image.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/screen/screen.o",
+      "src/ftxui/screen/screen.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/screen/screen.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/screen/screen.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/screen/string.o",
+      "src/ftxui/screen/string.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/screen/string.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/screen/string.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Iinclude",
+      "-Isrc",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-DUNICODE",
+      "-c",
+      "-o",
+      "obj/ftxui/screen/terminal.o",
+      "src/ftxui/screen/terminal.cpp"
+    ],
+    "directory": "/home/the-lone-cub/LibManager/ftxui",
+    "file": "/home/the-lone-cub/LibManager/ftxui/src/ftxui/screen/terminal.cpp",
+    "output": "/home/the-lone-cub/LibManager/ftxui/obj/ftxui/screen/terminal.o"
+  }
+]

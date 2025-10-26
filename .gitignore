@@ -1,6 +1,4 @@
 .cache/
-ftxui/
 .vscode/
 bin/
-Makefile
 

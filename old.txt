@@ -1,0 +1,6 @@
+void Librarian::createDataDirectory() {
+  std::filesystem::path dirPath = "assets/program_data";
+  if (!std::filesystem::exists(dirPath)) {
+    std::filesystem::create_directories(dirPath);
+  }
+}
