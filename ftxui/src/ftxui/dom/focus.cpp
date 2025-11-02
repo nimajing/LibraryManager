@@ -1,13 +1,13 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <memory>   // for make_shared
-#include <utility>  // for move
+#include <memory>  // for make_shared
+#include <utility> // for move
 
-#include "ftxui/dom/elements.hpp"  // for Decorator, Element, focusPosition, focusPositionRelative
-#include "ftxui/dom/node_decorator.hpp"  // for NodeDecorator
-#include "ftxui/dom/requirement.hpp"  // for Requirement, Requirement::NORMAL, Requirement::Selection
-#include "ftxui/screen/box.hpp"  // for Box
+#include "ftxui/dom/elements.hpp" // for Decorator, Element, focusPosition, focusPositionRelative
+#include "ftxui/dom/node_decorator.hpp" // for NodeDecorator
+#include "ftxui/dom/requirement.hpp" // for Requirement, Requirement::NORMAL, Requirement::Selection
+#include "ftxui/screen/box.hpp" // for Box
 
 namespace ftxui {
 
@@ -30,7 +30,7 @@ namespace ftxui {
 /// ```
 Decorator focusPositionRelative(float x, float y) {
   class Impl : public NodeDecorator {
-   public:
+public:
     Impl(Element child, float x, float y)
         : NodeDecorator(std::move(child)), x_(x), y_(y) {}
 
@@ -44,7 +44,7 @@ Decorator focusPositionRelative(float x, float y) {
       requirement_.focused.box.y_max = int(float(requirement_.min_y) * y_);
     }
 
-   private:
+private:
     const float x_;
     const float y_;
   };
@@ -68,7 +68,7 @@ Decorator focusPositionRelative(float x, float y) {
 /// ```
 Decorator focusPosition(int x, int y) {
   class Impl : public NodeDecorator {
-   public:
+public:
     Impl(Element child, int x, int y)
         : NodeDecorator(std::move(child)), x_(x), y_(y) {}
 
@@ -76,14 +76,14 @@ Decorator focusPosition(int x, int y) {
       NodeDecorator::ComputeRequirement();
       requirement_.focused.enabled = false;
 
-      Box& box = requirement_.focused.box;
+      Box &box = requirement_.focused.box;
       box.x_min = x_;
       box.y_min = y_;
       box.x_max = x_;
       box.y_max = y_;
     }
 
-   private:
+private:
     const int x_;
     const int y_;
   };
@@ -93,4 +93,4 @@ Decorator focusPosition(int x, int y) {
   };
 }
 
-}  // namespace ftxui
+} // namespace ftxui

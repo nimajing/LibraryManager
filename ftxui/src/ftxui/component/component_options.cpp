@@ -3,12 +3,12 @@
 // the LICENSE file.
 #include "ftxui/component/component_options.hpp"
 
-#include <ftxui/screen/color.hpp>  // for Color, Color::White, Color::Black, Color::GrayDark, Color::Blue, Color::GrayLight, Color::Red
-#include <memory>                  // for shared_ptr
-#include <utility>                 // for move
-#include "ftxui/component/animation.hpp"  // for Function, Duration
+#include "ftxui/component/animation.hpp" // for Function, Duration
 #include "ftxui/dom/direction.hpp"
-#include "ftxui/dom/elements.hpp"  // for operator|=, Element, text, bgcolor, inverted, bold, dim, operator|, color, borderEmpty, hbox, automerge, border, borderLight
+#include "ftxui/dom/elements.hpp" // for operator|=, Element, text, bgcolor, inverted, bold, dim, operator|, color, borderEmpty, hbox, automerge, border, borderLight
+#include <ftxui/screen/color.hpp> // for Color, Color::White, Color::Black, Color::GrayDark, Color::Blue, Color::GrayLight, Color::Red
+#include <memory>                 // for shared_ptr
+#include <utility>                // for move
 
 namespace ftxui {
 
@@ -18,8 +18,7 @@ namespace ftxui {
 /// @params _duration The duration of the animation.
 /// @params _function The easing function of the animation.
 /// @ingroup component
-void AnimatedColorOption::Set(Color _inactive,
-                              Color _active,
+void AnimatedColorOption::Set(Color _inactive, Color _active,
                               animation::Duration _duration,
                               animation::easing::Function _function) {
   enabled = true;
@@ -75,7 +74,7 @@ void UnderlineOption::SetAnimationFunction(
 MenuOption MenuOption::Horizontal() {
   MenuOption option;
   option.direction = Direction::Right;
-  option.entries_option.transform = [](const EntryState& state) {
+  option.entries_option.transform = [](const EntryState &state) {
     Element e = text(state.label);
     if (state.focused) {
       e |= inverted;
@@ -109,8 +108,8 @@ MenuOption MenuOption::HorizontalAnimated() {
 // static
 MenuOption MenuOption::Vertical() {
   MenuOption option;
-  option.entries_option.transform = [](const EntryState& state) {
-    Element e = text((state.active ? "> " : "  ") + state.label);  // NOLINT
+  option.entries_option.transform = [](const EntryState &state) {
+    Element e = text((state.active ? "> " : "  ") + state.label); // NOLINT
     if (state.focused) {
       e |= inverted;
     }
@@ -131,7 +130,7 @@ MenuOption MenuOption::Vertical() {
 // static
 MenuOption MenuOption::VerticalAnimated() {
   auto option = MenuOption::Vertical();
-  option.entries_option.transform = [](const EntryState& state) {
+  option.entries_option.transform = [](const EntryState &state) {
     Element e = text(state.label);
     if (state.focused) {
       e |= inverted;
@@ -163,8 +162,8 @@ MenuOption MenuOption::Toggle() {
 // static
 ButtonOption ButtonOption::Ascii() {
   ButtonOption option;
-  option.transform = [](const EntryState& s) {
-    const std::string t = s.focused ? "[" + s.label + "]"  //
+  option.transform = [](const EntryState &s) {
+    const std::string t = s.focused ? "[" + s.label + "]" //
                                     : " " + s.label + " ";
     return text(t);
   };
@@ -176,7 +175,7 @@ ButtonOption ButtonOption::Ascii() {
 // static
 ButtonOption ButtonOption::Simple() {
   ButtonOption option;
-  option.transform = [](const EntryState& s) {
+  option.transform = [](const EntryState &s) {
     auto element = text(s.label) | borderLight;
     if (s.focused) {
       element |= inverted;
@@ -191,7 +190,7 @@ ButtonOption ButtonOption::Simple() {
 /// @ingroup component
 ButtonOption ButtonOption::Border() {
   ButtonOption option;
-  option.transform = [](const EntryState& s) {
+  option.transform = [](const EntryState &s) {
     auto element = text(s.label) | border;
     if (s.active) {
       element |= bold;
@@ -208,7 +207,7 @@ ButtonOption ButtonOption::Border() {
 /// @ingroup component
 // static
 ButtonOption ButtonOption::Animated() {
-  return Animated(Color::Black, Color::GrayLight,  //
+  return Animated(Color::Black, Color::GrayLight, //
                   Color::GrayDark, Color::White);
 }
 
@@ -217,10 +216,10 @@ ButtonOption ButtonOption::Animated() {
 // static
 ButtonOption ButtonOption::Animated(Color color) {
   return ButtonOption::Animated(
-      Color::Interpolate(0.85F, color, Color::Black),   // NOLINT
-      Color::Interpolate(0.10F, color, Color::White),   // NOLINT
-      Color::Interpolate(0.10F, color, Color::Black),   // NOLINT
-      Color::Interpolate(0.85F, color, Color::White));  // NOLINT
+      Color::Interpolate(0.85F, color, Color::Black),  // NOLINT
+      Color::Interpolate(0.10F, color, Color::White),  // NOLINT
+      Color::Interpolate(0.10F, color, Color::Black),  // NOLINT
+      Color::Interpolate(0.85F, color, Color::White)); // NOLINT
 }
 
 /// @brief Create a ButtonOption, using animated colors.
@@ -239,12 +238,11 @@ ButtonOption ButtonOption::Animated(Color background, Color foreground) {
 /// @brief Create a ButtonOption, using animated colors.
 /// @ingroup component
 // static
-ButtonOption ButtonOption::Animated(Color background,
-                                    Color foreground,
+ButtonOption ButtonOption::Animated(Color background, Color foreground,
                                     Color background_active,
                                     Color foreground_active) {
   ButtonOption option;
-  option.transform = [](const EntryState& s) {
+  option.transform = [](const EntryState &s) {
     auto element = text(s.label) | borderEmpty;
     if (s.focused) {
       element |= bold;
@@ -261,13 +259,13 @@ ButtonOption ButtonOption::Animated(Color background,
 // static
 CheckboxOption CheckboxOption::Simple() {
   auto option = CheckboxOption();
-  option.transform = [](const EntryState& s) {
+  option.transform = [](const EntryState &s) {
 #if defined(FTXUI_MICROSOFT_TERMINAL_FALLBACK)
     // Microsoft terminal do not use fonts able to render properly the default
     // radiobox glyph.
-    auto prefix = text(s.state ? "[X] " : "[ ] ");  // NOLINT
+    auto prefix = text(s.state ? "[X] " : "[ ] "); // NOLINT
 #else
-    auto prefix = text(s.state ? "▣ " : "☐ ");  // NOLINT
+    auto prefix = text(s.state ? "▣ " : "☐ "); // NOLINT
 #endif
     auto t = text(s.label);
     if (s.active) {
@@ -286,13 +284,13 @@ CheckboxOption CheckboxOption::Simple() {
 // static
 RadioboxOption RadioboxOption::Simple() {
   auto option = RadioboxOption();
-  option.transform = [](const EntryState& s) {
+  option.transform = [](const EntryState &s) {
 #if defined(FTXUI_MICROSOFT_TERMINAL_FALLBACK)
     // Microsoft terminal do not use fonts able to render properly the default
     // radiobox glyph.
-    auto prefix = text(s.state ? "(*) " : "( ) ");  // NOLINT
+    auto prefix = text(s.state ? "(*) " : "( ) "); // NOLINT
 #else
-    auto prefix = text(s.state ? "◉ " : "○ ");  // NOLINT
+    auto prefix = text(s.state ? "◉ " : "○ "); // NOLINT
 #endif
     auto t = text(s.label);
     if (s.active) {
@@ -355,4 +353,4 @@ InputOption InputOption::Spacious() {
   return option;
 }
 
-}  // namespace ftxui
+} // namespace ftxui

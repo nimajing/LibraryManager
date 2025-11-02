@@ -1,48 +1,47 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>               // for max
-#include <array>                   // for array
-#include <ftxui/screen/color.hpp>  // for Color
-#include <memory>    // for allocator, make_shared, __shared_ptr_access
-#include <optional>  // for optional, nullopt
-#include <string>    // for basic_string, string
-#include <utility>   // for move
+#include <algorithm>              // for max
+#include <array>                  // for array
+#include <ftxui/screen/color.hpp> // for Color
+#include <memory>   // for allocator, make_shared, __shared_ptr_access
+#include <optional> // for optional, nullopt
+#include <string>   // for basic_string, string
+#include <utility>  // for move
 
-#include "ftxui/dom/elements.hpp"  // for unpack, Element, Decorator, BorderStyle, ROUNDED, borderStyled, Elements, DASHED, DOUBLE, EMPTY, HEAVY, LIGHT, border, borderDashed, borderDouble, borderEmpty, borderHeavy, borderLight, borderRounded, borderWith, window
-#include "ftxui/dom/node.hpp"      // for Node, Elements
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/screen/box.hpp"       // for Box
-#include "ftxui/screen/pixel.hpp"     // for Pixel
-#include "ftxui/screen/screen.hpp"    // for Pixel, Screen
+#include "ftxui/dom/elements.hpp" // for unpack, Element, Decorator, BorderStyle, ROUNDED, borderStyled, Elements, DASHED, DOUBLE, EMPTY, HEAVY, LIGHT, border, borderDashed, borderDouble, borderEmpty, borderHeavy, borderLight, borderRounded, borderWith, window
+#include "ftxui/dom/node.hpp"     // for Node, Elements
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/screen/box.hpp"      // for Box
+#include "ftxui/screen/pixel.hpp"    // for Pixel
+#include "ftxui/screen/screen.hpp"   // for Pixel, Screen
 
 namespace ftxui {
 
 namespace {
-using Charset = std::array<std::string, 6>;  // NOLINT
-using Charsets = std::array<Charset, 6>;     // NOLINT
+using Charset = std::array<std::string, 6>; // NOLINT
+using Charsets = std::array<Charset, 6>;    // NOLINT
 // NOLINTNEXTLINE
 static Charsets simple_border_charset = {
-    Charset{"┌", "┐", "└", "┘", "─", "│"},  // LIGHT
-    Charset{"┏", "┓", "┗", "┛", "╍", "╏"},  // DASHED
-    Charset{"┏", "┓", "┗", "┛", "━", "┃"},  // HEAVY
-    Charset{"╔", "╗", "╚", "╝", "═", "║"},  // DOUBLE
-    Charset{"╭", "╮", "╰", "╯", "─", "│"},  // ROUNDED
-    Charset{" ", " ", " ", " ", " ", " "},  // EMPTY
+    Charset{"┌", "┐", "└", "┘", "─", "│"}, // LIGHT
+    Charset{"┏", "┓", "┗", "┛", "╍", "╏"}, // DASHED
+    Charset{"┏", "┓", "┗", "┛", "━", "┃"}, // HEAVY
+    Charset{"╔", "╗", "╚", "╝", "═", "║"}, // DOUBLE
+    Charset{"╭", "╮", "╰", "╯", "─", "│"}, // ROUNDED
+    Charset{" ", " ", " ", " ", " ", " "}, // EMPTY
 };
 
 // For reference, here is the charset for normal border:
 class Border : public Node {
- public:
-  Border(Elements children,
-         BorderStyle style,
+  public:
+  Border(Elements children, BorderStyle style,
          std::optional<Color> foreground_color = std::nullopt)
       : Node(std::move(children)),
-        charset_(simple_border_charset[style])  // NOLINT
+        charset_(simple_border_charset[style]) // NOLINT
         ,
-        foreground_color_(foreground_color) {}  // NOLINT
+        foreground_color_(foreground_color) {} // NOLINT
 
-  const Charset& charset_;  // NOLINT
+  const Charset &charset_; // NOLINT
   std::optional<Color> foreground_color_;
 
   void ComputeRequirement() override {
@@ -78,7 +77,7 @@ class Border : public Node {
     children_[0]->SetBox(box);
   }
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     // Draw content.
     children_[0]->Render(screen);
 
@@ -87,24 +86,24 @@ class Border : public Node {
       return;
     }
 
-    screen.at(box_.x_min, box_.y_min) = charset_[0];  // NOLINT
-    screen.at(box_.x_max, box_.y_min) = charset_[1];  // NOLINT
-    screen.at(box_.x_min, box_.y_max) = charset_[2];  // NOLINT
-    screen.at(box_.x_max, box_.y_max) = charset_[3];  // NOLINT
+    screen.at(box_.x_min, box_.y_min) = charset_[0]; // NOLINT
+    screen.at(box_.x_max, box_.y_min) = charset_[1]; // NOLINT
+    screen.at(box_.x_min, box_.y_max) = charset_[2]; // NOLINT
+    screen.at(box_.x_max, box_.y_max) = charset_[3]; // NOLINT
 
     for (int x = box_.x_min + 1; x < box_.x_max; ++x) {
-      Pixel& p1 = screen.PixelAt(x, box_.y_min);
-      Pixel& p2 = screen.PixelAt(x, box_.y_max);
-      p1.character = charset_[4];  // NOLINT
-      p2.character = charset_[4];  // NOLINT
+      Pixel &p1 = screen.PixelAt(x, box_.y_min);
+      Pixel &p2 = screen.PixelAt(x, box_.y_max);
+      p1.character = charset_[4]; // NOLINT
+      p2.character = charset_[4]; // NOLINT
       p1.automerge = true;
       p2.automerge = true;
     }
     for (int y = box_.y_min + 1; y < box_.y_max; ++y) {
-      Pixel& p3 = screen.PixelAt(box_.x_min, y);
-      Pixel& p4 = screen.PixelAt(box_.x_max, y);
-      p3.character = charset_[5];  // NOLINT
-      p4.character = charset_[5];  // NOLINT
+      Pixel &p3 = screen.PixelAt(box_.x_min, y);
+      Pixel &p4 = screen.PixelAt(box_.x_max, y);
+      p3.character = charset_[5]; // NOLINT
+      p4.character = charset_[5]; // NOLINT
       p3.automerge = true;
       p4.automerge = true;
     }
@@ -130,11 +129,11 @@ class Border : public Node {
 
 // For reference, here is the charset for normal border:
 class BorderPixel : public Node {
- public:
+  public:
   BorderPixel(Elements children, Pixel pixel)
       : Node(std::move(children)), pixel_(std::move(pixel)) {}
 
- private:
+  private:
   Pixel pixel_;
 
   void ComputeRequirement() override {
@@ -167,7 +166,7 @@ class BorderPixel : public Node {
     children_[0]->SetBox(box);
   }
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     // Draw content.
     children_[0]->Render(screen);
 
@@ -191,7 +190,7 @@ class BorderPixel : public Node {
     }
   }
 };
-}  // namespace
+} // namespace
 
 /// @brief Draw a border around the element.
 /// @ingroup dom
@@ -231,7 +230,7 @@ Element border(Element child) {
 /// @brief Same as border but with a constant Pixel around the element.
 /// @ingroup dom
 /// @see border
-Decorator borderWith(const Pixel& pixel) {
+Decorator borderWith(const Pixel &pixel) {
   return [pixel](Element child) {
     return std::make_shared<BorderPixel>(unpack(std::move(child)), pixel);
   };
@@ -508,4 +507,4 @@ Element window(Element title, Element content, BorderStyle border) {
   return std::make_shared<Border>(unpack(std::move(content), std::move(title)),
                                   border);
 }
-}  // namespace ftxui
+} // namespace ftxui

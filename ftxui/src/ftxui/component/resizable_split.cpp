@@ -1,52 +1,52 @@
 // Copyright 2021 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <ftxui/component/component_options.hpp>  // for ResizableSplitOption
-#include <ftxui/dom/direction.hpp>  // for Direction, Direction::Down, Direction::Left, Direction::Right, Direction::Up
-#include <ftxui/util/ref.hpp>       // for Ref
-#include <functional>               // for function
-#include <utility>                  // for move
+#include <ftxui/component/component_options.hpp> // for ResizableSplitOption
+#include <ftxui/dom/direction.hpp> // for Direction, Direction::Down, Direction::Left, Direction::Right, Direction::Up
+#include <ftxui/util/ref.hpp>      // for Ref
+#include <functional>              // for function
+#include <utility>                 // for move
 
-#include "ftxui/component/captured_mouse.hpp"  // for CapturedMouse
-#include "ftxui/component/component.hpp"  // for Horizontal, Make, ResizableSplit, ResizableSplitBottom, ResizableSplitLeft, ResizableSplitRight, ResizableSplitTop
-#include "ftxui/component/component_base.hpp"  // for Component, ComponentBase
-#include "ftxui/component/event.hpp"           // for Event
-#include "ftxui/component/mouse.hpp"  // for Mouse, Mouse::Left, Mouse::Pressed, Mouse::Released
-#include "ftxui/dom/elements.hpp"  // for operator|, reflect, Element, size, EQUAL, xflex, yflex, hbox, vbox, HEIGHT, WIDTH, text
-#include "ftxui/screen/box.hpp"    // for Box
+#include "ftxui/component/captured_mouse.hpp" // for CapturedMouse
+#include "ftxui/component/component.hpp" // for Horizontal, Make, ResizableSplit, ResizableSplitBottom, ResizableSplitLeft, ResizableSplitRight, ResizableSplitTop
+#include "ftxui/component/component_base.hpp" // for Component, ComponentBase
+#include "ftxui/component/event.hpp"          // for Event
+#include "ftxui/component/mouse.hpp" // for Mouse, Mouse::Left, Mouse::Pressed, Mouse::Released
+#include "ftxui/dom/elements.hpp" // for operator|, reflect, Element, size, EQUAL, xflex, yflex, hbox, vbox, HEIGHT, WIDTH, text
+#include "ftxui/screen/box.hpp"   // for Box
 
 namespace ftxui {
 namespace {
 
 class ResizableSplitBase : public ComponentBase {
- public:
+  public:
   explicit ResizableSplitBase(ResizableSplitOption options)
       : options_(std::move(options)) {
     switch (options_->direction()) {
-      case Direction::Left:
-        Add(Container::Horizontal({
-            options_->main,
-            options_->back,
-        }));
-        break;
-      case Direction::Right:
-        Add(Container::Horizontal({
-            options_->back,
-            options_->main,
-        }));
-        break;
-      case Direction::Up:
-        Add(Container::Vertical({
-            options_->main,
-            options_->back,
-        }));
-        break;
-      case Direction::Down:
-        Add(Container::Vertical({
-            options_->back,
-            options_->main,
-        }));
-        break;
+    case Direction::Left:
+      Add(Container::Horizontal({
+          options_->main,
+          options_->back,
+      }));
+      break;
+    case Direction::Right:
+      Add(Container::Horizontal({
+          options_->back,
+          options_->main,
+      }));
+      break;
+    case Direction::Up:
+      Add(Container::Vertical({
+          options_->main,
+          options_->back,
+      }));
+      break;
+    case Direction::Down:
+      Add(Container::Vertical({
+          options_->back,
+          options_->main,
+      }));
+      break;
     }
   }
 
@@ -76,18 +76,18 @@ class ResizableSplitBase : public ComponentBase {
     }
 
     switch (options_->direction()) {
-      case Direction::Left:
-        options_->main_size() = std::max(0, event.mouse().x - box_.x_min);
-        return true;
-      case Direction::Right:
-        options_->main_size() = std::max(0, box_.x_max - event.mouse().x);
-        return true;
-      case Direction::Up:
-        options_->main_size() = std::max(0, event.mouse().y - box_.y_min);
-        return true;
-      case Direction::Down:
-        options_->main_size() = std::max(0, box_.y_max - event.mouse().y);
-        return true;
+    case Direction::Left:
+      options_->main_size() = std::max(0, event.mouse().x - box_.x_min);
+      return true;
+    case Direction::Right:
+      options_->main_size() = std::max(0, box_.x_max - event.mouse().x);
+      return true;
+    case Direction::Up:
+      options_->main_size() = std::max(0, event.mouse().y - box_.y_min);
+      return true;
+    case Direction::Down:
+      options_->main_size() = std::max(0, box_.y_max - event.mouse().y);
+      return true;
     }
 
     // NOTREACHED()
@@ -96,14 +96,14 @@ class ResizableSplitBase : public ComponentBase {
 
   Element OnRender() final {
     switch (options_->direction()) {
-      case Direction::Left:
-        return RenderLeft();
-      case Direction::Right:
-        return RenderRight();
-      case Direction::Up:
-        return RenderTop();
-      case Direction::Down:
-        return RenderBottom();
+    case Direction::Left:
+      return RenderLeft();
+    case Direction::Right:
+      return RenderRight();
+    case Direction::Up:
+      return RenderTop();
+    case Direction::Down:
+      return RenderBottom();
     }
     // NOTREACHED()
     return text("unreacheable");
@@ -149,14 +149,14 @@ class ResizableSplitBase : public ComponentBase {
            reflect(box_);
   }
 
- private:
+  private:
   Ref<ResizableSplitOption> options_;
   CapturedMouse captured_mouse_;
   Box separator_box_;
   Box box_;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief A split in between two components.
 /// @param options all the parameters.
@@ -212,7 +212,7 @@ Component ResizableSplit(ResizableSplitOption options) {
 ///    left   │   right
 ///           │
 /// ```
-Component ResizableSplitLeft(Component main, Component back, int* main_size) {
+Component ResizableSplitLeft(Component main, Component back, int *main_size) {
   return ResizableSplit({
       std::move(main),
       std::move(back),
@@ -246,7 +246,7 @@ Component ResizableSplitLeft(Component main, Component back, int* main_size) {
 ///    left   │   right
 ///           │
 /// ```
-Component ResizableSplitRight(Component main, Component back, int* main_size) {
+Component ResizableSplitRight(Component main, Component back, int *main_size) {
   return ResizableSplit({
       std::move(main),
       std::move(back),
@@ -280,7 +280,7 @@ Component ResizableSplitRight(Component main, Component back, int* main_size) {
 /// ────────────
 ///    bottom
 /// ```
-Component ResizableSplitTop(Component main, Component back, int* main_size) {
+Component ResizableSplitTop(Component main, Component back, int *main_size) {
   return ResizableSplit({
       std::move(main),
       std::move(back),
@@ -314,7 +314,7 @@ Component ResizableSplitTop(Component main, Component back, int* main_size) {
 /// ────────────
 ///    bottom
 /// ```
-Component ResizableSplitBottom(Component main, Component back, int* main_size) {
+Component ResizableSplitBottom(Component main, Component back, int *main_size) {
   return ResizableSplit({
       std::move(main),
       std::move(back),
@@ -323,4 +323,4 @@ Component ResizableSplitBottom(Component main, Component back, int* main_size) {
   });
 }
 
-}  // namespace ftxui
+} // namespace ftxui

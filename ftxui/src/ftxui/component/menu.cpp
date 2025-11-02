@@ -1,33 +1,33 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>                // for max, fill_n, reverse
-#include <chrono>                   // for milliseconds
-#include <ftxui/dom/direction.hpp>  // for Direction, Direction::Down, Direction::Left, Direction::Right, Direction::Up
-#include <functional>               // for function
-#include <string>                   // for operator+, string
-#include <utility>                  // for move
-#include <vector>                   // for vector, __alloc_traits<>::value_type
+#include <algorithm>               // for max, fill_n, reverse
+#include <chrono>                  // for milliseconds
+#include <ftxui/dom/direction.hpp> // for Direction, Direction::Down, Direction::Left, Direction::Right, Direction::Up
+#include <functional>              // for function
+#include <string>                  // for operator+, string
+#include <utility>                 // for move
+#include <vector>                  // for vector, __alloc_traits<>::value_type
 
-#include "ftxui/component/animation.hpp"  // for Animator, Linear
-#include "ftxui/component/component.hpp"  // for Make, Menu, MenuEntry, Toggle
-#include "ftxui/component/component_base.hpp"     // for ComponentBase
-#include "ftxui/component/component_options.hpp"  // for MenuOption, MenuEntryOption, UnderlineOption, AnimatedColorOption, AnimatedColorsOption, EntryState
-#include "ftxui/component/event.hpp"  // for Event, Event::ArrowDown, Event::ArrowLeft, Event::ArrowRight, Event::ArrowUp, Event::End, Event::Home, Event::PageDown, Event::PageUp, Event::Return, Event::Tab, Event::TabReverse
-#include "ftxui/component/mouse.hpp"  // for Mouse, Mouse::Left, Mouse::Released, Mouse::WheelDown, Mouse::WheelUp, Mouse::None
-#include "ftxui/component/screen_interactive.hpp"  // for Component
-#include "ftxui/dom/elements.hpp"  // for operator|, Element, reflect, Decorator, nothing, Elements, bgcolor, color, hbox, separatorHSelector, separatorVSelector, vbox, xflex, yflex, text, bold, focus, inverted, select
-#include "ftxui/screen/box.hpp"    // for Box
-#include "ftxui/screen/color.hpp"  // for Color
-#include "ftxui/screen/util.hpp"   // for clamp
-#include "ftxui/util/ref.hpp"  // for Ref, ConstStringListRef, ConstStringRef
+#include "ftxui/component/animation.hpp" // for Animator, Linear
+#include "ftxui/component/component.hpp" // for Make, Menu, MenuEntry, Toggle
+#include "ftxui/component/component_base.hpp"    // for ComponentBase
+#include "ftxui/component/component_options.hpp" // for MenuOption, MenuEntryOption, UnderlineOption, AnimatedColorOption, AnimatedColorsOption, EntryState
+#include "ftxui/component/event.hpp" // for Event, Event::ArrowDown, Event::ArrowLeft, Event::ArrowRight, Event::ArrowUp, Event::End, Event::Home, Event::PageDown, Event::PageUp, Event::Return, Event::Tab, Event::TabReverse
+#include "ftxui/component/mouse.hpp" // for Mouse, Mouse::Left, Mouse::Released, Mouse::WheelDown, Mouse::WheelUp, Mouse::None
+#include "ftxui/component/screen_interactive.hpp" // for Component
+#include "ftxui/dom/elements.hpp" // for operator|, Element, reflect, Decorator, nothing, Elements, bgcolor, color, hbox, separatorHSelector, separatorVSelector, vbox, xflex, yflex, text, bold, focus, inverted, select
+#include "ftxui/screen/box.hpp"   // for Box
+#include "ftxui/screen/color.hpp" // for Color
+#include "ftxui/screen/util.hpp"  // for clamp
+#include "ftxui/util/ref.hpp"     // for Ref, ConstStringListRef, ConstStringRef
 
 namespace ftxui {
 
 namespace {
 
-Element DefaultOptionTransform(const EntryState& state) {
-  std::string label = (state.active ? "> " : "  ") + state.label;  // NOLINT
+Element DefaultOptionTransform(const EntryState &state) {
+  std::string label = (state.active ? "> " : "  ") + state.label; // NOLINT
   Element e = text(std::move(label));
   if (state.focused) {
     e = e | inverted;
@@ -40,35 +40,35 @@ Element DefaultOptionTransform(const EntryState& state) {
 
 bool IsInverted(Direction direction) {
   switch (direction) {
-    case Direction::Up:
-    case Direction::Left:
-      return true;
-    case Direction::Down:
-    case Direction::Right:
-      return false;
+  case Direction::Up:
+  case Direction::Left:
+    return true;
+  case Direction::Down:
+  case Direction::Right:
+    return false;
   }
-  return false;  // NOT_REACHED()
+  return false; // NOT_REACHED()
 }
 
 bool IsHorizontal(Direction direction) {
   switch (direction) {
-    case Direction::Left:
-    case Direction::Right:
-      return true;
-    case Direction::Down:
-    case Direction::Up:
-      return false;
+  case Direction::Left:
+  case Direction::Right:
+    return true;
+  case Direction::Down:
+  case Direction::Up:
+    return false;
   }
-  return false;  // NOT_REACHED()
+  return false; // NOT_REACHED()
 }
 
-}  // namespace
+} // namespace
 
 /// @brief A list of items. The user can navigate through them.
 /// @ingroup component
 class MenuBase : public ComponentBase, public MenuOption {
- public:
-  explicit MenuBase(const MenuOption& option) : MenuOption(option) {}
+  public:
+  explicit MenuBase(const MenuOption &option) : MenuOption(option) {}
 
   bool IsHorizontal() { return ftxui::IsHorizontal(direction); }
   void OnChange() {
@@ -94,13 +94,13 @@ class MenuBase : public ComponentBase, public MenuOption {
     focused_entry() = util::clamp(focused_entry(), 0, size() - 1);
   }
 
-  void OnAnimation(animation::Params& params) override {
+  void OnAnimation(animation::Params &params) override {
     animator_first_.OnAnimation(params);
     animator_second_.OnAnimation(params);
-    for (auto& animator : animator_background_) {
+    for (auto &animator : animator_background_) {
       animator.OnAnimation(params);
     }
-    for (auto& animator : animator_foreground_) {
+    for (auto &animator : animator_foreground_) {
       animator.OnAnimation(params);
     }
   }
@@ -127,7 +127,7 @@ class MenuBase : public ComponentBase, public MenuOption {
       };
 
       Element element = (entries_option.transform ? entries_option.transform
-                                                  : DefaultOptionTransform)  //
+                                                  : DefaultOptionTransform) //
           (state);
       if (selected_focus_ == i) {
         element |= focus;
@@ -155,14 +155,14 @@ class MenuBase : public ComponentBase, public MenuOption {
     if (IsHorizontal()) {
       return vbox({
                  bar | xflex,
-                 separatorHSelector(first_, second_,  //
+                 separatorHSelector(first_, second_, //
                                     underline.color_active,
                                     underline.color_inactive),
              }) |
              reflect(box_);
     } else {
       return hbox({
-                 separatorVSelector(first_, second_,  //
+                 separatorVSelector(first_, second_, //
                                     underline.color_active,
                                     underline.color_inactive),
                  bar | yflex,
@@ -178,57 +178,57 @@ class MenuBase : public ComponentBase, public MenuOption {
 
   void OnUp() {
     switch (direction) {
-      case Direction::Up:
-        selected()++;
-        break;
-      case Direction::Down:
-        selected()--;
-        break;
-      case Direction::Left:
-      case Direction::Right:
-        break;
+    case Direction::Up:
+      selected()++;
+      break;
+    case Direction::Down:
+      selected()--;
+      break;
+    case Direction::Left:
+    case Direction::Right:
+      break;
     }
   }
 
   void OnDown() {
     switch (direction) {
-      case Direction::Up:
-        selected()--;
-        break;
-      case Direction::Down:
-        selected()++;
-        break;
-      case Direction::Left:
-      case Direction::Right:
-        break;
+    case Direction::Up:
+      selected()--;
+      break;
+    case Direction::Down:
+      selected()++;
+      break;
+    case Direction::Left:
+    case Direction::Right:
+      break;
     }
   }
 
   void OnLeft() {
     switch (direction) {
-      case Direction::Left:
-        selected()++;
-        break;
-      case Direction::Right:
-        selected()--;
-        break;
-      case Direction::Down:
-      case Direction::Up:
-        break;
+    case Direction::Left:
+      selected()++;
+      break;
+    case Direction::Right:
+      selected()--;
+      break;
+    case Direction::Down:
+    case Direction::Up:
+      break;
     }
   }
 
   void OnRight() {
     switch (direction) {
-      case Direction::Left:
-        selected()--;
-        break;
-      case Direction::Right:
-        selected()++;
-        break;
-      case Direction::Down:
-      case Direction::Up:
-        break;
+    case Direction::Left:
+      selected()--;
+      break;
+    case Direction::Right:
+      selected()++;
+      break;
+    case Direction::Down:
+    case Direction::Up:
+      break;
     }
   }
 
@@ -381,7 +381,7 @@ class MenuBase : public ComponentBase, public MenuOption {
     for (int i = 0; i < size(); ++i) {
       const bool is_focused = (focused_entry() == i) && is_menu_focused;
       const bool is_selected = (selected() == i);
-      float target = is_selected ? 1.F : is_focused ? 0.5F : 0.F;  // NOLINT
+      float target = is_selected ? 1.F : is_focused ? 0.5F : 0.F; // NOLINT
       if (animator_background_[i].to() != target) {
         animator_background_[i] = animation::Animator(
             &animation_background_[i], target,
@@ -461,7 +461,7 @@ class MenuBase : public ComponentBase, public MenuOption {
     return float(value);
   }
 
- protected:
+  protected:
   int selected_previous_ = selected();
   int selected_focus_ = selected();
 
@@ -509,9 +509,7 @@ class MenuBase : public ComponentBase, public MenuOption {
 ///   entry 3
 /// ```
 // NOLINTNEXTLINE
-Component Menu(MenuOption option) {
-  return Make<MenuBase>(std::move(option));
-}
+Component Menu(MenuOption option) { return Make<MenuBase>(std::move(option)); }
 
 /// @brief A list of text. The focused element is selected.
 /// @param entries The list of entries in the menu.
@@ -540,7 +538,7 @@ Component Menu(MenuOption option) {
 ///   entry 2
 ///   entry 3
 /// ```
-Component Menu(ConstStringListRef entries, int* selected, MenuOption option) {
+Component Menu(ConstStringListRef entries, int *selected, MenuOption option) {
   option.entries = std::move(entries);
   option.selected = selected;
   return Menu(option);
@@ -551,7 +549,7 @@ Component Menu(ConstStringListRef entries, int* selected, MenuOption option) {
 /// @param selected Reference the selected entry.
 /// See also |Menu|.
 /// @ingroup component
-Component Toggle(ConstStringListRef entries, int* selected) {
+Component Toggle(ConstStringListRef entries, int *selected) {
   return Menu(std::move(entries), selected, MenuOption::Toggle());
 }
 
@@ -613,11 +611,11 @@ Component MenuEntry(ConstStringRef label, MenuEntryOption option) {
 /// ```
 Component MenuEntry(MenuEntryOption option) {
   class Impl : public ComponentBase, public MenuEntryOption {
-   public:
+public:
     explicit Impl(MenuEntryOption option)
         : MenuEntryOption(std::move(option)) {}
 
-   private:
+private:
     Element OnRender() override {
       const bool is_focused = Focused();
       UpdateAnimationTarget();
@@ -626,7 +624,7 @@ Component MenuEntry(MenuEntryOption option) {
           label(), false, hovered_, is_focused, Index(),
       };
 
-      Element element = (transform ? transform : DefaultOptionTransform)  //
+      Element element = (transform ? transform : DefaultOptionTransform) //
           (state);
 
       if (is_focused) {
@@ -638,7 +636,7 @@ Component MenuEntry(MenuEntryOption option) {
 
     void UpdateAnimationTarget() {
       const bool focused = Focused();
-      float target = focused ? 1.F : hovered_ ? 0.5F : 0.F;  // NOLINT
+      float target = focused ? 1.F : hovered_ ? 0.5F : 0.F; // NOLINT
       if (target == animator_background_.to()) {
         return;
       }
@@ -689,7 +687,7 @@ Component MenuEntry(MenuEntryOption option) {
       return false;
     }
 
-    void OnAnimation(animation::Params& params) override {
+    void OnAnimation(animation::Params &params) override {
       animator_background_.OnAnimation(params);
       animator_foreground_.OnAnimation(params);
     }
@@ -708,4 +706,4 @@ Component MenuEntry(MenuEntryOption option) {
   return Make<Impl>(std::move(option));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

@@ -2,26 +2,26 @@
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
 
-#include <functional>  // for function
-#include <utility>     // for move
+#include <functional> // for function
+#include <utility>    // for move
 
-#include "ftxui/component/animation.hpp"  // for Animator, Params (ptr only)
-#include "ftxui/component/component.hpp"  // for Make, Button
-#include "ftxui/component/component_base.hpp"  // for ComponentBase
-#include "ftxui/component/component_options.hpp"  // for ButtonOption, AnimatedColorOption, AnimatedColorsOption, EntryState
-#include "ftxui/component/event.hpp"  // for Event, Event::Return
-#include "ftxui/component/mouse.hpp"  // for Mouse, Mouse::Left, Mouse::Pressed
-#include "ftxui/component/screen_interactive.hpp"  // for Component
-#include "ftxui/dom/elements.hpp"  // for operator|, Decorator, Element, operator|=, bgcolor, color, reflect, text, bold, border, inverted, nothing
-#include "ftxui/screen/box.hpp"    // for Box
-#include "ftxui/screen/color.hpp"  // for Color
-#include "ftxui/util/ref.hpp"      // for Ref, ConstStringRef
+#include "ftxui/component/animation.hpp"      // for Animator, Params (ptr only)
+#include "ftxui/component/component.hpp"      // for Make, Button
+#include "ftxui/component/component_base.hpp" // for ComponentBase
+#include "ftxui/component/component_options.hpp" // for ButtonOption, AnimatedColorOption, AnimatedColorsOption, EntryState
+#include "ftxui/component/event.hpp" // for Event, Event::Return
+#include "ftxui/component/mouse.hpp" // for Mouse, Mouse::Left, Mouse::Pressed
+#include "ftxui/component/screen_interactive.hpp" // for Component
+#include "ftxui/dom/elements.hpp" // for operator|, Decorator, Element, operator|=, bgcolor, color, reflect, text, bold, border, inverted, nothing
+#include "ftxui/screen/box.hpp"   // for Box
+#include "ftxui/screen/color.hpp" // for Color
+#include "ftxui/util/ref.hpp"     // for Ref, ConstStringRef
 
 namespace ftxui {
 
 namespace {
 
-Element DefaultTransform(EntryState params) {  // NOLINT
+Element DefaultTransform(EntryState params) { // NOLINT
   auto element = text(params.label) | border;
   if (params.active) {
     element |= bold;
@@ -33,7 +33,7 @@ Element DefaultTransform(EntryState params) {  // NOLINT
 }
 
 class ButtonBase : public ComponentBase, public ButtonOption {
- public:
+  public:
   explicit ButtonBase(ButtonOption option) : ButtonOption(std::move(option)) {}
 
   // Component implementation:
@@ -42,7 +42,7 @@ class ButtonBase : public ComponentBase, public ButtonOption {
     const bool focused = Focused();
     const bool focused_or_hover = focused || mouse_hover_;
 
-    float target = focused_or_hover ? 1.f : 0.f;  // NOLINT
+    float target = focused_or_hover ? 1.f : 0.f; // NOLINT
     if (target != animator_background_.to()) {
       SetAnimationTarget(target);
     }
@@ -51,7 +51,7 @@ class ButtonBase : public ComponentBase, public ButtonOption {
         *label, false, active, focused_or_hover, Index(),
     };
 
-    auto element = (transform ? transform : DefaultTransform)  //
+    auto element = (transform ? transform : DefaultTransform) //
         (state);
     element |= AnimatedColorStyle();
     element |= focus;
@@ -63,13 +63,13 @@ class ButtonBase : public ComponentBase, public ButtonOption {
     Decorator style = nothing;
     if (animated_colors.background.enabled) {
       style = style |
-              bgcolor(Color::Interpolate(animation_foreground_,  //
+              bgcolor(Color::Interpolate(animation_foreground_, //
                                          animated_colors.background.inactive,
                                          animated_colors.background.active));
     }
     if (animated_colors.foreground.enabled) {
       style =
-          style | color(Color::Interpolate(animation_foreground_,  //
+          style | color(Color::Interpolate(animation_foreground_, //
                                            animated_colors.foreground.inactive,
                                            animated_colors.foreground.active));
     }
@@ -89,19 +89,19 @@ class ButtonBase : public ComponentBase, public ButtonOption {
     }
   }
 
-  void OnAnimation(animation::Params& p) override {
+  void OnAnimation(animation::Params &p) override {
     animator_background_.OnAnimation(p);
     animator_foreground_.OnAnimation(p);
   }
 
   void OnClick() {
-    animation_background_ = 0.5F;  // NOLINT
-    animation_foreground_ = 0.5F;  // NOLINT
-    SetAnimationTarget(1.F);       // NOLINT
+    animation_background_ = 0.5F; // NOLINT
+    animation_foreground_ = 0.5F; // NOLINT
+    SetAnimationTarget(1.F);      // NOLINT
 
     // TODO(arthursonzogni): Consider posting the task to the main loop, instead
     // of invoking it immediately.
-    on_click();  // May delete this.
+    on_click(); // May delete this.
   }
 
   bool OnEvent(Event event) override {
@@ -110,7 +110,7 @@ class ButtonBase : public ComponentBase, public ButtonOption {
     }
 
     if (event == Event::Return) {
-      OnClick();  // May delete this.
+      OnClick(); // May delete this.
       return true;
     }
     return false;
@@ -127,7 +127,7 @@ class ButtonBase : public ComponentBase, public ButtonOption {
     if (event.mouse().button == Mouse::Left &&
         event.mouse().motion == Mouse::Pressed) {
       TakeFocus();
-      OnClick();  // May delete this.
+      OnClick(); // May delete this.
       return true;
     }
 
@@ -136,7 +136,7 @@ class ButtonBase : public ComponentBase, public ButtonOption {
 
   bool Focusable() const final { return true; }
 
- private:
+  private:
   bool mouse_hover_ = false;
   Box box_;
   ButtonOption option_;
@@ -148,7 +148,7 @@ class ButtonBase : public ComponentBase, public ButtonOption {
       animation::Animator(&animation_foreground_);
 };
 
-}  // namespace
+} // namespace
 
 /// @brief Draw a button. Execute a function when clicked.
 /// @param option Additional optional parameters.
@@ -201,12 +201,11 @@ Component Button(ButtonOption option) {
 /// └─────────────┘
 /// ```
 // NOLINTNEXTLINE
-Component Button(ConstStringRef label,
-                 std::function<void()> on_click,
+Component Button(ConstStringRef label, std::function<void()> on_click,
                  ButtonOption option) {
   option.label = std::move(label);
   option.on_click = std::move(on_click);
   return Make<ButtonBase>(std::move(option));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

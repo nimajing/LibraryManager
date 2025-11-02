@@ -2,9 +2,9 @@
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
 
-#include <utility>  // for move
+#include <utility> // for move
 
-#include "ftxui/dom/elements.hpp"  // for Element, filler, operator|, hbox, flex_grow, vbox, xflex_grow, yflex_grow, align_right, center, hcenter, vcenter
+#include "ftxui/dom/elements.hpp" // for Element, filler, operator|, hbox, flex_grow, vbox, xflex_grow, yflex_grow, align_right, center, hcenter, vcenter
 
 namespace ftxui {
 
@@ -28,16 +28,12 @@ Element vcenter(Element child) {
 /// @param child The decorated element.
 /// @return The centered element.
 /// @ingroup dom
-Element center(Element child) {
-  return hcenter(vcenter(std::move(child)));
-}
+Element center(Element child) { return hcenter(vcenter(std::move(child))); }
 
 /// @brief Align an element on the right side.
 /// @param child The decorated element.
 /// @return The right aligned element.
 /// @ingroup dom
-Element align_right(Element child) {
-  return hbox(filler(), std::move(child));
-}
+Element align_right(Element child) { return hbox(filler(), std::move(child)); }
 
-}  // namespace ftxui
+} // namespace ftxui

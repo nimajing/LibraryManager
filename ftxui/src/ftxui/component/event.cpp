@@ -1,13 +1,13 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <map>  // for map
+#include <map> // for map
 #include <string>
-#include <utility>  // for move
+#include <utility> // for move
 
 #include "ftxui/component/event.hpp"
-#include "ftxui/component/mouse.hpp"  // for Mouse
-#include "ftxui/screen/string.hpp"    // for to_wstring
+#include "ftxui/component/mouse.hpp" // for Mouse
+#include "ftxui/screen/string.hpp"   // for to_wstring
 
 // Disable warning for shadowing variable, for every compilers. Indeed, there is
 // a static Event for every letter of the alphabet:
@@ -37,9 +37,7 @@ Event Event::Character(std::string input) {
 /// @param c The character typed by the user.
 /// @ingroup component
 // static
-Event Event::Character(char c) {
-  return Event::Character(std::string{c});
-}
+Event Event::Character(char c) { return Event::Character(std::string{c}); }
 
 /// @brief An event corresponding to a given typed character.
 /// @param c The character typed by the user.
@@ -58,7 +56,7 @@ Event Event::Mouse(std::string input, struct Mouse mouse) {
   Event event;
   event.input_ = std::move(input);
   event.type_ = Type::Mouse;
-  event.data_.mouse = mouse;  // NOLINT
+  event.data_.mouse = mouse; // NOLINT
   return event;
 }
 
@@ -68,7 +66,7 @@ Event Event::CursorShape(std::string input, int shape) {
   Event event;
   event.input_ = std::move(input);
   event.type_ = Type::CursorShape;
-  event.data_.cursor_shape = shape;  // NOLINT
+  event.data_.cursor_shape = shape; // NOLINT
   return event;
 }
 
@@ -88,199 +86,199 @@ Event Event::CursorPosition(std::string input, int x, int y) {
   Event event;
   event.input_ = std::move(input);
   event.type_ = Type::CursorPosition;
-  event.data_.cursor = {x, y};  // NOLINT
+  event.data_.cursor = {x, y}; // NOLINT
   return event;
 }
 
 /// @brief Return a string representation of the event.
 std::string Event::DebugString() const {
-  static std::map<Event, const char*> event_to_string = {
+  static std::map<Event, const char *> event_to_string = {
       // --- Arrow ---
-      {Event::ArrowLeft, "Event::ArrowLeft"},
-      {Event::ArrowRight, "Event::ArrowRight"},
-      {Event::ArrowUp, "Event::ArrowUp"},
-      {Event::ArrowDown, "Event::ArrowDown"},
+      {     Event::ArrowLeft,      "Event::ArrowLeft"},
+      {    Event::ArrowRight,     "Event::ArrowRight"},
+      {       Event::ArrowUp,        "Event::ArrowUp"},
+      {     Event::ArrowDown,      "Event::ArrowDown"},
 
       // --- ArrowCtrl ---
-      {Event::ArrowLeftCtrl, "Event::ArrowLeftCtrl"},
+      { Event::ArrowLeftCtrl,  "Event::ArrowLeftCtrl"},
       {Event::ArrowRightCtrl, "Event::ArrowRightCtrl"},
-      {Event::ArrowUpCtrl, "Event::ArrowUpCtrl"},
-      {Event::ArrowDownCtrl, "Event::ArrowDownCtrl"},
+      {   Event::ArrowUpCtrl,    "Event::ArrowUpCtrl"},
+      { Event::ArrowDownCtrl,  "Event::ArrowDownCtrl"},
 
       // --- Other ---
-      {Event::Backspace, "Event::Backspace"},
-      {Event::Delete, "Event::Delete"},
-      {Event::Escape, "Event::Escape"},
-      {Event::Return, "Event::Return"},
-      {Event::Tab, "Event::Tab"},
-      {Event::TabReverse, "Event::TabReverse"},
+      {     Event::Backspace,      "Event::Backspace"},
+      {        Event::Delete,         "Event::Delete"},
+      {        Event::Escape,         "Event::Escape"},
+      {        Event::Return,         "Event::Return"},
+      {           Event::Tab,            "Event::Tab"},
+      {    Event::TabReverse,     "Event::TabReverse"},
 
       // --- Function keys ---
-      {Event::F1, "Event::F1"},
-      {Event::F2, "Event::F2"},
-      {Event::F3, "Event::F3"},
-      {Event::F4, "Event::F4"},
-      {Event::F5, "Event::F5"},
-      {Event::F6, "Event::F6"},
-      {Event::F7, "Event::F7"},
-      {Event::F8, "Event::F8"},
-      {Event::F9, "Event::F9"},
-      {Event::F10, "Event::F10"},
-      {Event::F11, "Event::F11"},
-      {Event::F12, "Event::F12"},
+      {            Event::F1,             "Event::F1"},
+      {            Event::F2,             "Event::F2"},
+      {            Event::F3,             "Event::F3"},
+      {            Event::F4,             "Event::F4"},
+      {            Event::F5,             "Event::F5"},
+      {            Event::F6,             "Event::F6"},
+      {            Event::F7,             "Event::F7"},
+      {            Event::F8,             "Event::F8"},
+      {            Event::F9,             "Event::F9"},
+      {           Event::F10,            "Event::F10"},
+      {           Event::F11,            "Event::F11"},
+      {           Event::F12,            "Event::F12"},
 
       // --- Navigation keys ---
-      {Event::Insert, "Event::Insert"},
-      {Event::Home, "Event::Home"},
-      {Event::End, "Event::End"},
-      {Event::PageUp, "Event::PageUp"},
-      {Event::PageDown, "Event::PageDown"},
+      {        Event::Insert,         "Event::Insert"},
+      {          Event::Home,           "Event::Home"},
+      {           Event::End,            "Event::End"},
+      {        Event::PageUp,         "Event::PageUp"},
+      {      Event::PageDown,       "Event::PageDown"},
 
       // --- Control keys ---
-      {Event::CtrlA, "Event::CtrlA"},
-      {Event::CtrlB, "Event::CtrlB"},
-      {Event::CtrlC, "Event::CtrlC"},
-      {Event::CtrlD, "Event::CtrlD"},
-      {Event::CtrlE, "Event::CtrlE"},
-      {Event::CtrlF, "Event::CtrlF"},
-      {Event::CtrlG, "Event::CtrlG"},
-      {Event::CtrlH, "Event::CtrlH"},
-      {Event::CtrlI, "Event::CtrlI"},
-      {Event::CtrlJ, "Event::CtrlJ"},
-      {Event::CtrlK, "Event::CtrlK"},
-      {Event::CtrlL, "Event::CtrlL"},
-      {Event::CtrlM, "Event::CtrlM"},
-      {Event::CtrlN, "Event::CtrlN"},
-      {Event::CtrlO, "Event::CtrlO"},
-      {Event::CtrlP, "Event::CtrlP"},
-      {Event::CtrlQ, "Event::CtrlQ"},
-      {Event::CtrlR, "Event::CtrlR"},
-      {Event::CtrlS, "Event::CtrlS"},
-      {Event::CtrlT, "Event::CtrlT"},
-      {Event::CtrlU, "Event::CtrlU"},
-      {Event::CtrlV, "Event::CtrlV"},
-      {Event::CtrlW, "Event::CtrlW"},
-      {Event::CtrlX, "Event::CtrlX"},
-      {Event::CtrlY, "Event::CtrlY"},
-      {Event::CtrlZ, "Event::CtrlZ"},
+      {         Event::CtrlA,          "Event::CtrlA"},
+      {         Event::CtrlB,          "Event::CtrlB"},
+      {         Event::CtrlC,          "Event::CtrlC"},
+      {         Event::CtrlD,          "Event::CtrlD"},
+      {         Event::CtrlE,          "Event::CtrlE"},
+      {         Event::CtrlF,          "Event::CtrlF"},
+      {         Event::CtrlG,          "Event::CtrlG"},
+      {         Event::CtrlH,          "Event::CtrlH"},
+      {         Event::CtrlI,          "Event::CtrlI"},
+      {         Event::CtrlJ,          "Event::CtrlJ"},
+      {         Event::CtrlK,          "Event::CtrlK"},
+      {         Event::CtrlL,          "Event::CtrlL"},
+      {         Event::CtrlM,          "Event::CtrlM"},
+      {         Event::CtrlN,          "Event::CtrlN"},
+      {         Event::CtrlO,          "Event::CtrlO"},
+      {         Event::CtrlP,          "Event::CtrlP"},
+      {         Event::CtrlQ,          "Event::CtrlQ"},
+      {         Event::CtrlR,          "Event::CtrlR"},
+      {         Event::CtrlS,          "Event::CtrlS"},
+      {         Event::CtrlT,          "Event::CtrlT"},
+      {         Event::CtrlU,          "Event::CtrlU"},
+      {         Event::CtrlV,          "Event::CtrlV"},
+      {         Event::CtrlW,          "Event::CtrlW"},
+      {         Event::CtrlX,          "Event::CtrlX"},
+      {         Event::CtrlY,          "Event::CtrlY"},
+      {         Event::CtrlZ,          "Event::CtrlZ"},
 
       // --- Alt keys ---
-      {Event::AltA, "Event::AltA"},
-      {Event::AltB, "Event::AltB"},
-      {Event::AltC, "Event::AltC"},
-      {Event::AltD, "Event::AltD"},
-      {Event::AltE, "Event::AltE"},
-      {Event::AltF, "Event::AltF"},
-      {Event::AltG, "Event::AltG"},
-      {Event::AltH, "Event::AltH"},
-      {Event::AltI, "Event::AltI"},
-      {Event::AltJ, "Event::AltJ"},
-      {Event::AltK, "Event::AltK"},
-      {Event::AltL, "Event::AltL"},
-      {Event::AltM, "Event::AltM"},
-      {Event::AltN, "Event::AltN"},
-      {Event::AltO, "Event::AltO"},
-      {Event::AltP, "Event::AltP"},
-      {Event::AltQ, "Event::AltQ"},
-      {Event::AltR, "Event::AltR"},
-      {Event::AltS, "Event::AltS"},
-      {Event::AltT, "Event::AltT"},
-      {Event::AltU, "Event::AltU"},
-      {Event::AltV, "Event::AltV"},
-      {Event::AltW, "Event::AltW"},
-      {Event::AltX, "Event::AltX"},
-      {Event::AltY, "Event::AltY"},
-      {Event::AltZ, "Event::AltZ"},
+      {          Event::AltA,           "Event::AltA"},
+      {          Event::AltB,           "Event::AltB"},
+      {          Event::AltC,           "Event::AltC"},
+      {          Event::AltD,           "Event::AltD"},
+      {          Event::AltE,           "Event::AltE"},
+      {          Event::AltF,           "Event::AltF"},
+      {          Event::AltG,           "Event::AltG"},
+      {          Event::AltH,           "Event::AltH"},
+      {          Event::AltI,           "Event::AltI"},
+      {          Event::AltJ,           "Event::AltJ"},
+      {          Event::AltK,           "Event::AltK"},
+      {          Event::AltL,           "Event::AltL"},
+      {          Event::AltM,           "Event::AltM"},
+      {          Event::AltN,           "Event::AltN"},
+      {          Event::AltO,           "Event::AltO"},
+      {          Event::AltP,           "Event::AltP"},
+      {          Event::AltQ,           "Event::AltQ"},
+      {          Event::AltR,           "Event::AltR"},
+      {          Event::AltS,           "Event::AltS"},
+      {          Event::AltT,           "Event::AltT"},
+      {          Event::AltU,           "Event::AltU"},
+      {          Event::AltV,           "Event::AltV"},
+      {          Event::AltW,           "Event::AltW"},
+      {          Event::AltX,           "Event::AltX"},
+      {          Event::AltY,           "Event::AltY"},
+      {          Event::AltZ,           "Event::AltZ"},
 
       // --- CtrlAlt keys ---
-      {Event::CtrlAltA, "Event::CtrlAltA"},
-      {Event::CtrlAltB, "Event::CtrlAltB"},
-      {Event::CtrlAltC, "Event::CtrlAltC"},
-      {Event::CtrlAltD, "Event::CtrlAltD"},
-      {Event::CtrlAltE, "Event::CtrlAltE"},
-      {Event::CtrlAltF, "Event::CtrlAltF"},
-      {Event::CtrlAltG, "Event::CtrlAltG"},
-      {Event::CtrlAltH, "Event::CtrlAltH"},
-      {Event::CtrlAltI, "Event::CtrlAltI"},
-      {Event::CtrlAltJ, "Event::CtrlAltJ"},
-      {Event::CtrlAltK, "Event::CtrlAltK"},
-      {Event::CtrlAltL, "Event::CtrlAltL"},
-      {Event::CtrlAltM, "Event::CtrlAltM"},
-      {Event::CtrlAltN, "Event::CtrlAltN"},
-      {Event::CtrlAltO, "Event::CtrlAltO"},
-      {Event::CtrlAltP, "Event::CtrlAltP"},
-      {Event::CtrlAltQ, "Event::CtrlAltQ"},
-      {Event::CtrlAltR, "Event::CtrlAltR"},
-      {Event::CtrlAltS, "Event::CtrlAltS"},
-      {Event::CtrlAltT, "Event::CtrlAltT"},
-      {Event::CtrlAltU, "Event::CtrlAltU"},
-      {Event::CtrlAltV, "Event::CtrlAltV"},
-      {Event::CtrlAltW, "Event::CtrlAltW"},
-      {Event::CtrlAltX, "Event::CtrlAltX"},
-      {Event::CtrlAltY, "Event::CtrlAltY"},
-      {Event::CtrlAltZ, "Event::CtrlAltZ"},
+      {      Event::CtrlAltA,       "Event::CtrlAltA"},
+      {      Event::CtrlAltB,       "Event::CtrlAltB"},
+      {      Event::CtrlAltC,       "Event::CtrlAltC"},
+      {      Event::CtrlAltD,       "Event::CtrlAltD"},
+      {      Event::CtrlAltE,       "Event::CtrlAltE"},
+      {      Event::CtrlAltF,       "Event::CtrlAltF"},
+      {      Event::CtrlAltG,       "Event::CtrlAltG"},
+      {      Event::CtrlAltH,       "Event::CtrlAltH"},
+      {      Event::CtrlAltI,       "Event::CtrlAltI"},
+      {      Event::CtrlAltJ,       "Event::CtrlAltJ"},
+      {      Event::CtrlAltK,       "Event::CtrlAltK"},
+      {      Event::CtrlAltL,       "Event::CtrlAltL"},
+      {      Event::CtrlAltM,       "Event::CtrlAltM"},
+      {      Event::CtrlAltN,       "Event::CtrlAltN"},
+      {      Event::CtrlAltO,       "Event::CtrlAltO"},
+      {      Event::CtrlAltP,       "Event::CtrlAltP"},
+      {      Event::CtrlAltQ,       "Event::CtrlAltQ"},
+      {      Event::CtrlAltR,       "Event::CtrlAltR"},
+      {      Event::CtrlAltS,       "Event::CtrlAltS"},
+      {      Event::CtrlAltT,       "Event::CtrlAltT"},
+      {      Event::CtrlAltU,       "Event::CtrlAltU"},
+      {      Event::CtrlAltV,       "Event::CtrlAltV"},
+      {      Event::CtrlAltW,       "Event::CtrlAltW"},
+      {      Event::CtrlAltX,       "Event::CtrlAltX"},
+      {      Event::CtrlAltY,       "Event::CtrlAltY"},
+      {      Event::CtrlAltZ,       "Event::CtrlAltZ"},
 
       // --- Custom ---
-      {Event::Custom, "Event::Custom"},
+      {        Event::Custom,         "Event::Custom"},
   };
 
-  static std::map<Mouse::Button, const char*> mouse_button_string = {
-      {Mouse::Button::Left, ".button = Mouse::Left"},
-      {Mouse::Button::Middle, ".button = Mouse::Middle"},
-      {Mouse::Button::Right, ".button = Mouse::Right"},
-      {Mouse::Button::WheelUp, ".button = Mouse::WheelUp"},
-      {Mouse::Button::WheelDown, ".button = Mouse::WheelDown"},
-      {Mouse::Button::None, ".button = Mouse::None"},
-      {Mouse::Button::WheelLeft, ".button = Mouse::WheelLeft"},
+  static std::map<Mouse::Button, const char *> mouse_button_string = {
+      {      Mouse::Button::Left,       ".button = Mouse::Left"},
+      {    Mouse::Button::Middle,     ".button = Mouse::Middle"},
+      {     Mouse::Button::Right,      ".button = Mouse::Right"},
+      {   Mouse::Button::WheelUp,    ".button = Mouse::WheelUp"},
+      { Mouse::Button::WheelDown,  ".button = Mouse::WheelDown"},
+      {      Mouse::Button::None,       ".button = Mouse::None"},
+      { Mouse::Button::WheelLeft,  ".button = Mouse::WheelLeft"},
       {Mouse::Button::WheelRight, ".button = Mouse::WheelRight"},
   };
 
-  static std::map<Mouse::Motion, const char*> mouse_motion_string = {
-      {Mouse::Motion::Pressed, ".motion = Mouse::Pressed"},
+  static std::map<Mouse::Motion, const char *> mouse_motion_string = {
+      { Mouse::Motion::Pressed,  ".motion = Mouse::Pressed"},
       {Mouse::Motion::Released, ".motion = Mouse::Released"},
-      {Mouse::Motion::Moved, ".motion = Mouse::Moved"},
+      {   Mouse::Motion::Moved,    ".motion = Mouse::Moved"},
   };
 
   switch (type_) {
-    case Type::Character: {
-      return "Event::Character(\"" + input_ + "\")";
+  case Type::Character: {
+    return "Event::Character(\"" + input_ + "\")";
+  }
+  case Type::Mouse: {
+    std::string out = "Event::Mouse(\"...\", Mouse{";
+    out += std::string(mouse_button_string[data_.mouse.button]);
+    out += ", ";
+    out += std::string(mouse_motion_string[data_.mouse.motion]);
+    out += ", ";
+    if (data_.mouse.shift) {
+      out += ".shift = true, ";
     }
-    case Type::Mouse: {
-      std::string out = "Event::Mouse(\"...\", Mouse{";
-      out += std::string(mouse_button_string[data_.mouse.button]);
-      out += ", ";
-      out += std::string(mouse_motion_string[data_.mouse.motion]);
-      out += ", ";
-      if (data_.mouse.shift) {
-        out += ".shift = true, ";
-      }
-      if (data_.mouse.meta) {
-        out += ".meta = true, ";
-      }
-      if (data_.mouse.control) {
-        out += ".control = true, ";
-      }
-      out += ".x = " + std::to_string(data_.mouse.x);
-      out += ", ";
-      out += ".y = " + std::to_string(data_.mouse.y);
-      out += "})";
-      return out;
+    if (data_.mouse.meta) {
+      out += ".meta = true, ";
     }
-    case Type::CursorShape:
-      return "Event::CursorShape(" + input_ + ", " +
-             std::to_string(data_.cursor_shape) + ")";
-    case Type::CursorPosition:
-      return "Event::CursorPosition(" + input_ + ", " +
-             std::to_string(data_.cursor.x) + ", " +
-             std::to_string(data_.cursor.y) + ")";
-    default: {
-      auto event_it = event_to_string.find(*this);
-      if (event_it != event_to_string.end()) {
-        return event_it->second;
-      }
+    if (data_.mouse.control) {
+      out += ".control = true, ";
+    }
+    out += ".x = " + std::to_string(data_.mouse.x);
+    out += ", ";
+    out += ".y = " + std::to_string(data_.mouse.y);
+    out += "})";
+    return out;
+  }
+  case Type::CursorShape:
+    return "Event::CursorShape(" + input_ + ", " +
+           std::to_string(data_.cursor_shape) + ")";
+  case Type::CursorPosition:
+    return "Event::CursorPosition(" + input_ + ", " +
+           std::to_string(data_.cursor.x) + ", " +
+           std::to_string(data_.cursor.y) + ")";
+  default: {
+    auto event_it = event_to_string.find(*this);
+    if (event_it != event_to_string.end()) {
+      return event_it->second;
+    }
 
-      return "";
-    }
+    return "";
+  }
   }
   return "";
 }
@@ -464,4 +462,4 @@ const Event Event::CtrlAltZ = Event::Special("\x1b\x1a");
 // NOLINTEND
 // clang-format on
 
-}  // namespace ftxui
+} // namespace ftxui

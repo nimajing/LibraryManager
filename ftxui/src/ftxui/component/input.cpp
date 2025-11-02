@@ -1,33 +1,33 @@
 // Copyright 2022 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>   // for max, min
-#include <cstddef>     // for size_t
-#include <cstdint>     // for uint32_t
-#include <functional>  // for function
-#include <sstream>     // for basic_istream, stringstream
-#include <string>      // for string, basic_string, operator==, getline
-#include <utility>     // for move
-#include <vector>      // for vector
+#include <algorithm>  // for max, min
+#include <cstddef>    // for size_t
+#include <cstdint>    // for uint32_t
+#include <functional> // for function
+#include <sstream>    // for basic_istream, stringstream
+#include <string>     // for string, basic_string, operator==, getline
+#include <utility>    // for move
+#include <vector>     // for vector
 
-#include "ftxui/component/component.hpp"          // for Make, Input
-#include "ftxui/component/component_base.hpp"     // for ComponentBase
-#include "ftxui/component/component_options.hpp"  // for InputOption
-#include "ftxui/component/event.hpp"  // for Event, Event::ArrowDown, Event::ArrowLeft, Event::ArrowLeftCtrl, Event::ArrowRight, Event::ArrowRightCtrl, Event::ArrowUp, Event::Backspace, Event::Delete, Event::End, Event::Home, Event::Return
-#include "ftxui/component/mouse.hpp"  // for Mouse, Mouse::Left, Mouse::Pressed
-#include "ftxui/component/screen_interactive.hpp"  // for Component
-#include "ftxui/dom/elements.hpp"  // for operator|, reflect, text, Element, xflex, hbox, Elements, frame, operator|=, vbox, focus, focusCursorBarBlinking, select
-#include "ftxui/screen/box.hpp"    // for Box
-#include "ftxui/screen/string.hpp"           // for string_width
-#include "ftxui/screen/string_internal.hpp"  // for GlyphNext, GlyphPrevious, WordBreakProperty, EatCodePoint, CodepointToWordBreakProperty, IsFullWidth, WordBreakProperty::ALetter, WordBreakProperty::CR, WordBreakProperty::Double_Quote, WordBreakProperty::Extend, WordBreakProperty::ExtendNumLet, WordBreakProperty::Format, WordBreakProperty::Hebrew_Letter, WordBreakProperty::Katakana, WordBreakProperty::LF, WordBreakProperty::MidLetter, WordBreakProperty::MidNum, WordBreakProperty::MidNumLet, WordBreakProperty::Newline, WordBreakProperty::Numeric, WordBreakProperty::Regional_Indicator, WordBreakProperty::Single_Quote, WordBreakProperty::WSegSpace, WordBreakProperty::ZWJ
-#include "ftxui/screen/util.hpp"             // for clamp
-#include "ftxui/util/ref.hpp"                // for StringRef, Ref
+#include "ftxui/component/component.hpp"         // for Make, Input
+#include "ftxui/component/component_base.hpp"    // for ComponentBase
+#include "ftxui/component/component_options.hpp" // for InputOption
+#include "ftxui/component/event.hpp" // for Event, Event::ArrowDown, Event::ArrowLeft, Event::ArrowLeftCtrl, Event::ArrowRight, Event::ArrowRightCtrl, Event::ArrowUp, Event::Backspace, Event::Delete, Event::End, Event::Home, Event::Return
+#include "ftxui/component/mouse.hpp" // for Mouse, Mouse::Left, Mouse::Pressed
+#include "ftxui/component/screen_interactive.hpp" // for Component
+#include "ftxui/dom/elements.hpp" // for operator|, reflect, text, Element, xflex, hbox, Elements, frame, operator|=, vbox, focus, focusCursorBarBlinking, select
+#include "ftxui/screen/box.hpp"   // for Box
+#include "ftxui/screen/string.hpp"          // for string_width
+#include "ftxui/screen/string_internal.hpp" // for GlyphNext, GlyphPrevious, WordBreakProperty, EatCodePoint, CodepointToWordBreakProperty, IsFullWidth, WordBreakProperty::ALetter, WordBreakProperty::CR, WordBreakProperty::Double_Quote, WordBreakProperty::Extend, WordBreakProperty::ExtendNumLet, WordBreakProperty::Format, WordBreakProperty::Hebrew_Letter, WordBreakProperty::Katakana, WordBreakProperty::LF, WordBreakProperty::MidLetter, WordBreakProperty::MidNum, WordBreakProperty::MidNumLet, WordBreakProperty::Newline, WordBreakProperty::Numeric, WordBreakProperty::Regional_Indicator, WordBreakProperty::Single_Quote, WordBreakProperty::WSegSpace, WordBreakProperty::ZWJ
+#include "ftxui/screen/util.hpp"            // for clamp
+#include "ftxui/util/ref.hpp"               // for StringRef, Ref
 
 namespace ftxui {
 
 namespace {
 
-std::vector<std::string> Split(const std::string& input) {
+std::vector<std::string> Split(const std::string &input) {
   std::vector<std::string> output;
   std::stringstream ss(input);
   std::string line;
@@ -40,7 +40,7 @@ std::vector<std::string> Split(const std::string& input) {
   return output;
 }
 
-size_t GlyphWidth(const std::string& input, size_t iter) {
+size_t GlyphWidth(const std::string &input, size_t iter) {
   uint32_t ucs = 0;
   if (!EatCodePoint(input, iter, &iter, &ucs)) {
     return 0;
@@ -53,33 +53,33 @@ size_t GlyphWidth(const std::string& input, size_t iter) {
 
 bool IsWordCodePoint(uint32_t codepoint) {
   switch (CodepointToWordBreakProperty(codepoint)) {
-    case WordBreakProperty::ALetter:
-    case WordBreakProperty::Hebrew_Letter:
-    case WordBreakProperty::Katakana:
-    case WordBreakProperty::Numeric:
-      return true;
+  case WordBreakProperty::ALetter:
+  case WordBreakProperty::Hebrew_Letter:
+  case WordBreakProperty::Katakana:
+  case WordBreakProperty::Numeric:
+    return true;
 
-    case WordBreakProperty::CR:
-    case WordBreakProperty::Double_Quote:
-    case WordBreakProperty::LF:
-    case WordBreakProperty::MidLetter:
-    case WordBreakProperty::MidNum:
-    case WordBreakProperty::MidNumLet:
-    case WordBreakProperty::Newline:
-    case WordBreakProperty::Single_Quote:
-    case WordBreakProperty::WSegSpace:
-    // Unexpected/Unsure
-    case WordBreakProperty::Extend:
-    case WordBreakProperty::ExtendNumLet:
-    case WordBreakProperty::Format:
-    case WordBreakProperty::Regional_Indicator:
-    case WordBreakProperty::ZWJ:
-      return false;
+  case WordBreakProperty::CR:
+  case WordBreakProperty::Double_Quote:
+  case WordBreakProperty::LF:
+  case WordBreakProperty::MidLetter:
+  case WordBreakProperty::MidNum:
+  case WordBreakProperty::MidNumLet:
+  case WordBreakProperty::Newline:
+  case WordBreakProperty::Single_Quote:
+  case WordBreakProperty::WSegSpace:
+  // Unexpected/Unsure
+  case WordBreakProperty::Extend:
+  case WordBreakProperty::ExtendNumLet:
+  case WordBreakProperty::Format:
+  case WordBreakProperty::Regional_Indicator:
+  case WordBreakProperty::ZWJ:
+    return false;
   }
-  return false;  // NOT_REACHED();
+  return false; // NOT_REACHED();
 }
 
-bool IsWordCharacter(const std::string& input, size_t iter) {
+bool IsWordCharacter(const std::string &input, size_t iter) {
   uint32_t ucs = 0;
   if (!EatCodePoint(input, iter, &iter, &ucs)) {
     return false;
@@ -90,11 +90,11 @@ bool IsWordCharacter(const std::string& input, size_t iter) {
 
 // An input box. The user can type text into it.
 class InputBase : public ComponentBase, public InputOption {
- public:
+  public:
   // NOLINTNEXTLINE
   InputBase(InputOption option) : InputOption(std::move(option)) {}
 
- private:
+  private:
   // Component implementation:
   Element OnRender() override {
     const bool is_focused = Focused();
@@ -111,7 +111,7 @@ class InputBase : public ComponentBase, public InputOption {
 
       return transform_func({
                  std::move(element), hovered_, is_focused,
-                 true  // placeholder
+                 true // placeholder
              }) |
              focus | reflect(box_);
     }
@@ -124,7 +124,7 @@ class InputBase : public ComponentBase, public InputOption {
     // Find the line and index of the cursor.
     int cursor_line = 0;
     int cursor_char_index = cursor_position();
-    for (const auto& line : lines) {
+    for (const auto &line : lines) {
       if (cursor_char_index <= (int)line.size()) {
         break;
       }
@@ -139,7 +139,7 @@ class InputBase : public ComponentBase, public InputOption {
 
     elements.reserve(lines.size());
     for (size_t i = 0; i < lines.size(); ++i) {
-      const std::string& line = lines[i];
+      const std::string &line = lines[i];
 
       // This is not the cursor line.
       if (int(i) != cursor_line) {
@@ -176,12 +176,12 @@ class InputBase : public ComponentBase, public InputOption {
     auto element = vbox(std::move(elements), cursor_line) | frame;
     return transform_func({
                std::move(element), hovered_, is_focused,
-               false  // placeholder
+               false // placeholder
            }) |
            xflex | reflect(box_);
   }
 
-  Element Text(const std::string& input) {
+  Element Text(const std::string &input) {
     if (!password()) {
       return text(input);
     }
@@ -352,7 +352,7 @@ class InputBase : public ComponentBase, public InputOption {
     return true;
   }
 
-  bool HandleCharacter(const std::string& character) {
+  bool HandleCharacter(const std::string &character) {
     if (!insert() && cursor_position() < (int)content->size() &&
         content()[cursor_position()] != '\n') {
       DeleteImpl();
@@ -461,7 +461,7 @@ class InputBase : public ComponentBase, public InputOption {
   }
 
   bool HandleMouse(Event event) {
-    hovered_ = box_.Contain(event.mouse().x,  //
+    hovered_ = box_.Contain(event.mouse().x, //
                             event.mouse().y) &&
                CaptureMouse(event);
     if (!hovered_) {
@@ -486,7 +486,7 @@ class InputBase : public ComponentBase, public InputOption {
     std::vector<std::string> lines = Split(*content);
     int cursor_line = 0;
     int cursor_char_index = cursor_position();
-    for (const auto& line : lines) {
+    for (const auto &line : lines) {
       if (cursor_char_index <= (int)line.size()) {
         break;
       }
@@ -504,12 +504,12 @@ class InputBase : public ComponentBase, public InputOption {
     new_cursor_line = std::max(std::min(new_cursor_line, (int)lines.size()), 0);
 
     const std::string empty_string;
-    const std::string& line = new_cursor_line < (int)lines.size()
+    const std::string &line = new_cursor_line < (int)lines.size()
                                   ? lines[new_cursor_line]
                                   : empty_string;
     new_cursor_column = util::clamp(new_cursor_column, 0, string_width(line));
 
-    if (new_cursor_column == cursor_column &&  //
+    if (new_cursor_column == cursor_column && //
         new_cursor_line == cursor_line) {
       return false;
     }
@@ -543,7 +543,7 @@ class InputBase : public ComponentBase, public InputOption {
   Box cursor_box_;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief An input box for editing text.
 /// @param option Additional optional parameters.
@@ -628,4 +628,4 @@ Component Input(StringRef content, StringRef placeholder, InputOption option) {
   return Make<InputBase>(std::move(option));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

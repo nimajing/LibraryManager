@@ -1,27 +1,27 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <functional>  // for function
-#include <utility>     // for move
+#include <functional> // for function
+#include <utility>    // for move
 
-#include "ftxui/component/component.hpp"       // for Make, Checkbox
-#include "ftxui/component/component_base.hpp"  // for Component, ComponentBase
-#include "ftxui/component/component_options.hpp"  // for CheckboxOption, EntryState
-#include "ftxui/component/event.hpp"              // for Event, Event::Return
-#include "ftxui/component/mouse.hpp"  // for Mouse, Mouse::Left, Mouse::Pressed
-#include "ftxui/dom/elements.hpp"  // for operator|, Element, reflect, focus, nothing, select
-#include "ftxui/screen/box.hpp"  // for Box
-#include "ftxui/util/ref.hpp"    // for Ref, ConstStringRef
+#include "ftxui/component/component.hpp"         // for Make, Checkbox
+#include "ftxui/component/component_base.hpp"    // for Component, ComponentBase
+#include "ftxui/component/component_options.hpp" // for CheckboxOption, EntryState
+#include "ftxui/component/event.hpp"             // for Event, Event::Return
+#include "ftxui/component/mouse.hpp" // for Mouse, Mouse::Left, Mouse::Pressed
+#include "ftxui/dom/elements.hpp" // for operator|, Element, reflect, focus, nothing, select
+#include "ftxui/screen/box.hpp" // for Box
+#include "ftxui/util/ref.hpp"   // for Ref, ConstStringRef
 
 namespace ftxui {
 
 namespace {
 class CheckboxBase : public ComponentBase, public CheckboxOption {
- public:
+  public:
   explicit CheckboxBase(CheckboxOption option)
       : CheckboxOption(std::move(option)) {}
 
- private:
+  private:
   // Component implementation.
   Element OnRender() override {
     const bool is_focused = Focused();
@@ -81,7 +81,7 @@ class CheckboxBase : public ComponentBase, public CheckboxOption {
   bool hovered_ = false;
   Box box_;
 };
-}  // namespace
+} // namespace
 
 /// @brief Draw checkable element.
 /// @param option Additional optional parameters.
@@ -132,10 +132,10 @@ Component Checkbox(CheckboxOption option) {
 /// ☐ Make a sandwitch
 /// ```
 // NOLINTNEXTLINE
-Component Checkbox(ConstStringRef label, bool* checked, CheckboxOption option) {
+Component Checkbox(ConstStringRef label, bool *checked, CheckboxOption option) {
   option.label = std::move(label);
   option.checked = checked;
   return Make<CheckboxBase>(std::move(option));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

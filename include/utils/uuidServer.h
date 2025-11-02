@@ -4,13 +4,13 @@
 #include <vector>
 
 class UUIDServer {
-private:
+  private:
   std::map<std::string, std::vector<std::string>> uuids;
   std::string PATH = "assets/program_data/enc.enc";
   UUIDServer();
   ~UUIDServer();
 
-public:
+  public:
   static UUIDServer &Instance() {
     static UUIDServer inst = UUIDServer();
     return inst;

@@ -7,7 +7,7 @@ namespace lms {
 namespace ui {
 
 class BookExplorer : public ExplorerBase {
-public:
+  public:
   enum class SearchCriteria { TITLE, AUTHOR, ISBN };
 
   BookExplorer(const std::string &title, const std::vector<Book> &books)
@@ -18,7 +18,7 @@ public:
 
   const Book *GetSelectedBook() const { return selectedBook; }
 
-protected:
+  protected:
   std::vector<std::string> GetAllItemStrings() const override;
 
   const std::vector<std::string> &GetFilteredItems() const override {
@@ -31,11 +31,11 @@ protected:
 
   void UpdateSelection(size_t index) override;
 
-private:
+  private:
   std::vector<Book> books;
   std::vector<Book> filteredBooks;
   const Book *selectedBook = nullptr;
-  
+
   void UpdateFilteredBooks();
 };
 

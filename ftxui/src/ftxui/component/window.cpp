@@ -2,17 +2,17 @@
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
 #define NOMINMAX
+#include "ftxui/dom/elements.hpp" // for text, window, hbox, vbox, size, clear_under, reflect, emptyElement
+#include "ftxui/dom/node_decorator.hpp" // for NodeDecorator
+#include "ftxui/screen/color.hpp"       // for Color
+#include "ftxui/screen/screen.hpp"      // for Screen
 #include <algorithm>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/component/component_options.hpp>
-#include <ftxui/component/screen_interactive.hpp>  // for ScreenInteractive
+#include <ftxui/component/screen_interactive.hpp> // for ScreenInteractive
 #include <memory>
 #include <utility>
-#include "ftxui/dom/elements.hpp"  // for text, window, hbox, vbox, size, clear_under, reflect, emptyElement
-#include "ftxui/dom/node_decorator.hpp"  // for NodeDecorator
-#include "ftxui/screen/color.hpp"        // for Color
-#include "ftxui/screen/screen.hpp"       // for Screen
 
 namespace ftxui {
 
@@ -37,47 +37,40 @@ Decorator PositionAndSize(int left, int top, int width, int height) {
 }
 
 class ResizeDecorator : public NodeDecorator {
- public:
-  ResizeDecorator(Element child,
-                  bool resize_left,
-                  bool resize_right,
-                  bool resize_top,
-                  bool resize_down,
-                  Color color)
-      : NodeDecorator(std::move(child)),
-        color_(color),
-        resize_left_(resize_left),
-        resize_right_(resize_right),
-        resize_top_(resize_top),
-        resize_down_(resize_down) {}
+  public:
+  ResizeDecorator(Element child, bool resize_left, bool resize_right,
+                  bool resize_top, bool resize_down, Color color)
+      : NodeDecorator(std::move(child)), color_(color),
+        resize_left_(resize_left), resize_right_(resize_right),
+        resize_top_(resize_top), resize_down_(resize_down) {}
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     NodeDecorator::Render(screen);
 
     if (resize_left_) {
       for (int y = box_.y_min; y <= box_.y_max; ++y) {
-        auto& cell = screen.PixelAt(box_.x_min, y);
+        auto &cell = screen.PixelAt(box_.x_min, y);
         cell.foreground_color = color_;
         cell.automerge = false;
       }
     }
     if (resize_right_) {
       for (int y = box_.y_min; y <= box_.y_max; ++y) {
-        auto& cell = screen.PixelAt(box_.x_max, y);
+        auto &cell = screen.PixelAt(box_.x_max, y);
         cell.foreground_color = color_;
         cell.automerge = false;
       }
     }
     if (resize_top_) {
       for (int x = box_.x_min; x <= box_.x_max; ++x) {
-        auto& cell = screen.PixelAt(x, box_.y_min);
+        auto &cell = screen.PixelAt(x, box_.y_min);
         cell.foreground_color = color_;
         cell.automerge = false;
       }
     }
     if (resize_down_) {
       for (int x = box_.x_min; x <= box_.x_max; ++x) {
-        auto& cell = screen.PixelAt(x, box_.y_max);
+        auto &cell = screen.PixelAt(x, box_.y_max);
         cell.foreground_color = color_;
         cell.automerge = false;
       }
@@ -91,7 +84,7 @@ class ResizeDecorator : public NodeDecorator {
   const bool resize_down_;
 };
 
-Element DefaultRenderState(const WindowRenderState& state) {
+Element DefaultRenderState(const WindowRenderState &state) {
   Element element = state.inner;
   if (!state.active) {
     element |= dim;
@@ -102,20 +95,20 @@ Element DefaultRenderState(const WindowRenderState& state) {
 
   const Color color = Color::Red;
 
-  element = std::make_shared<ResizeDecorator>(  //
-      element,                                  //
-      state.hover_left,                         //
-      state.hover_right,                        //
-      state.hover_top,                          //
-      state.hover_down,                         //
-      color                                     //
+  element = std::make_shared<ResizeDecorator>( //
+      element,                                 //
+      state.hover_left,                        //
+      state.hover_right,                       //
+      state.hover_top,                         //
+      state.hover_down,                        //
+      color                                    //
   );
 
   return element;
 }
 
 class WindowImpl : public ComponentBase, public WindowOptions {
- public:
+  public:
   explicit WindowImpl(WindowOptions option) : WindowOptions(std::move(option)) {
     if (!inner) {
       inner = Make<ComponentBase>();
@@ -123,7 +116,7 @@ class WindowImpl : public ComponentBase, public WindowOptions {
     Add(inner);
   }
 
- private:
+  private:
   Element OnRender() final {
     auto element = ComponentBase::Render();
 
@@ -282,7 +275,7 @@ class WindowImpl : public ComponentBase, public WindowOptions {
   bool resize_right_hover_ = false;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief A draggeable / resizeable window. To use multiple of them, they must
 /// be stacked using `Container::Stacked({...})` component;
@@ -313,4 +306,4 @@ Component Window(WindowOptions option) {
   return Make<WindowImpl>(std::move(option));
 }
 
-};  // namespace ftxui
+}; // namespace ftxui

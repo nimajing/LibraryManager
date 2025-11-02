@@ -1,17 +1,17 @@
 // Copyright 2021 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>  // for max
-#include <memory>     // for make_shared, __shared_ptr_access
-#include <string>     // for string
-#include <utility>    // for move
+#include <algorithm> // for max
+#include <memory>    // for make_shared, __shared_ptr_access
+#include <string>    // for string
+#include <utility>   // for move
 
-#include "ftxui/dom/elements.hpp"  // for Element, vscroll_indicator, hscroll_indicator
-#include "ftxui/dom/node.hpp"            // for Node, Elements
-#include "ftxui/dom/node_decorator.hpp"  // for NodeDecorator
-#include "ftxui/dom/requirement.hpp"     // for Requirement
-#include "ftxui/screen/box.hpp"          // for Box
-#include "ftxui/screen/screen.hpp"       // for Screen, Pixel
+#include "ftxui/dom/elements.hpp" // for Element, vscroll_indicator, hscroll_indicator
+#include "ftxui/dom/node.hpp"           // for Node, Elements
+#include "ftxui/dom/node_decorator.hpp" // for NodeDecorator
+#include "ftxui/dom/requirement.hpp"    // for Requirement
+#include "ftxui/screen/box.hpp"         // for Box
+#include "ftxui/screen/screen.hpp"      // for Screen, Pixel
 
 namespace ftxui {
 
@@ -34,10 +34,10 @@ Element vscroll_indicator(Element child) {
       children_[0]->SetBox(box);
     }
 
-    void Render(Screen& screen) final {
+    void Render(Screen &screen) final {
       NodeDecorator::Render(screen);
 
-      const Box& stencil = screen.stencil;
+      const Box &stencil = screen.stencil;
 
       const int size_inner = box_.y_max - box_.y_min;
       if (size_inner <= 0) {
@@ -52,7 +52,7 @@ Element vscroll_indicator(Element child) {
       size = std::max(size, 1);
 
       const int start_y =
-          2 * stencil.y_min +  //
+          2 * stencil.y_min + //
           2 * (stencil.y_min - box_.y_min) * size_outter / size_inner;
 
       const int x = stencil.x_max;
@@ -62,7 +62,7 @@ Element vscroll_indicator(Element child) {
         const bool up = (start_y <= y_up) && (y_up <= start_y + size);
         const bool down = (start_y <= y_down) && (y_down <= start_y + size);
 
-        const char* c = up ? (down ? "┃" : "╹") : (down ? "╻" : " ");  // NOLINT
+        const char *c = up ? (down ? "┃" : "╹") : (down ? "╻" : " "); // NOLINT
         screen.PixelAt(x, y).character = c;
       }
     }
@@ -89,10 +89,10 @@ Element hscroll_indicator(Element child) {
       children_[0]->SetBox(box);
     }
 
-    void Render(Screen& screen) final {
+    void Render(Screen &screen) final {
       NodeDecorator::Render(screen);
 
-      const Box& stencil = screen.stencil;
+      const Box &stencil = screen.stencil;
 
       const int size_inner = box_.x_max - box_.x_min;
       if (size_inner <= 0) {
@@ -107,7 +107,7 @@ Element hscroll_indicator(Element child) {
       size = std::max(size, 1);
 
       const int start_x =
-          2 * stencil.x_min +  //
+          2 * stencil.x_min + //
           2 * (stencil.x_min - box_.x_min) * size_outter / size_inner;
 
       const int y = stencil.y_max;
@@ -117,8 +117,8 @@ Element hscroll_indicator(Element child) {
         const bool left = (start_x <= x_left) && (x_left <= start_x + size);
         const bool right = (start_x <= x_right) && (x_right <= start_x + size);
 
-        const char* c =
-            left ? (right ? "─" : "╴") : (right ? "╶" : " ");  // NOLINT
+        const char *c =
+            left ? (right ? "─" : "╴") : (right ? "╶" : " "); // NOLINT
         screen.PixelAt(x, y).character = c;
       }
     }
@@ -126,4 +126,4 @@ Element hscroll_indicator(Element child) {
   return std::make_shared<Impl>(std::move(child));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

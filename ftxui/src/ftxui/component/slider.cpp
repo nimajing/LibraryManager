@@ -1,41 +1,41 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>                              // for max, min
-#include <ftxui/component/component_options.hpp>  // for SliderOption
-#include <ftxui/dom/direction.hpp>  // for Direction, Direction::Down, Direction::Left, Direction::Right, Direction::Up
-#include <string>                   // for allocator
-#include <utility>                  // for move
+#include <algorithm>                             // for max, min
+#include <ftxui/component/component_options.hpp> // for SliderOption
+#include <ftxui/dom/direction.hpp> // for Direction, Direction::Down, Direction::Left, Direction::Right, Direction::Up
+#include <string>                  // for allocator
+#include <utility>                 // for move
 
-#include "ftxui/component/captured_mouse.hpp"  // for CapturedMouse
-#include "ftxui/component/component.hpp"       // for Make, Slider
-#include "ftxui/component/component_base.hpp"  // for ComponentBase
-#include "ftxui/component/event.hpp"  // for Event, Event::ArrowDown, Event::ArrowLeft, Event::ArrowRight, Event::ArrowUp
-#include "ftxui/component/mouse.hpp"  // for Mouse, Mouse::Left, Mouse::Pressed, Mouse::Released
-#include "ftxui/component/screen_interactive.hpp"  // for Component
-#include "ftxui/dom/elements.hpp"  // for operator|, text, Element, xflex, hbox, color, underlined, reflect, Decorator, dim, vcenter, focus, nothing, select, yflex, gaugeDirection
-#include "ftxui/screen/box.hpp"    // for Box
-#include "ftxui/screen/color.hpp"  // for Color, Color::GrayDark, Color::White
-#include "ftxui/util/ref.hpp"      // for ConstRef, Ref, ConstStringRef
+#include "ftxui/component/captured_mouse.hpp" // for CapturedMouse
+#include "ftxui/component/component.hpp"      // for Make, Slider
+#include "ftxui/component/component_base.hpp" // for ComponentBase
+#include "ftxui/component/event.hpp" // for Event, Event::ArrowDown, Event::ArrowLeft, Event::ArrowRight, Event::ArrowUp
+#include "ftxui/component/mouse.hpp" // for Mouse, Mouse::Left, Mouse::Pressed, Mouse::Released
+#include "ftxui/component/screen_interactive.hpp" // for Component
+#include "ftxui/dom/elements.hpp" // for operator|, text, Element, xflex, hbox, color, underlined, reflect, Decorator, dim, vcenter, focus, nothing, select, yflex, gaugeDirection
+#include "ftxui/screen/box.hpp"   // for Box
+#include "ftxui/screen/color.hpp" // for Color, Color::GrayDark, Color::White
+#include "ftxui/util/ref.hpp"     // for ConstRef, Ref, ConstStringRef
 
 namespace ftxui {
 
 namespace {
 Decorator flexDirection(Direction direction) {
   switch (direction) {
-    case Direction::Up:
-    case Direction::Down:
-      return yflex;
-    case Direction::Left:
-    case Direction::Right:
-      return xflex;
+  case Direction::Up:
+  case Direction::Down:
+    return yflex;
+  case Direction::Left:
+  case Direction::Right:
+    return xflex;
   }
-  return xflex;  // NOT_REACHED()
+  return xflex; // NOT_REACHED()
 }
 
 template <class T>
 class SliderBase : public SliderOption<T>, public ComponentBase {
- public:
+  public:
   explicit SliderBase(SliderOption<T> options) : SliderOption<T>(options) {}
 
   Element OnRender() override {
@@ -49,57 +49,57 @@ class SliderBase : public SliderOption<T>, public ComponentBase {
 
   void OnLeft() {
     switch (this->direction) {
-      case Direction::Right:
-        this->value() -= this->increment();
-        break;
-      case Direction::Left:
-        this->value() += this->increment();
-        break;
-      case Direction::Up:
-      case Direction::Down:
-        break;
+    case Direction::Right:
+      this->value() -= this->increment();
+      break;
+    case Direction::Left:
+      this->value() += this->increment();
+      break;
+    case Direction::Up:
+    case Direction::Down:
+      break;
     }
   }
 
   void OnRight() {
     switch (this->direction) {
-      case Direction::Right:
-        this->value() += this->increment();
-        break;
-      case Direction::Left:
-        this->value() -= this->increment();
-        break;
-      case Direction::Up:
-      case Direction::Down:
-        break;
+    case Direction::Right:
+      this->value() += this->increment();
+      break;
+    case Direction::Left:
+      this->value() -= this->increment();
+      break;
+    case Direction::Up:
+    case Direction::Down:
+      break;
     }
   }
 
   void OnUp() {
     switch (this->direction) {
-      case Direction::Up:
-        this->value() -= this->increment();
-        break;
-      case Direction::Down:
-        this->value() += this->increment();
-        break;
-      case Direction::Left:
-      case Direction::Right:
-        break;
+    case Direction::Up:
+      this->value() -= this->increment();
+      break;
+    case Direction::Down:
+      this->value() += this->increment();
+      break;
+    case Direction::Left:
+    case Direction::Right:
+      break;
     }
   }
 
   void OnDown() {
     switch (this->direction) {
-      case Direction::Down:
-        this->value() += this->increment();
-        break;
-      case Direction::Up:
-        this->value() -= this->increment();
-        break;
-      case Direction::Left:
-      case Direction::Right:
-        break;
+    case Direction::Down:
+      this->value() += this->increment();
+      break;
+    case Direction::Up:
+      this->value() -= this->increment();
+      break;
+    case Direction::Left:
+    case Direction::Right:
+      break;
     }
   }
 
@@ -141,31 +141,31 @@ class SliderBase : public SliderOption<T>, public ComponentBase {
 
     T old_value = this->value();
     switch (this->direction) {
-      case Direction::Right: {
-        this->value() = this->min() + (event.mouse().x - gauge_box_.x_min) *
-                                          (this->max() - this->min()) /
-                                          (gauge_box_.x_max - gauge_box_.x_min);
+    case Direction::Right: {
+      this->value() = this->min() + (event.mouse().x - gauge_box_.x_min) *
+                                        (this->max() - this->min()) /
+                                        (gauge_box_.x_max - gauge_box_.x_min);
 
-        break;
-      }
-      case Direction::Left: {
-        this->value() = this->max() - (event.mouse().x - gauge_box_.x_min) *
-                                          (this->max() - this->min()) /
-                                          (gauge_box_.x_max - gauge_box_.x_min);
-        break;
-      }
-      case Direction::Down: {
-        this->value() = this->min() + (event.mouse().y - gauge_box_.y_min) *
-                                          (this->max() - this->min()) /
-                                          (gauge_box_.y_max - gauge_box_.y_min);
-        break;
-      }
-      case Direction::Up: {
-        this->value() = this->max() - (event.mouse().y - gauge_box_.y_min) *
-                                          (this->max() - this->min()) /
-                                          (gauge_box_.y_max - gauge_box_.y_min);
-        break;
-      }
+      break;
+    }
+    case Direction::Left: {
+      this->value() = this->max() - (event.mouse().x - gauge_box_.x_min) *
+                                        (this->max() - this->min()) /
+                                        (gauge_box_.x_max - gauge_box_.x_min);
+      break;
+    }
+    case Direction::Down: {
+      this->value() = this->min() + (event.mouse().y - gauge_box_.y_min) *
+                                        (this->max() - this->min()) /
+                                        (gauge_box_.y_max - gauge_box_.y_min);
+      break;
+    }
+    case Direction::Up: {
+      this->value() = this->max() - (event.mouse().y - gauge_box_.y_min) *
+                                        (this->max() - this->min()) /
+                                        (gauge_box_.y_max - gauge_box_.y_min);
+      break;
+    }
     }
 
     this->value() = std::max(this->min(), std::min(this->max(), this->value()));
@@ -204,20 +204,20 @@ class SliderBase : public SliderOption<T>, public ComponentBase {
 
   bool Focusable() const final { return true; }
 
- private:
+  private:
   Box gauge_box_;
   CapturedMouse captured_mouse_;
 };
 
 class SliderWithLabel : public ComponentBase {
- public:
+  public:
   SliderWithLabel(ConstStringRef label, Component inner)
       : label_(std::move(label)) {
     Add(std::move(inner));
     SetActiveChild(ChildAt(0));
   }
 
- private:
+  private:
   bool OnEvent(Event event) final {
     if (ComponentBase::OnEvent(event)) {
       return true;
@@ -262,7 +262,7 @@ class SliderWithLabel : public ComponentBase {
   bool mouse_hover_ = false;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief An horizontal slider.
 /// @param label The name of the slider.
@@ -286,11 +286,8 @@ class SliderWithLabel : public ComponentBase {
 /// ```bash
 /// Value:[██████████████████████████                          ]
 /// ```
-Component Slider(ConstStringRef label,
-                 Ref<int> value,
-                 ConstRef<int> min,
-                 ConstRef<int> max,
-                 ConstRef<int> increment) {
+Component Slider(ConstStringRef label, Ref<int> value, ConstRef<int> min,
+                 ConstRef<int> max, ConstRef<int> increment) {
   SliderOption<int> option;
   option.value = value;
   option.min = min;
@@ -300,11 +297,8 @@ Component Slider(ConstStringRef label,
   return Make<SliderWithLabel>(std::move(label), slider);
 }
 
-Component Slider(ConstStringRef label,
-                 Ref<float> value,
-                 ConstRef<float> min,
-                 ConstRef<float> max,
-                 ConstRef<float> increment) {
+Component Slider(ConstStringRef label, Ref<float> value, ConstRef<float> min,
+                 ConstRef<float> max, ConstRef<float> increment) {
   SliderOption<float> option;
   option.value = value;
   option.min = min;
@@ -313,11 +307,8 @@ Component Slider(ConstStringRef label,
   auto slider = Make<SliderBase<float>>(option);
   return Make<SliderWithLabel>(std::move(label), slider);
 }
-Component Slider(ConstStringRef label,
-                 Ref<long> value,
-                 ConstRef<long> min,
-                 ConstRef<long> max,
-                 ConstRef<long> increment) {
+Component Slider(ConstStringRef label, Ref<long> value, ConstRef<long> min,
+                 ConstRef<long> max, ConstRef<long> increment) {
   SliderOption<long> option;
   option.value = value;
   option.min = min;
@@ -342,8 +333,7 @@ Component Slider(ConstStringRef label,
 /// });
 /// screen.Loop(slider);
 /// ```
-template <typename T>
-Component Slider(SliderOption<T> options) {
+template <typename T> Component Slider(SliderOption<T> options) {
   return Make<SliderBase<T>>(options);
 }
 
@@ -360,4 +350,4 @@ template Component Slider(SliderOption<uint64_t>);
 template Component Slider(SliderOption<float>);
 template Component Slider(SliderOption<double>);
 
-}  // namespace ftxui
+} // namespace ftxui

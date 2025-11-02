@@ -1,17 +1,17 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>  // for max, min
-#include <cstddef>    // for size_t
-#include <memory>  // for __shared_ptr_access, shared_ptr, make_shared, allocator_traits<>::value_type
-#include <utility>  // for move
-#include <vector>   // for vector, __alloc_traits<>::value_type
+#include <algorithm> // for max, min
+#include <cstddef>   // for size_t
+#include <memory> // for __shared_ptr_access, shared_ptr, make_shared, allocator_traits<>::value_type
+#include <utility> // for move
+#include <vector>  // for vector, __alloc_traits<>::value_type
 
-#include "ftxui/dom/box_helper.hpp"   // for Element, Compute
-#include "ftxui/dom/elements.hpp"     // for Elements, filler, Element, gridbox
-#include "ftxui/dom/node.hpp"         // for Node
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/screen/box.hpp"       // for Box
+#include "ftxui/dom/box_helper.hpp"  // for Element, Compute
+#include "ftxui/dom/elements.hpp"    // for Elements, filler, Element, gridbox
+#include "ftxui/dom/node.hpp"        // for Node
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/screen/box.hpp"      // for Box
 
 namespace ftxui {
 class Screen;
@@ -22,9 +22,9 @@ namespace {
 // V[0] = 0;
 // V[n+1] = v[n] + U[n]
 // return the sum of U[n].
-int Integrate(std::vector<int>& elements) {
+int Integrate(std::vector<int> &elements) {
   int accu = 0;
-  for (auto& i : elements) {
+  for (auto &i : elements) {
     const int old_accu = accu;
     accu += i;
     i = old_accu;
@@ -33,15 +33,15 @@ int Integrate(std::vector<int>& elements) {
 }
 
 class GridBox : public Node {
- public:
+  public:
   explicit GridBox(std::vector<Elements> lines) : lines_(std::move(lines)) {
     y_size = static_cast<int>(lines_.size());
-    for (const auto& line : lines_) {
+    for (const auto &line : lines_) {
       x_size = std::max(x_size, int(line.size()));
     }
 
     // Fill in empty cells, in case the user did not used the API correctly:
-    for (auto& line : lines_) {
+    for (auto &line : lines_) {
       while (line.size() < size_t(x_size)) {
         line.push_back(filler());
       }
@@ -50,8 +50,8 @@ class GridBox : public Node {
 
   void ComputeRequirement() override {
     requirement_ = Requirement{};
-    for (auto& line : lines_) {
-      for (auto& cell : line) {
+    for (auto &line : lines_) {
+      for (auto &cell : line) {
         cell->ComputeRequirement();
       }
     }
@@ -87,17 +87,17 @@ class GridBox : public Node {
 
     box_helper::Element init;
     init.min_size = 0;
-    init.flex_grow = 1024;    // NOLINT
-    init.flex_shrink = 1024;  // NOLINT
+    init.flex_grow = 1024;   // NOLINT
+    init.flex_shrink = 1024; // NOLINT
     std::vector<box_helper::Element> elements_x(x_size, init);
     std::vector<box_helper::Element> elements_y(y_size, init);
 
     for (int y = 0; y < y_size; ++y) {
       for (int x = 0; x < x_size; ++x) {
-        const auto& cell = lines_[y][x];
-        const auto& requirement = cell->requirement();
-        auto& e_x = elements_x[x];
-        auto& e_y = elements_y[y];
+        const auto &cell = lines_[y][x];
+        const auto &requirement = cell->requirement();
+        auto &e_x = elements_x[x];
+        auto &e_y = elements_y[y];
         e_x.min_size = std::max(e_x.min_size, requirement.min_x);
         e_y.min_size = std::max(e_y.min_size, requirement.min_y);
         e_x.flex_grow = std::min(e_x.flex_grow, requirement.flex_grow_x);
@@ -130,9 +130,9 @@ class GridBox : public Node {
     }
   }
 
-  void Render(Screen& screen) override {
-    for (auto& line : lines_) {
-      for (auto& cell : line) {
+  void Render(Screen &screen) override {
+    for (auto &line : lines_) {
+      for (auto &cell : line) {
         cell->Render(screen);
       }
     }
@@ -142,8 +142,8 @@ class GridBox : public Node {
   int y_size = 0;
   std::vector<Elements> lines_;
 };
-}  // namespace
-   //
+} // namespace
+  //
 /// @brief A container displaying a grid of elements.
 /// @param lines A list of lines, each line being a list of elements.
 /// @return The container.
@@ -174,4 +174,4 @@ Element gridbox(std::vector<Elements> lines) {
   return std::make_shared<GridBox>(std::move(lines));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

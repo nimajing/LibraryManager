@@ -41,7 +41,8 @@ inline std::string encryptData(const std::string &data) {
     throw std::runtime_error("Failed to initialize encryption");
   }
 
-  std::vector<unsigned char> ciphertext(data.size() + AES_BLOCK_SIZE); // Output buffer for ciphertext
+  std::vector<unsigned char> ciphertext(
+      data.size() + AES_BLOCK_SIZE); // Output buffer for ciphertext
   int len = 0;
 
   // Perform encryption
@@ -85,9 +86,11 @@ inline std::string encryptData(const std::string &data) {
 
 /**
  * @brief Decrypts data using AES-256-CBC.
- * @param encryptedData The input string containing the IV (first 32 hex characters) followed by the encrypted data in hexadecimal format.
+ * @param encryptedData The input string containing the IV (first 32 hex
+ * characters) followed by the encrypted data in hexadecimal format.
  * @return The decrypted plaintext string.
- * @throws std::runtime_error if the IV or encrypted data cannot be parsed, or if decryption fails.
+ * @throws std::runtime_error if the IV or encrypted data cannot be parsed, or
+ * if decryption fails.
  */
 // Decrypt data using AES-256-CBC
 inline std::string decryptData(const std::string &encryptedData) {
@@ -100,7 +103,8 @@ inline std::string decryptData(const std::string &encryptedData) {
       throw std::runtime_error("Invalid IV length");
     }
     for (int i = 0; i < 16; ++i) {
-      iv[i] = static_cast<unsigned char>(std::stoi(ivString.substr(i * 2, 2), nullptr, 16));
+      iv[i] = static_cast<unsigned char>(
+          std::stoi(ivString.substr(i * 2, 2), nullptr, 16));
     }
   } catch (const std::exception &e) {
     throw std::runtime_error(std::string("Failed to parse IV: ") + e.what());
@@ -115,10 +119,12 @@ inline std::string decryptData(const std::string &encryptedData) {
       throw std::runtime_error("Invalid encrypted data length");
     }
     for (size_t i = 0; i < encryptedText.size(); ++i) {
-      encryptedText[i] = static_cast<unsigned char>(std::stoi(encryptedDataString.substr(i * 2, 2), nullptr, 16));
+      encryptedText[i] = static_cast<unsigned char>(
+          std::stoi(encryptedDataString.substr(i * 2, 2), nullptr, 16));
     }
   } catch (const std::exception &e) {
-    throw std::runtime_error(std::string("Failed to parse encrypted data: ") + e.what());
+    throw std::runtime_error(std::string("Failed to parse encrypted data: ") +
+                             e.what());
   }
 
   EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
@@ -135,7 +141,8 @@ inline std::string decryptData(const std::string &encryptedData) {
     throw std::runtime_error("Failed to initialize decryption");
   }
 
-  std::vector<unsigned char> decryptedData(encryptedText.size() + AES_BLOCK_SIZE);
+  std::vector<unsigned char> decryptedData(encryptedText.size() +
+                                           AES_BLOCK_SIZE);
   int len = 0;
 
   // Perform decryption
@@ -154,6 +161,7 @@ inline std::string decryptData(const std::string &encryptedData) {
   EVP_CIPHER_CTX_free(ctx);
 
   // Return the decrypted data as a string
-  return std::string(decryptedData.begin(), decryptedData.begin() + len + final_len);
+  return std::string(decryptedData.begin(),
+                     decryptedData.begin() + len + final_len);
 }
 }; // namespace Cipher

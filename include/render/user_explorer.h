@@ -7,7 +7,7 @@ namespace lms {
 namespace ui {
 
 class UserExplorer : public ExplorerBase {
-public:
+  public:
   UserExplorer(const std::string &title,
                const std::vector<std::unique_ptr<User>> &users)
       : ExplorerBase(title) {
@@ -22,7 +22,7 @@ public:
 
   const User *GetSelectedUser() const { return selectedUser; }
 
-protected:
+  protected:
   std::vector<std::string> GetAllItemStrings() const override;
 
   const std::vector<std::string> &GetFilteredItems() const override {
@@ -35,7 +35,7 @@ protected:
 
   void UpdateSelection(size_t index) override;
 
-private:
+  private:
   std::vector<User *> users;
   std::vector<User *> filteredUsers;
   User *selectedUser = nullptr;

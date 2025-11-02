@@ -1,25 +1,25 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>  // for max, min
-#include <cstddef>    // for size_t
-#include <memory>  // for make_shared, __shared_ptr_access, allocator, shared_ptr, allocator_traits<>::value_type
-#include <utility>  // for move
+#include <algorithm> // for max, min
+#include <cstddef>   // for size_t
+#include <memory> // for make_shared, __shared_ptr_access, allocator, shared_ptr, allocator_traits<>::value_type
+#include <utility> // for move
 
-#include "ftxui/component/component.hpp"  // for Horizontal, Vertical, Tab
-#include "ftxui/component/component_base.hpp"  // for Components, Component, ComponentBase
-#include "ftxui/component/event.hpp"  // for Event, Event::Tab, Event::TabReverse, Event::ArrowDown, Event::ArrowLeft, Event::ArrowRight, Event::ArrowUp, Event::End, Event::Home, Event::PageDown, Event::PageUp
-#include "ftxui/component/mouse.hpp"  // for Mouse, Mouse::WheelDown, Mouse::WheelUp
-#include "ftxui/dom/elements.hpp"  // for text, Elements, operator|, reflect, Element, hbox, vbox
-#include "ftxui/screen/box.hpp"  // for Box
+#include "ftxui/component/component.hpp" // for Horizontal, Vertical, Tab
+#include "ftxui/component/component_base.hpp" // for Components, Component, ComponentBase
+#include "ftxui/component/event.hpp" // for Event, Event::Tab, Event::TabReverse, Event::ArrowDown, Event::ArrowLeft, Event::ArrowRight, Event::ArrowUp, Event::End, Event::Home, Event::PageDown, Event::PageUp
+#include "ftxui/component/mouse.hpp" // for Mouse, Mouse::WheelDown, Mouse::WheelUp
+#include "ftxui/dom/elements.hpp" // for text, Elements, operator|, reflect, Element, hbox, vbox
+#include "ftxui/screen/box.hpp" // for Box
 
 namespace ftxui {
 
 class ContainerBase : public ComponentBase {
- public:
-  ContainerBase(Components children, int* selector)
+  public:
+  ContainerBase(Components children, int *selector)
       : selector_(selector ? selector : &selected_) {
-    for (Component& child : children) {
+    for (Component &child : children) {
       Add(std::move(child));
     }
   }
@@ -49,7 +49,7 @@ class ContainerBase : public ComponentBase {
     return children_[static_cast<size_t>(*selector_) % children_.size()];
   }
 
-  void SetActiveChild(ComponentBase* child) override {
+  void SetActiveChild(ComponentBase *child) override {
     for (size_t i = 0; i < children_.size(); ++i) {
       if (children_[i].get() == child) {
         *selector_ = static_cast<int>(i);
@@ -58,16 +58,16 @@ class ContainerBase : public ComponentBase {
     }
   }
 
- protected:
+  protected:
   // Handlers
-  virtual bool EventHandler(Event /*unused*/) { return false; }  // NOLINT
+  virtual bool EventHandler(Event /*unused*/) { return false; } // NOLINT
 
   virtual bool OnMouseEvent(Event event) {
     return ComponentBase::OnEvent(std::move(event));
   }
 
   int selected_ = 0;
-  int* selector_ = nullptr;
+  int *selector_ = nullptr;
 
   void MoveSelector(int dir) {
     for (int i = *selector_ + dir; i >= 0 && i < int(children_.size());
@@ -95,13 +95,13 @@ class ContainerBase : public ComponentBase {
 };
 
 class VerticalContainer : public ContainerBase {
- public:
+  public:
   using ContainerBase::ContainerBase;
 
   Element OnRender() override {
     Elements elements;
     elements.reserve(children_.size());
-    for (auto& it : children_) {
+    for (auto &it : children_) {
       elements.push_back(it->Render());
     }
     if (elements.empty()) {
@@ -179,13 +179,13 @@ class VerticalContainer : public ContainerBase {
 };
 
 class HorizontalContainer : public ContainerBase {
- public:
+  public:
   using ContainerBase::ContainerBase;
 
   Element OnRender() override {
     Elements elements;
     elements.reserve(children_.size());
-    for (auto& it : children_) {
+    for (auto &it : children_) {
       elements.push_back(it->Render());
     }
     if (elements.empty()) {
@@ -215,7 +215,7 @@ class HorizontalContainer : public ContainerBase {
 };
 
 class TabContainer : public ContainerBase {
- public:
+  public:
   using ContainerBase::ContainerBase;
 
   Element OnRender() override {
@@ -239,14 +239,14 @@ class TabContainer : public ContainerBase {
 };
 
 class StackedContainer : public ContainerBase {
- public:
+  public:
   explicit StackedContainer(Components children)
       : ContainerBase(std::move(children), nullptr) {}
 
- private:
+  private:
   Element OnRender() final {
     Elements elements;
-    for (auto& child : children_) {
+    for (auto &child : children_) {
       elements.push_back(child->Render());
     }
     // Reverse the order of the elements.
@@ -255,7 +255,7 @@ class StackedContainer : public ContainerBase {
   }
 
   bool Focusable() const final {
-    for (const auto& child : children_) {
+    for (const auto &child : children_) {
       if (child->Focusable()) {
         return true;
       }
@@ -270,7 +270,7 @@ class StackedContainer : public ContainerBase {
     return children_[0];
   }
 
-  void SetActiveChild(ComponentBase* child) final {
+  void SetActiveChild(ComponentBase *child) final {
     if (children_.empty()) {
       return;
     }
@@ -279,7 +279,7 @@ class StackedContainer : public ContainerBase {
     // other children.
     auto it =
         std::find_if(children_.begin(), children_.end(),
-                     [child](const Component& c) { return c.get() == child; });
+                     [child](const Component &c) { return c.get() == child; });
     if (it == children_.end()) {
       return;
     }
@@ -287,7 +287,7 @@ class StackedContainer : public ContainerBase {
   }
 
   bool OnEvent(Event event) final {
-    for (auto& child : children_) {
+    for (auto &child : children_) {
       if (child->OnEvent(event)) {
         return true;
       }
@@ -336,7 +336,7 @@ Component Vertical(Components children) {
 ///   children_4,
 /// }, &selected_children);
 /// ```
-Component Vertical(Components children, int* selector) {
+Component Vertical(Components children, int *selector) {
   return std::make_shared<VerticalContainer>(std::move(children), selector);
 }
 
@@ -379,7 +379,7 @@ Component Horizontal(Components children) {
 ///   children_4,
 /// }, selected_children);
 /// ```
-Component Horizontal(Components children, int* selector) {
+Component Horizontal(Components children, int *selector) {
   return std::make_shared<HorizontalContainer>(std::move(children), selector);
 }
 
@@ -402,7 +402,7 @@ Component Horizontal(Components children, int* selector) {
 ///   children_4,
 /// }, &tab_drawn);
 /// ```
-Component Tab(Components children, int* selector) {
+Component Tab(Components children, int *selector) {
   return std::make_shared<TabContainer>(std::move(children), selector);
 }
 
@@ -433,6 +433,6 @@ Component Stacked(Components children) {
   return std::make_shared<StackedContainer>(std::move(children));
 }
 
-}  // namespace Container
+} // namespace Container
 
-}  // namespace ftxui
+} // namespace ftxui

@@ -7,11 +7,11 @@
 #include "book.h"
 
 class User {
-private:
+  private:
   std::string m_username;
   std::string m_thumbnail;
 
-public:
+  public:
   BookManager m_books;
 
   User(std::string username = "", std::string thumbnail = "")

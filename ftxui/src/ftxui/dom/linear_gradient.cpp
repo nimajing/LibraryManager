@@ -1,20 +1,20 @@
 // Copyright 2023 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>                      // for max, min, sort, copy
-#include <cmath>                          // for fmod, cos, sin
-#include <cstddef>                        // for size_t
-#include <ftxui/dom/linear_gradient.hpp>  // for LinearGradient::Stop, LinearGradient
-#include <memory>    // for allocator_traits<>::value_type, make_shared
-#include <optional>  // for optional, operator!=, operator<
-#include <utility>   // for move
-#include <vector>    // for vector
+#include <algorithm>                     // for max, min, sort, copy
+#include <cmath>                         // for fmod, cos, sin
+#include <cstddef>                       // for size_t
+#include <ftxui/dom/linear_gradient.hpp> // for LinearGradient::Stop, LinearGradient
+#include <memory>   // for allocator_traits<>::value_type, make_shared
+#include <optional> // for optional, operator!=, operator<
+#include <utility>  // for move
+#include <vector>   // for vector
 
-#include "ftxui/dom/elements.hpp"  // for Element, Decorator, bgcolor, color
-#include "ftxui/dom/node_decorator.hpp"  // for NodeDecorator
-#include "ftxui/screen/box.hpp"          // for Box
-#include "ftxui/screen/color.hpp"   // for Color, Color::Default, Color::Blue
-#include "ftxui/screen/screen.hpp"  // for Pixel, Screen
+#include "ftxui/dom/elements.hpp" // for Element, Decorator, bgcolor, color
+#include "ftxui/dom/node_decorator.hpp" // for NodeDecorator
+#include "ftxui/screen/box.hpp"         // for Box
+#include "ftxui/screen/color.hpp"  // for Color, Color::Default, Color::Blue
+#include "ftxui/screen/screen.hpp" // for Pixel, Screen
 
 namespace ftxui {
 namespace {
@@ -22,7 +22,7 @@ namespace {
 struct LinearGradientNormalized {
   float angle = 0.F;
   std::vector<Color> colors;
-  std::vector<float> positions;  // Sorted.
+  std::vector<float> positions; // Sorted.
 };
 
 // Convert a LinearGradient to a normalized version.
@@ -32,7 +32,7 @@ LinearGradientNormalized Normalize(LinearGradient gradient) {
     return LinearGradientNormalized{
         0.F,
         {Color::Default, Color::Default},
-        {0.F, 1.F},
+        {           0.F,            1.F},
     };
   }
 
@@ -52,9 +52,9 @@ LinearGradientNormalized Normalize(LinearGradient gradient) {
     }
 
     if (i - last_checkpoint >= 2) {
-      const float min = gradient.stops[i].position.value();  // NOLINT
+      const float min = gradient.stops[i].position.value(); // NOLINT
       const float max =
-          gradient.stops[last_checkpoint].position.value();  // NOLINT
+          gradient.stops[last_checkpoint].position.value(); // NOLINT
       for (size_t j = last_checkpoint + 1; j < i; ++j) {
         gradient.stops[j].position = min + (max - min) *
                                                float(j - last_checkpoint) /
@@ -68,7 +68,7 @@ LinearGradientNormalized Normalize(LinearGradient gradient) {
   // Sort the stops by position.
   std::sort(
       gradient.stops.begin(), gradient.stops.end(),
-      [](const auto& a, const auto& b) { return a.position < b.position; });
+      [](const auto &a, const auto &b) { return a.position < b.position; });
 
   // If we don't being with zero, add a stop at zero.
   if (gradient.stops.front().position != 0) {
@@ -85,7 +85,7 @@ LinearGradientNormalized Normalize(LinearGradient gradient) {
   const float modulo = 360.F;
   normalized.angle =
       std::fmod(std::fmod(gradient.angle, modulo) + modulo, modulo);
-  for (auto& stop : gradient.stops) {
+  for (auto &stop : gradient.stops) {
     normalized.colors.push_back(stop.color);
     // NOLINTNEXTLINE
     normalized.positions.push_back(stop.position.value());
@@ -93,7 +93,7 @@ LinearGradientNormalized Normalize(LinearGradient gradient) {
   return normalized;
 }
 
-Color Interpolate(const LinearGradientNormalized& gradient, float t) {
+Color Interpolate(const LinearGradientNormalized &gradient, float t) {
   // Find the right color in the gradient's stops.
   size_t i = 1;
   while (true) {
@@ -116,24 +116,22 @@ Color Interpolate(const LinearGradientNormalized& gradient, float t) {
   const float t1 = gradient.positions[i - 0];
   const float tt = (t - t0) / (t1 - t0);
 
-  const Color& c0 = gradient.colors[i - 1];
-  const Color& c1 = gradient.colors[i - 0];
-  const Color& cc = Color::Interpolate(tt, c0, c1);
+  const Color &c0 = gradient.colors[i - 1];
+  const Color &c1 = gradient.colors[i - 0];
+  const Color &cc = Color::Interpolate(tt, c0, c1);
 
   return cc;
 }
 
 class LinearGradientColor : public NodeDecorator {
- public:
-  explicit LinearGradientColor(Element child,
-                               const LinearGradient& gradient,
+  public:
+  explicit LinearGradientColor(Element child, const LinearGradient &gradient,
                                bool background_color)
-      : NodeDecorator(std::move(child)),
-        gradient_(Normalize(gradient)),
+      : NodeDecorator(std::move(child)), gradient_(Normalize(gradient)),
         background_color_{background_color} {}
 
- private:
-  void Render(Screen& screen) override {
+  private:
+  void Render(Screen &screen) override {
     const float degtorad = 0.01745329251F;
     const float dx = std::cos(gradient_.angle * degtorad);
     const float dy = std::sin(gradient_.angle * degtorad);
@@ -176,7 +174,7 @@ class LinearGradientColor : public NodeDecorator {
   bool background_color_;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief Build the "empty" gradient. This is often followed by calls to
 /// LinearGradient::Angle() and LinearGradient::Stop().
@@ -213,7 +211,7 @@ LinearGradient::LinearGradient(float a, Color begin, Color end) : angle(a) {
 /// @param a The angle of the gradient.
 /// @return The gradient.
 /// @ingroup dom
-LinearGradient& LinearGradient::Angle(float a) {
+LinearGradient &LinearGradient::Angle(float a) {
   angle = a;
   return *this;
 }
@@ -222,7 +220,7 @@ LinearGradient& LinearGradient::Angle(float a) {
 /// @param c The color of the stop.
 /// @param p The position of the stop.
 /// @return The gradient.
-LinearGradient& LinearGradient::Stop(Color c, float p) {
+LinearGradient &LinearGradient::Stop(Color c, float p) {
   stops.push_back({c, p});
   return *this;
 }
@@ -232,7 +230,7 @@ LinearGradient& LinearGradient::Stop(Color c, float p) {
 /// @return The gradient.
 /// @ingroup dom
 /// @note The position of the stop is interpolated from nearby stops.
-LinearGradient& LinearGradient::Stop(Color c) {
+LinearGradient &LinearGradient::Stop(Color c) {
   stops.push_back({c, {}});
   return *this;
 }
@@ -248,7 +246,7 @@ LinearGradient& LinearGradient::Stop(Color c) {
 /// ```cpp
 /// color(LinearGradient{0, {Color::Red, Color::Blue}}, text("Hello"))
 /// ```
-Element color(const LinearGradient& gradient, Element child) {
+Element color(const LinearGradient &gradient, Element child) {
   return std::make_shared<LinearGradientColor>(std::move(child), gradient,
                                                /*background_color*/ false);
 }
@@ -264,7 +262,7 @@ Element color(const LinearGradient& gradient, Element child) {
 /// ```cpp
 /// bgcolor(LinearGradient{0, {Color::Red, Color::Blue}}, text("Hello"))
 /// ```
-Element bgcolor(const LinearGradient& gradient, Element child) {
+Element bgcolor(const LinearGradient &gradient, Element child) {
   return std::make_shared<LinearGradientColor>(std::move(child), gradient,
                                                /*background_color*/ true);
 }
@@ -279,7 +277,7 @@ Element bgcolor(const LinearGradient& gradient, Element child) {
 /// ```cpp
 /// text("Hello") | color(LinearGradient{0, {Color::Red, Color::Blue}})
 /// ```
-Decorator color(const LinearGradient& gradient) {
+Decorator color(const LinearGradient &gradient) {
   return
       [gradient](Element child) { return color(gradient, std::move(child)); };
 }
@@ -294,9 +292,9 @@ Decorator color(const LinearGradient& gradient) {
 /// ```cpp
 /// text("Hello") | color(LinearGradient{0, {Color::Red, Color::Blue}})
 /// ```
-Decorator bgcolor(const LinearGradient& gradient) {
+Decorator bgcolor(const LinearGradient &gradient) {
   return
       [gradient](Element child) { return bgcolor(gradient, std::move(child)); };
 }
 
-}  // namespace ftxui
+} // namespace ftxui

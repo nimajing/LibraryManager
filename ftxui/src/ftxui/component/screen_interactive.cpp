@@ -2,39 +2,39 @@
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
 #include "ftxui/component/screen_interactive.hpp"
-#include <algorithm>  // for copy, max, min
-#include <array>      // for array
+#include "ftxui/component/animation.hpp" // for TimePoint, Clock, Duration, Params, RequestAnimationFrame
+#include "ftxui/component/captured_mouse.hpp" // for CapturedMouse, CapturedMouseInterface
+#include "ftxui/component/component_base.hpp" // for ComponentBase
+#include "ftxui/component/event.hpp"          // for Event
+#include "ftxui/component/loop.hpp"           // for Loop
+#include "ftxui/component/receiver.hpp" // for ReceiverImpl, Sender, MakeReceiver, SenderImpl, Receiver
+#include "ftxui/component/terminal_input_parser.hpp" // for TerminalInputParser
+#include "ftxui/dom/node.hpp"                        // for Node, Render
+#include "ftxui/dom/requirement.hpp"                 // for Requirement
+#include "ftxui/screen/pixel.hpp"                    // for Pixel
+#include "ftxui/screen/terminal.hpp"                 // for Dimensions, Size
+#include "ftxui/screen/util.hpp"                     // for util::clamp
+#include <algorithm>                                 // for copy, max, min
+#include <array>                                     // for array
 #include <atomic>
-#include <chrono>  // for operator-, milliseconds, operator>=, duration, common_type<>::type, time_point
-#include <csignal>  // for signal, SIGTSTP, SIGABRT, SIGWINCH, raise, SIGFPE, SIGILL, SIGINT, SIGSEGV, SIGTERM, __sighandler_t, size_t
+#include <chrono> // for operator-, milliseconds, operator>=, duration, common_type<>::type, time_point
+#include <csignal> // for signal, SIGTSTP, SIGABRT, SIGWINCH, raise, SIGFPE, SIGILL, SIGINT, SIGSEGV, SIGTERM, __sighandler_t, size_t
 #include <cstdint>
-#include <cstdio>                    // for fileno, stdin
-#include <ftxui/component/task.hpp>  // for Task, Closure, AnimationTask
-#include <ftxui/screen/screen.hpp>  // for Pixel, Screen::Cursor, Screen, Screen::Cursor::Hidden
-#include <functional>        // for function
-#include <initializer_list>  // for initializer_list
-#include <iostream>  // for cout, ostream, operator<<, basic_ostream, endl, flush
+#include <cstdio>                   // for fileno, stdin
+#include <ftxui/component/task.hpp> // for Task, Closure, AnimationTask
+#include <ftxui/screen/screen.hpp> // for Pixel, Screen::Cursor, Screen, Screen::Cursor::Hidden
+#include <functional>       // for function
+#include <initializer_list> // for initializer_list
+#include <iostream> // for cout, ostream, operator<<, basic_ostream, endl, flush
 #include <memory>
-#include <stack>  // for stack
+#include <stack> // for stack
 #include <string>
-#include <thread>       // for thread, sleep_for
-#include <tuple>        // for _Swallow_assign, ignore
-#include <type_traits>  // for decay_t
-#include <utility>      // for move, swap
-#include <variant>      // for visit, variant
-#include <vector>       // for vector
-#include "ftxui/component/animation.hpp"  // for TimePoint, Clock, Duration, Params, RequestAnimationFrame
-#include "ftxui/component/captured_mouse.hpp"  // for CapturedMouse, CapturedMouseInterface
-#include "ftxui/component/component_base.hpp"  // for ComponentBase
-#include "ftxui/component/event.hpp"           // for Event
-#include "ftxui/component/loop.hpp"            // for Loop
-#include "ftxui/component/receiver.hpp"  // for ReceiverImpl, Sender, MakeReceiver, SenderImpl, Receiver
-#include "ftxui/component/terminal_input_parser.hpp"  // for TerminalInputParser
-#include "ftxui/dom/node.hpp"                         // for Node, Render
-#include "ftxui/dom/requirement.hpp"                  // for Requirement
-#include "ftxui/screen/pixel.hpp"                     // for Pixel
-#include "ftxui/screen/terminal.hpp"                  // for Dimensions, Size
-#include "ftxui/screen/util.hpp"                      // for util::clamp
+#include <thread>      // for thread, sleep_for
+#include <tuple>       // for _Swallow_assign, ignore
+#include <type_traits> // for decay_t
+#include <utility>     // for move, swap
+#include <variant>     // for visit, variant
+#include <vector>      // for vector
 
 #if defined(_WIN32)
 #define DEFINE_CONSOLEV2_PROPERTIES
@@ -47,9 +47,9 @@
 #error Must be compiled in UNICODE mode
 #endif
 #else
-#include <sys/select.h>  // for select, FD_ISSET, FD_SET, FD_ZERO, fd_set, timeval
-#include <termios.h>  // for tcsetattr, termios, tcgetattr, TCSANOW, cc_t, ECHO, ICANON, VMIN, VTIME
-#include <unistd.h>  // for STDIN_FILENO, read
+#include <sys/select.h> // for select, FD_ISSET, FD_SET, FD_ZERO, fd_set, timeval
+#include <termios.h> // for tcsetattr, termios, tcgetattr, TCSANOW, cc_t, ECHO, ICANON, VMIN, VTIME
+#include <unistd.h> // for STDIN_FILENO, read
 #endif
 
 // Quick exit is missing in standard CLang headers
@@ -61,16 +61,16 @@ namespace ftxui {
 
 namespace animation {
 void RequestAnimationFrame() {
-  auto* screen = ScreenInteractive::Active();
+  auto *screen = ScreenInteractive::Active();
   if (screen) {
     screen->RequestAnimationFrame();
   }
 }
-}  // namespace animation
+} // namespace animation
 
 namespace {
 
-ScreenInteractive* g_active_screen = nullptr;  // NOLINT
+ScreenInteractive *g_active_screen = nullptr; // NOLINT
 
 void Flush() {
   // Emscripten doesn't implement flush. We interpret zero as flush.
@@ -82,7 +82,7 @@ constexpr int timeout_milliseconds = 20;
     timeout_milliseconds * 1000;
 #if defined(_WIN32)
 
-void EventListener(std::atomic<bool>* quit, Sender<Task> out) {
+void EventListener(std::atomic<bool> *quit, Sender<Task> out) {
   auto console = GetStdHandle(STD_INPUT_HANDLE);
   auto parser = TerminalInputParser(out->Clone());
   while (!*quit) {
@@ -106,27 +106,27 @@ void EventListener(std::atomic<bool>* quit, Sender<Task> out) {
                      &number_of_events_read);
     records.resize(number_of_events_read);
 
-    for (const auto& r : records) {
+    for (const auto &r : records) {
       switch (r.EventType) {
-        case KEY_EVENT: {
-          auto key_event = r.Event.KeyEvent;
-          // ignore UP key events
-          if (key_event.bKeyDown == FALSE)
-            continue;
-          std::wstring wstring;
-          wstring += key_event.uChar.UnicodeChar;
-          for (auto it : to_string(wstring)) {
-            parser.Add(it);
-          }
-        } break;
-        case WINDOW_BUFFER_SIZE_EVENT:
-          out->Send(Event::Special({0}));
-          break;
-        case MENU_EVENT:
-        case FOCUS_EVENT:
-        case MOUSE_EVENT:
-          // TODO(mauve): Implement later.
-          break;
+      case KEY_EVENT: {
+        auto key_event = r.Event.KeyEvent;
+        // ignore UP key events
+        if (key_event.bKeyDown == FALSE)
+          continue;
+        std::wstring wstring;
+        wstring += key_event.uChar.UnicodeChar;
+        for (auto it : to_string(wstring)) {
+          parser.Add(it);
+        }
+      } break;
+      case WINDOW_BUFFER_SIZE_EVENT:
+        out->Send(Event::Special({0}));
+        break;
+      case MENU_EVENT:
+      case FOCUS_EVENT:
+      case MOUSE_EVENT:
+        // TODO(mauve): Implement later.
+        break;
       }
     }
   }
@@ -136,7 +136,7 @@ void EventListener(std::atomic<bool>* quit, Sender<Task> out) {
 #include <emscripten.h>
 
 // Read char from the terminal.
-void EventListener(std::atomic<bool>* quit, Sender<Task> out) {
+void EventListener(std::atomic<bool> *quit, Sender<Task> out) {
   auto parser = TerminalInputParser(std::move(out));
 
   char c;
@@ -160,19 +160,19 @@ void ftxui_on_resize(int columns, int rows) {
 }
 }
 
-#else  // POSIX (Linux & Mac)
+#else // POSIX (Linux & Mac)
 
 int CheckStdinReady(int usec_timeout) {
-  timeval tv = {0, usec_timeout};  // NOLINT
+  timeval tv = {0, usec_timeout}; // NOLINT
   fd_set fds;
-  FD_ZERO(&fds);                                          // NOLINT
-  FD_SET(STDIN_FILENO, &fds);                             // NOLINT
-  select(STDIN_FILENO + 1, &fds, nullptr, nullptr, &tv);  // NOLINT
-  return FD_ISSET(STDIN_FILENO, &fds);                    // NOLINT
+  FD_ZERO(&fds);                                         // NOLINT
+  FD_SET(STDIN_FILENO, &fds);                            // NOLINT
+  select(STDIN_FILENO + 1, &fds, nullptr, nullptr, &tv); // NOLINT
+  return FD_ISSET(STDIN_FILENO, &fds);                   // NOLINT
 }
 
 // Read char from the terminal.
-void EventListener(std::atomic<bool>* quit, Sender<Task> out) {
+void EventListener(std::atomic<bool> *quit, Sender<Task> out) {
   auto parser = TerminalInputParser(std::move(out));
 
   while (!*quit) {
@@ -182,16 +182,16 @@ void EventListener(std::atomic<bool>* quit, Sender<Task> out) {
     }
 
     const size_t buffer_size = 100;
-    std::array<char, buffer_size> buffer;                        // NOLINT;
-    size_t l = read(fileno(stdin), buffer.data(), buffer_size);  // NOLINT
+    std::array<char, buffer_size> buffer;                       // NOLINT;
+    size_t l = read(fileno(stdin), buffer.data(), buffer_size); // NOLINT
     for (size_t i = 0; i < l; ++i) {
-      parser.Add(buffer[i]);  // NOLINT
+      parser.Add(buffer[i]); // NOLINT
     }
   }
 }
 #endif
 
-std::stack<Closure> on_exit_functions;  // NOLINT
+std::stack<Closure> on_exit_functions; // NOLINT
 void OnExit() {
   while (!on_exit_functions.empty()) {
     on_exit_functions.top()();
@@ -199,36 +199,36 @@ void OnExit() {
   }
 }
 
-std::atomic<int> g_signal_exit_count = 0;  // NOLINT
+std::atomic<int> g_signal_exit_count = 0; // NOLINT
 #if !defined(_WIN32)
-std::atomic<int> g_signal_stop_count = 0;    // NOLINT
-std::atomic<int> g_signal_resize_count = 0;  // NOLINT
+std::atomic<int> g_signal_stop_count = 0;   // NOLINT
+std::atomic<int> g_signal_resize_count = 0; // NOLINT
 #endif
 
 // Async signal safe function
 void RecordSignal(int signal) {
   switch (signal) {
-    case SIGABRT:
-    case SIGFPE:
-    case SIGILL:
-    case SIGINT:
-    case SIGSEGV:
-    case SIGTERM:
-      g_signal_exit_count++;
-      break;
+  case SIGABRT:
+  case SIGFPE:
+  case SIGILL:
+  case SIGINT:
+  case SIGSEGV:
+  case SIGTERM:
+    g_signal_exit_count++;
+    break;
 
 #if !defined(_WIN32)
-    case SIGTSTP:  // NOLINT
-      g_signal_stop_count++;
-      break;
+  case SIGTSTP: // NOLINT
+    g_signal_stop_count++;
+    break;
 
-    case SIGWINCH:  // NOLINT
-      g_signal_resize_count++;
-      break;
+  case SIGWINCH: // NOLINT
+    g_signal_resize_count++;
+    break;
 #endif
 
-    default:
-      break;
+  default:
+    break;
   }
 }
 
@@ -258,16 +258,16 @@ void InstallSignalHandler(int sig) {
 }
 
 // CSI: Control Sequence Introducer
-const std::string CSI = "\x1b[";  // NOLINT
-                                  //
+const std::string CSI = "\x1b["; // NOLINT
+                                 //
 // DCS: Device Control String
-const std::string DCS = "\x1bP";  // NOLINT
+const std::string DCS = "\x1bP"; // NOLINT
 // ST: String Terminator
-const std::string ST = "\x1b\\";  // NOLINT
+const std::string ST = "\x1b\\"; // NOLINT
 
 // DECRQSS: Request Status String
 // DECSCUSR: Set Cursor Style
-const std::string DECRQSS_DECSCUSR = DCS + "$q q" + ST;  // NOLINT
+const std::string DECRQSS_DECSCUSR = DCS + "$q q" + ST; // NOLINT
 
 // DEC: Digital Equipment Corporation
 enum class DECMode : std::uint16_t {
@@ -293,7 +293,7 @@ enum class DSRMode : std::uint8_t {
   kCursor = 6,
 };
 
-std::string Serialize(const std::vector<DECMode>& parameters) {
+std::string Serialize(const std::vector<DECMode> &parameters) {
   bool first = true;
   std::string out;
   for (const DECMode parameter : parameters) {
@@ -307,12 +307,12 @@ std::string Serialize(const std::vector<DECMode>& parameters) {
 }
 
 // DEC Private Mode Set (DECSET)
-std::string Set(const std::vector<DECMode>& parameters) {
+std::string Set(const std::vector<DECMode> &parameters) {
   return CSI + "?" + Serialize(parameters) + "h";
 }
 
 // DEC Private Mode Reset (DECRST)
-std::string Reset(const std::vector<DECMode>& parameters) {
+std::string Reset(const std::vector<DECMode> &parameters) {
   return CSI + "?" + Serialize(parameters) + "l";
 }
 
@@ -322,20 +322,20 @@ std::string DeviceStatusReport(DSRMode ps) {
 }
 
 class CapturedMouseImpl : public CapturedMouseInterface {
- public:
+  public:
   explicit CapturedMouseImpl(std::function<void(void)> callback)
       : callback_(std::move(callback)) {}
   ~CapturedMouseImpl() override { callback_(); }
-  CapturedMouseImpl(const CapturedMouseImpl&) = delete;
-  CapturedMouseImpl(CapturedMouseImpl&&) = delete;
-  CapturedMouseImpl& operator=(const CapturedMouseImpl&) = delete;
-  CapturedMouseImpl& operator=(CapturedMouseImpl&&) = delete;
+  CapturedMouseImpl(const CapturedMouseImpl &) = delete;
+  CapturedMouseImpl(CapturedMouseImpl &&) = delete;
+  CapturedMouseImpl &operator=(const CapturedMouseImpl &) = delete;
+  CapturedMouseImpl &operator=(CapturedMouseImpl &&) = delete;
 
- private:
+  private:
   std::function<void(void)> callback_;
 };
 
-void AnimationListener(std::atomic<bool>* quit, Sender<Task> out) {
+void AnimationListener(std::atomic<bool> *quit, Sender<Task> out) {
   // Animation at around 60fps.
   const auto time_delta = std::chrono::milliseconds(15);
   while (!*quit) {
@@ -344,14 +344,11 @@ void AnimationListener(std::atomic<bool>* quit, Sender<Task> out) {
   }
 }
 
-}  // namespace
+} // namespace
 
-ScreenInteractive::ScreenInteractive(int dimx,
-                                     int dimy,
-                                     Dimension dimension,
+ScreenInteractive::ScreenInteractive(int dimx, int dimy, Dimension dimension,
                                      bool use_alternative_screen)
-    : Screen(dimx, dimy),
-      dimension_(dimension),
+    : Screen(dimx, dimy), dimension_(dimension),
       use_alternative_screen_(use_alternative_screen) {
   task_receiver_ = MakeReceiver<Task>();
 }
@@ -438,9 +435,7 @@ ScreenInteractive ScreenInteractive::FitComponent() {
 /// screen.TrackMouse(false);
 /// screen.Loop(component);
 /// ```
-void ScreenInteractive::TrackMouse(bool enable) {
-  track_mouse_ = enable;
-}
+void ScreenInteractive::TrackMouse(bool enable) { track_mouse_ = enable; }
 
 /// @brief Add a task to the main loop.
 /// It will be executed later, after every other scheduled tasks.
@@ -458,9 +453,7 @@ void ScreenInteractive::Post(Task task) {
 /// @brief Add an event to the main loop.
 /// It will be executed later, after every other scheduled events.
 /// @ingroup component
-void ScreenInteractive::PostEvent(Event event) {
-  Post(event);
-}
+void ScreenInteractive::PostEvent(Event event) { Post(event); }
 
 /// @brief Add a task to draw the screen one more time, until all the animations
 /// are done.
@@ -492,16 +485,14 @@ CapturedMouse ScreenInteractive::CaptureMouse() {
 /// @brief Execute the main loop.
 /// @param component The component to draw.
 /// @ingroup component
-void ScreenInteractive::Loop(Component component) {  // NOLINT
+void ScreenInteractive::Loop(Component component) { // NOLINT
   class Loop loop(this, std::move(component));
   loop.Run();
 }
 
 /// @brief Return whether the main loop has been quit.
 /// @ingroup component
-bool ScreenInteractive::HasQuitted() {
-  return task_receiver_->HasQuitted();
-}
+bool ScreenInteractive::HasQuitted() { return task_receiver_->HasQuitted(); }
 
 // private
 void ScreenInteractive::PreMain() {
@@ -557,7 +548,7 @@ void ScreenInteractive::PostMain() {
 /// @brief Decorate a function. It executes the same way, but with the currently
 /// active screen terminal hooks temporarilly uninstalled during its execution.
 /// @param fn The function to decorate.
-Closure ScreenInteractive::WithRestoredIO(Closure fn) {  // NOLINT
+Closure ScreenInteractive::WithRestoredIO(Closure fn) { // NOLINT
   return [this, fn] {
     Uninstall();
     fn();
@@ -591,9 +582,7 @@ void ScreenInteractive::SelectionChange(std::function<void()> callback) {
 
 /// @brief Return the currently active screen, or null if none.
 // static
-ScreenInteractive* ScreenInteractive::Active() {
-  return g_active_screen;
-}
+ScreenInteractive *ScreenInteractive::Active() { return g_active_screen; }
 
 // private
 void ScreenInteractive::Install() {
@@ -616,7 +605,7 @@ void ScreenInteractive::Install() {
   // on exit.
   std::cout << DECRQSS_DECSCUSR;
   on_exit_functions.emplace([this] {
-    std::cout << "\033[?25h";  // Enable cursor.
+    std::cout << "\033[?25h"; // Enable cursor.
     std::cout << "\033[" + std::to_string(cursor_reset_shape_) + " q";
   });
 
@@ -662,47 +651,47 @@ void ScreenInteractive::Install() {
     InstallSignalHandler(signal);
   }
 
-  struct termios terminal;  // NOLINT
+  struct termios terminal; // NOLINT
   tcgetattr(STDIN_FILENO, &terminal);
   on_exit_functions.emplace(
       [=] { tcsetattr(STDIN_FILENO, TCSANOW, &terminal); });
 
   // Enabling raw terminal input mode
-  terminal.c_iflag &= ~IGNBRK;  // Disable ignoring break condition
-  terminal.c_iflag &= ~BRKINT;  // Disable break causing input and output to be
-                                // flushed
-  terminal.c_iflag &= ~PARMRK;  // Disable marking parity errors.
-  terminal.c_iflag &= ~ISTRIP;  // Disable striping 8th bit off characters.
-  terminal.c_iflag &= ~INLCR;   // Disable mapping NL to CR.
-  terminal.c_iflag &= ~IGNCR;   // Disable ignoring CR.
-  terminal.c_iflag &= ~ICRNL;   // Disable mapping CR to NL.
-  terminal.c_iflag &= ~IXON;    // Disable XON/XOFF flow control on output
+  terminal.c_iflag &= ~IGNBRK; // Disable ignoring break condition
+  terminal.c_iflag &= ~BRKINT; // Disable break causing input and output to be
+                               // flushed
+  terminal.c_iflag &= ~PARMRK; // Disable marking parity errors.
+  terminal.c_iflag &= ~ISTRIP; // Disable striping 8th bit off characters.
+  terminal.c_iflag &= ~INLCR;  // Disable mapping NL to CR.
+  terminal.c_iflag &= ~IGNCR;  // Disable ignoring CR.
+  terminal.c_iflag &= ~ICRNL;  // Disable mapping CR to NL.
+  terminal.c_iflag &= ~IXON;   // Disable XON/XOFF flow control on output
 
-  terminal.c_lflag &= ~ECHO;    // Disable echoing input characters.
-  terminal.c_lflag &= ~ECHONL;  // Disable echoing new line characters.
-  terminal.c_lflag &= ~ICANON;  // Disable Canonical mode.
-  terminal.c_lflag &= ~ISIG;    // Disable sending signal when hitting:
-                                // -     => DSUSP
-                                // - C-Z => SUSP
-                                // - C-C => INTR
-                                // - C-d => QUIT
-  terminal.c_lflag &= ~IEXTEN;  // Disable extended input processing
-  terminal.c_cflag |= CS8;      // 8 bits per byte
+  terminal.c_lflag &= ~ECHO;   // Disable echoing input characters.
+  terminal.c_lflag &= ~ECHONL; // Disable echoing new line characters.
+  terminal.c_lflag &= ~ICANON; // Disable Canonical mode.
+  terminal.c_lflag &= ~ISIG;   // Disable sending signal when hitting:
+                               // -     => DSUSP
+                               // - C-Z => SUSP
+                               // - C-C => INTR
+                               // - C-d => QUIT
+  terminal.c_lflag &= ~IEXTEN; // Disable extended input processing
+  terminal.c_cflag |= CS8;     // 8 bits per byte
 
-  terminal.c_cc[VMIN] = 0;   // Minimum number of characters for non-canonical
-                             // read.
-  terminal.c_cc[VTIME] = 0;  // Timeout in deciseconds for non-canonical read.
+  terminal.c_cc[VMIN] = 0;  // Minimum number of characters for non-canonical
+                            // read.
+  terminal.c_cc[VTIME] = 0; // Timeout in deciseconds for non-canonical read.
 
   tcsetattr(STDIN_FILENO, TCSANOW, &terminal);
 
 #endif
 
-  auto enable = [&](const std::vector<DECMode>& parameters) {
+  auto enable = [&](const std::vector<DECMode> &parameters) {
     std::cout << Set(parameters);
     on_exit_functions.emplace([=] { std::cout << Reset(parameters); });
   };
 
-  auto disable = [&](const std::vector<DECMode>& parameters) {
+  auto disable = [&](const std::vector<DECMode> &parameters) {
     std::cout << Reset(parameters);
     on_exit_functions.emplace([=] { std::cout << Set(parameters); });
   };
@@ -776,9 +765,9 @@ void ScreenInteractive::RunOnce(Component component) {
 
 // private
 // NOLINTNEXTLINE
-void ScreenInteractive::HandleTask(Component component, Task& task) {
+void ScreenInteractive::HandleTask(Component component, Task &task) {
   std::visit(
-      [&](auto&& arg) {
+      [&](auto &&arg) {
         using T = std::decay_t<decltype(arg)>;
 
         // clang-format off
@@ -860,7 +849,7 @@ bool ScreenInteractive::HandleSelection(bool handled, Event event) {
     return false;
   }
 
-  auto& mouse = event.mouse();
+  auto &mouse = event.mouse();
   if (mouse.button != Mouse::Left) {
     return false;
   }
@@ -912,22 +901,22 @@ void ScreenInteractive::Draw(Component component) {
   auto terminal = Terminal::Size();
   document->ComputeRequirement();
   switch (dimension_) {
-    case Dimension::Fixed:
-      dimx = dimx_;
-      dimy = dimy_;
-      break;
-    case Dimension::TerminalOutput:
-      dimx = terminal.dimx;
-      dimy = util::clamp(document->requirement().min_y, 0, terminal.dimy);
-      break;
-    case Dimension::Fullscreen:
-      dimx = terminal.dimx;
-      dimy = terminal.dimy;
-      break;
-    case Dimension::FitComponent:
-      dimx = util::clamp(document->requirement().min_x, 0, terminal.dimx);
-      dimy = util::clamp(document->requirement().min_y, 0, terminal.dimy);
-      break;
+  case Dimension::Fixed:
+    dimx = dimx_;
+    dimy = dimy_;
+    break;
+  case Dimension::TerminalOutput:
+    dimx = terminal.dimx;
+    dimy = util::clamp(document->requirement().min_y, 0, terminal.dimy);
+    break;
+  case Dimension::Fullscreen:
+    dimx = terminal.dimx;
+    dimy = terminal.dimy;
+    break;
+  case Dimension::FitComponent:
+    dimx = util::clamp(document->requirement().min_x, 0, terminal.dimx);
+    dimy = util::clamp(document->requirement().min_y, 0, terminal.dimy);
+    break;
   }
 
   const bool resized = (dimx != dimx_) || (dimy != dimy_);
@@ -937,8 +926,8 @@ void ScreenInteractive::Draw(Component component) {
   // If the terminal width decrease, the terminal emulator will start wrapping
   // lines and make the display dirty. We should clear it completely.
   if ((dimx < dimx_) && !use_alternative_screen_) {
-    std::cout << "\033[J";  // clear terminal output
-    std::cout << "\033[H";  // move cursor to home position
+    std::cout << "\033[J"; // clear terminal output
+    std::cout << "\033[H"; // move cursor to home position
   }
 
   // Resize the screen if needed.
@@ -962,14 +951,14 @@ void ScreenInteractive::Draw(Component component) {
   // https://github.com/ArthurSonzogni/FTXUI/issues/136
   static int i = -3;
   ++i;
-  if (!use_alternative_screen_ && (i % 150 == 0)) {  // NOLINT
+  if (!use_alternative_screen_ && (i % 150 == 0)) { // NOLINT
     std::cout << DeviceStatusReport(DSRMode::kCursor);
   }
 #else
   static int i = -3;
   ++i;
   if (!use_alternative_screen_ &&
-      (previous_frame_resized_ || i % 40 == 0)) {  // NOLINT
+      (previous_frame_resized_ || i % 40 == 0)) { // NOLINT
     std::cout << DeviceStatusReport(DSRMode::kCursor);
   }
 #endif
@@ -978,7 +967,7 @@ void ScreenInteractive::Draw(Component component) {
   selection_ = selection_data_.empty
                    ? std::make_unique<Selection>()
                    : std::make_unique<Selection>(
-                         selection_data_.start_x, selection_data_.start_y,  //
+                         selection_data_.start_x, selection_data_.start_y, //
                          selection_data_.end_x, selection_data_.end_y);
   Render(*this, document.get(), *selection_);
 
@@ -1051,7 +1040,7 @@ void ScreenInteractive::Signal(int signal) {
   if (signal == SIGTSTP) {
     Post([&] {
       ResetCursorPosition();
-      std::cout << ResetPosition(/*clear*/ true);  // Cursor to the beginning
+      std::cout << ResetPosition(/*clear*/ true); // Cursor to the beginning
       Uninstall();
       dimx_ = 0;
       dimy_ = 0;
@@ -1070,7 +1059,7 @@ void ScreenInteractive::Signal(int signal) {
 }
 
 bool ScreenInteractive::SelectionData::operator==(
-    const ScreenInteractive::SelectionData& other) const {
+    const ScreenInteractive::SelectionData &other) const {
   if (empty && other.empty) {
     return true;
   }
@@ -1082,8 +1071,8 @@ bool ScreenInteractive::SelectionData::operator==(
 }
 
 bool ScreenInteractive::SelectionData::operator!=(
-    const ScreenInteractive::SelectionData& other) const {
+    const ScreenInteractive::SelectionData &other) const {
   return !(*this == other);
 }
 
-}  // namespace ftxui.
+} // namespace ftxui.

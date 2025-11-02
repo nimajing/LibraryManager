@@ -66,8 +66,9 @@ void BookManager::bring(const Book &b) {
 }
 
 bool BookManager::remove(std::string isbn) {
-  auto it = std::find_if(m_books.begin(), m_books.end(),
-                      [&isbn](const Book &b) { return b.getIsbn() == isbn; });
+  auto it =
+      std::find_if(m_books.begin(), m_books.end(),
+                   [&isbn](const Book &b) { return b.getIsbn() == isbn; });
   if (it != m_books.end()) {
     m_books.erase(it);
     return true;
@@ -78,11 +79,13 @@ bool BookManager::remove(std::string isbn) {
 json BookManager::log() {
   json comp;
   for (const auto &i : m_books) {
-    json m = {{"title", i.getTitle()},
-              {"authors", i.getAuthors()},
-              {"isbn", i.getIsbn()},
-              {"copies", i.getCopies()},
-              {"thumbnail", i.getThumbnail()}};
+    json m = {
+        {    "title",     i.getTitle()},
+        {  "authors",   i.getAuthors()},
+        {     "isbn",      i.getIsbn()},
+        {   "copies",    i.getCopies()},
+        {"thumbnail", i.getThumbnail()}
+    };
     comp += m;
   }
   return comp;
@@ -92,7 +95,9 @@ bool BookManager::read(std::string msg) {
   try {
     json compare = json::parse(msg);
     for (const auto &comp : compare)
-      this->bring({comp.value("title", ""), comp.value("authors", std::vector<std::string>{}), comp.value("isbn", ""), comp.value("copies", 0),
+      this->bring({comp.value("title", ""),
+                   comp.value("authors", std::vector<std::string>{}),
+                   comp.value("isbn", ""), comp.value("copies", 0),
                    comp.value("thumbnail", "")});
     return true;
   } catch (std::exception) {

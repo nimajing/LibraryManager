@@ -1,20 +1,20 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <functional>  // for function
-#include <utility>     // for move
-#include <vector>      // for vector
+#include <functional> // for function
+#include <utility>    // for move
+#include <vector>     // for vector
 
-#include "ftxui/component/component.hpp"          // for Make, Radiobox
-#include "ftxui/component/component_base.hpp"     // for ComponentBase
-#include "ftxui/component/component_options.hpp"  // for RadioboxOption, EntryState
-#include "ftxui/component/event.hpp"  // for Event, Event::ArrowDown, Event::ArrowUp, Event::End, Event::Home, Event::PageDown, Event::PageUp, Event::Return, Event::Tab, Event::TabReverse
-#include "ftxui/component/mouse.hpp"  // for Mouse, Mouse::WheelDown, Mouse::WheelUp, Mouse::Left, Mouse::Released
-#include "ftxui/component/screen_interactive.hpp"  // for Component
-#include "ftxui/dom/elements.hpp"  // for operator|, reflect, Element, vbox, Elements, focus, nothing, select
-#include "ftxui/screen/box.hpp"   // for Box
-#include "ftxui/screen/util.hpp"  // for clamp
-#include "ftxui/util/ref.hpp"     // for Ref, ConstStringListRef
+#include "ftxui/component/component.hpp"         // for Make, Radiobox
+#include "ftxui/component/component_base.hpp"    // for ComponentBase
+#include "ftxui/component/component_options.hpp" // for RadioboxOption, EntryState
+#include "ftxui/component/event.hpp" // for Event, Event::ArrowDown, Event::ArrowUp, Event::End, Event::Home, Event::PageDown, Event::PageUp, Event::Return, Event::Tab, Event::TabReverse
+#include "ftxui/component/mouse.hpp" // for Mouse, Mouse::WheelDown, Mouse::WheelUp, Mouse::Left, Mouse::Released
+#include "ftxui/component/screen_interactive.hpp" // for Component
+#include "ftxui/dom/elements.hpp" // for operator|, reflect, Element, vbox, Elements, focus, nothing, select
+#include "ftxui/screen/box.hpp"  // for Box
+#include "ftxui/screen/util.hpp" // for clamp
+#include "ftxui/util/ref.hpp"    // for Ref, ConstStringListRef
 
 namespace ftxui {
 
@@ -23,11 +23,11 @@ namespace {
 /// the same time.
 /// @ingroup component
 class RadioboxBase : public ComponentBase, public RadioboxOption {
- public:
-  explicit RadioboxBase(const RadioboxOption& option)
+  public:
+  explicit RadioboxBase(const RadioboxOption &option)
       : RadioboxOption(option) {}
 
- private:
+  private:
   Element OnRender() override {
     Clamp();
     Elements elements;
@@ -169,7 +169,7 @@ class RadioboxBase : public ComponentBase, public RadioboxOption {
   Box box_;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief A list of element, where only one can be selected.
 /// @param option The parameters
@@ -233,12 +233,11 @@ Component Radiobox(RadioboxOption option) {
 /// ○ entry 2
 /// ○ entry 3
 /// ```
-Component Radiobox(ConstStringListRef entries,
-                   int* selected,
+Component Radiobox(ConstStringListRef entries, int *selected,
                    RadioboxOption option) {
   option.entries = std::move(entries);
   option.selected = selected;
   return Make<RadioboxBase>(std::move(option));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

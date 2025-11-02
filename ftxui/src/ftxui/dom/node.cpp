@@ -1,14 +1,14 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <ftxui/screen/box.hpp>  // for Box
+#include <ftxui/screen/box.hpp> // for Box
 #include <string>
-#include <utility>  // for move
+#include <utility> // for move
 
-#include <cstddef>
 #include "ftxui/dom/node.hpp"
-#include "ftxui/dom/selection.hpp"  // for Selection
-#include "ftxui/screen/screen.hpp"  // for Screen
+#include "ftxui/dom/selection.hpp" // for Selection
+#include "ftxui/screen/screen.hpp" // for Screen
+#include <cstddef>
 
 namespace ftxui {
 
@@ -22,7 +22,7 @@ void Node::ComputeRequirement() {
   if (children_.empty()) {
     return;
   }
-  for (auto& child : children_) {
+  for (auto &child : children_) {
     child->ComputeRequirement();
   }
 
@@ -40,43 +40,41 @@ void Node::ComputeRequirement() {
 
 /// @brief Assign a position and a dimension to an element for drawing.
 /// @ingroup dom
-void Node::SetBox(Box box) {
-  box_ = box;
-}
+void Node::SetBox(Box box) { box_ = box; }
 
 /// @brief Compute the selection of an element.
 /// @ingroup dom
-void Node::Select(Selection& selection) {
+void Node::Select(Selection &selection) {
   // If this Node box_ doesn't intersect with the selection, then no selection.
   if (Box::Intersection(selection.GetBox(), box_).IsEmpty()) {
     return;
   }
 
   // By default we defer the selection to the children.
-  for (auto& child : children_) {
+  for (auto &child : children_) {
     child->Select(selection);
   }
 }
 
 /// @brief Display an element on a ftxui::Screen.
 /// @ingroup dom
-void Node::Render(Screen& screen) {
-  for (auto& child : children_) {
+void Node::Render(Screen &screen) {
+  for (auto &child : children_) {
     child->Render(screen);
   }
 }
 
-void Node::Check(Status* status) {
-  for (auto& child : children_) {
+void Node::Check(Status *status) {
+  for (auto &child : children_) {
     child->Check(status);
   }
   status->need_iteration |= (status->iteration == 0);
 }
 
-std::string Node::GetSelectedContent(Selection& selection) {
+std::string Node::GetSelectedContent(Selection &selection) {
   std::string content;
 
-  for (auto& child : children_) {
+  for (auto &child : children_) {
     content += child->GetSelectedContent(selection);
   }
 
@@ -85,19 +83,19 @@ std::string Node::GetSelectedContent(Selection& selection) {
 
 /// @brief Display an element on a ftxui::Screen.
 /// @ingroup dom
-void Render(Screen& screen, const Element& element) {
+void Render(Screen &screen, const Element &element) {
   Selection selection;
   Render(screen, element.get(), selection);
 }
 
 /// @brief Display an element on a ftxui::Screen.
 /// @ingroup dom
-void Render(Screen& screen, Node* node) {
+void Render(Screen &screen, Node *node) {
   Selection selection;
   Render(screen, node, selection);
 }
 
-void Render(Screen& screen, Node* node, Selection& selection) {
+void Render(Screen &screen, Node *node, Selection &selection) {
   Box box;
   box.x_min = 0;
   box.y_min = 0;
@@ -169,9 +167,8 @@ void Render(Screen& screen, Node* node, Selection& selection) {
   screen.ApplyShader();
 }
 
-std::string GetNodeSelectedContent(Screen& screen,
-                                   Node* node,
-                                   Selection& selection) {
+std::string GetNodeSelectedContent(Screen &screen, Node *node,
+                                   Selection &selection) {
   Box box;
   box.x_min = 0;
   box.y_min = 0;
@@ -201,4 +198,4 @@ std::string GetNodeSelectedContent(Screen& screen,
   return node->GetSelectedContent(selection);
 }
 
-}  // namespace ftxui
+} // namespace ftxui

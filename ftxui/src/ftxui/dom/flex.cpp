@@ -1,64 +1,56 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <memory>   // for make_shared, __shared_ptr_access
-#include <utility>  // for move
+#include <memory>  // for make_shared, __shared_ptr_access
+#include <utility> // for move
 
-#include "ftxui/dom/elements.hpp"  // for Element, unpack, filler, flex, flex_grow, flex_shrink, notflex, xflex, xflex_grow, xflex_shrink, yflex, yflex_grow, yflex_shrink
-#include "ftxui/dom/node.hpp"      // for Elements, Node
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/screen/box.hpp"       // for Box
+#include "ftxui/dom/elements.hpp" // for Element, unpack, filler, flex, flex_grow, flex_shrink, notflex, xflex, xflex_grow, xflex_shrink, yflex, yflex_grow, yflex_shrink
+#include "ftxui/dom/node.hpp"     // for Elements, Node
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/screen/box.hpp"      // for Box
 
 namespace ftxui {
 
 namespace {
 
-using FlexFunction = void (*)(Requirement&);
+using FlexFunction = void (*)(Requirement &);
 
-void function_flex_grow(Requirement& r) {
+void function_flex_grow(Requirement &r) {
   r.flex_grow_x = 1;
   r.flex_grow_y = 1;
 }
 
-void function_xflex_grow(Requirement& r) {
-  r.flex_grow_x = 1;
-}
+void function_xflex_grow(Requirement &r) { r.flex_grow_x = 1; }
 
-void function_yflex_grow(Requirement& r) {
-  r.flex_grow_y = 1;
-}
+void function_yflex_grow(Requirement &r) { r.flex_grow_y = 1; }
 
-void function_flex_shrink(Requirement& r) {
+void function_flex_shrink(Requirement &r) {
   r.flex_shrink_x = 1;
   r.flex_shrink_y = 1;
 }
 
-void function_xflex_shrink(Requirement& r) {
-  r.flex_shrink_x = 1;
-}
+void function_xflex_shrink(Requirement &r) { r.flex_shrink_x = 1; }
 
-void function_yflex_shrink(Requirement& r) {
-  r.flex_shrink_y = 1;
-}
+void function_yflex_shrink(Requirement &r) { r.flex_shrink_y = 1; }
 
-void function_flex(Requirement& r) {
+void function_flex(Requirement &r) {
   r.flex_grow_x = 1;
   r.flex_grow_y = 1;
   r.flex_shrink_x = 1;
   r.flex_shrink_y = 1;
 }
 
-void function_xflex(Requirement& r) {
+void function_xflex(Requirement &r) {
   r.flex_grow_x = 1;
   r.flex_shrink_x = 1;
 }
 
-void function_yflex(Requirement& r) {
+void function_yflex(Requirement &r) {
   r.flex_grow_y = 1;
   r.flex_shrink_y = 1;
 }
 
-void function_not_flex(Requirement& r) {
+void function_not_flex(Requirement &r) {
   r.flex_grow_x = 0;
   r.flex_grow_y = 0;
   r.flex_shrink_x = 0;
@@ -66,7 +58,7 @@ void function_not_flex(Requirement& r) {
 }
 
 class Flex : public Node {
- public:
+  public:
   explicit Flex(FlexFunction f) : f_(f) {}
   Flex(FlexFunction f, Element child) : Node(unpack(std::move(child))), f_(f) {}
   void ComputeRequirement() override {
@@ -90,14 +82,12 @@ class Flex : public Node {
   FlexFunction f_;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief An element that will take expand proportionally to the space left in
 /// a container.
 /// @ingroup dom
-Element filler() {
-  return std::make_shared<Flex>(function_flex);
-}
+Element filler() { return std::make_shared<Flex>(function_flex); }
 
 /// @brief Make a child element to expand proportionally to the space left in a
 /// container.
@@ -178,4 +168,4 @@ Element notflex(Element child) {
   return std::make_shared<Flex>(function_not_flex, std::move(child));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

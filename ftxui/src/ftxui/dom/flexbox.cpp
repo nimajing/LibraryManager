@@ -1,48 +1,46 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>  // for min, max
-#include <cstddef>    // for size_t
-#include <memory>  // for __shared_ptr_access, shared_ptr, allocator_traits<>::value_type, make_shared
-#include <tuple>   // for ignore
-#include <utility>  // for move, swap
-#include <vector>   // for vector
+#include <algorithm> // for min, max
+#include <cstddef>   // for size_t
+#include <memory> // for __shared_ptr_access, shared_ptr, allocator_traits<>::value_type, make_shared
+#include <tuple>  // for ignore
+#include <utility> // for move, swap
+#include <vector>  // for vector
 
-#include "ftxui/dom/elements.hpp"  // for Element, Elements, flexbox, hflow, vflow
-#include "ftxui/dom/flexbox_config.hpp"  // for FlexboxConfig, FlexboxConfig::Direction, FlexboxConfig::Direction::Column, FlexboxConfig::AlignContent, FlexboxConfig::Direction::ColumnInversed, FlexboxConfig::Direction::Row, FlexboxConfig::JustifyContent, FlexboxConfig::Wrap, FlexboxConfig::AlignContent::FlexStart, FlexboxConfig::Direction::RowInversed, FlexboxConfig::JustifyContent::FlexStart, FlexboxConfig::Wrap::Wrap
-#include "ftxui/dom/flexbox_helper.hpp"  // for Block, Global, Compute
-#include "ftxui/dom/node.hpp"            // for Node, Elements, Node::Status
-#include "ftxui/dom/requirement.hpp"     // for Requirement
-#include "ftxui/dom/selection.hpp"       // for Selection
-#include "ftxui/screen/box.hpp"          // for Box
+#include "ftxui/dom/elements.hpp" // for Element, Elements, flexbox, hflow, vflow
+#include "ftxui/dom/flexbox_config.hpp" // for FlexboxConfig, FlexboxConfig::Direction, FlexboxConfig::Direction::Column, FlexboxConfig::AlignContent, FlexboxConfig::Direction::ColumnInversed, FlexboxConfig::Direction::Row, FlexboxConfig::JustifyContent, FlexboxConfig::Wrap, FlexboxConfig::AlignContent::FlexStart, FlexboxConfig::Direction::RowInversed, FlexboxConfig::JustifyContent::FlexStart, FlexboxConfig::Wrap::Wrap
+#include "ftxui/dom/flexbox_helper.hpp" // for Block, Global, Compute
+#include "ftxui/dom/node.hpp"           // for Node, Elements, Node::Status
+#include "ftxui/dom/requirement.hpp"    // for Requirement
+#include "ftxui/dom/selection.hpp"      // for Selection
+#include "ftxui/screen/box.hpp"         // for Box
 
 namespace ftxui {
 
 namespace {
-void Normalize(FlexboxConfig::Direction& direction) {
+void Normalize(FlexboxConfig::Direction &direction) {
   switch (direction) {
-    case FlexboxConfig::Direction::Row:
-    case FlexboxConfig::Direction::RowInversed: {
-      direction = FlexboxConfig::Direction::Row;
-    } break;
-    case FlexboxConfig::Direction::Column:
-    case FlexboxConfig::Direction::ColumnInversed: {
-      direction = FlexboxConfig::Direction::Column;
-    } break;
+  case FlexboxConfig::Direction::Row:
+  case FlexboxConfig::Direction::RowInversed: {
+    direction = FlexboxConfig::Direction::Row;
+  } break;
+  case FlexboxConfig::Direction::Column:
+  case FlexboxConfig::Direction::ColumnInversed: {
+    direction = FlexboxConfig::Direction::Column;
+  } break;
   }
 }
 
-void Normalize(FlexboxConfig::AlignContent& align_content) {
+void Normalize(FlexboxConfig::AlignContent &align_content) {
   align_content = FlexboxConfig::AlignContent::FlexStart;
 }
 
-void Normalize(FlexboxConfig::JustifyContent& justify_content) {
+void Normalize(FlexboxConfig::JustifyContent &justify_content) {
   justify_content = FlexboxConfig::JustifyContent::FlexStart;
 }
 
-void Normalize(FlexboxConfig::Wrap& wrap) {
-  wrap = FlexboxConfig::Wrap::Wrap;
-}
+void Normalize(FlexboxConfig::Wrap &wrap) { wrap = FlexboxConfig::Wrap::Wrap; }
 
 FlexboxConfig Normalize(FlexboxConfig config) {
   Normalize(config.direction);
@@ -53,10 +51,9 @@ FlexboxConfig Normalize(FlexboxConfig config) {
 }
 
 class Flexbox : public Node {
- public:
+  public:
   Flexbox(Elements children, FlexboxConfig config)
-      : Node(std::move(children)),
-        config_(config),
+      : Node(std::move(children)), config_(config),
         config_normalized_(Normalize(config)) {
     requirement_.flex_grow_x = 1;
     requirement_.flex_grow_y = 0;
@@ -71,10 +68,10 @@ class Flexbox : public Node {
            config_.direction == FlexboxConfig::Direction::ColumnInversed;
   }
 
-  void Layout(flexbox_helper::Global& global,
+  void Layout(flexbox_helper::Global &global,
               bool compute_requirement = false) {
     global.blocks.reserve(children_.size());
-    for (auto& child : children_) {
+    for (auto &child : children_) {
       flexbox_helper::Block block;
       block.min_size_x = child->requirement().min_x;
       block.min_size_y = child->requirement().min_y;
@@ -92,17 +89,17 @@ class Flexbox : public Node {
 
   void ComputeRequirement() override {
     requirement_ = Requirement{};
-    for (auto& child : children_) {
+    for (auto &child : children_) {
       child->ComputeRequirement();
     }
     global_ = flexbox_helper::Global();
     global_.config = config_normalized_;
     if (IsColumnOriented()) {
-      global_.size_x = 100000;  // NOLINT
+      global_.size_x = 100000; // NOLINT
       global_.size_y = asked_;
     } else {
       global_.size_x = asked_;
-      global_.size_y = 100000;  // NOLINT
+      global_.size_y = 100000; // NOLINT
     }
     Layout(global_, true);
 
@@ -116,7 +113,7 @@ class Flexbox : public Node {
     box.y_min = global_.blocks[0].y;
     box.x_max = global_.blocks[0].x + global_.blocks[0].dim_x;
     box.y_max = global_.blocks[0].y + global_.blocks[0].dim_y;
-    for (auto& b : global_.blocks) {
+    for (auto &b : global_.blocks) {
       box.x_min = std::min(box.x_min, b.x);
       box.y_min = std::min(box.y_min, b.y);
       box.x_max = std::max(box.x_max, b.x + b.dim_x);
@@ -130,7 +127,7 @@ class Flexbox : public Node {
       if (requirement_.focused.Prefer(children_[i]->requirement().focused)) {
         requirement_.focused = children_[i]->requirement().focused;
         // Shift |focused.box| according to its position inside this component:
-        auto& b = global_.blocks[i];
+        auto &b = global_.blocks[i];
         requirement_.focused.box.Shift(b.x, b.y);
         requirement_.focused.box =
             Box::Intersection(requirement_.focused.box, box);
@@ -153,8 +150,8 @@ class Flexbox : public Node {
     Layout(global);
 
     for (size_t i = 0; i < children_.size(); ++i) {
-      auto& child = children_[i];
-      auto& b = global.blocks[i];
+      auto &child = children_[i];
+      auto &b = global.blocks[i];
 
       Box children_box;
       children_box.x_min = box.x_min + b.x;
@@ -169,7 +166,7 @@ class Flexbox : public Node {
     }
   }
 
-  void Select(Selection& selection) override {
+  void Select(Selection &selection) override {
     // If this Node box_ doesn't intersect with the selection, then no
     // selection.
     if (Box::Intersection(selection.GetBox(), box_).IsEmpty()) {
@@ -181,7 +178,7 @@ class Flexbox : public Node {
                                     : selection.SaturateHorizontal(box_);
 
     size_t i = 0;
-    for (auto& line : global_.lines) {
+    for (auto &line : global_.lines) {
       Box box;
       box.x_min = box_.x_min + line.x;
       box.x_max = box_.x_min + line.x + line.dim_x - 1;
@@ -198,7 +195,7 @@ class Flexbox : public Node {
                                      ? selection_lines.SaturateHorizontal(box)
                                      : selection_lines.SaturateVertical(box);
 
-      for (auto& block : line.blocks) {
+      for (auto &block : line.blocks) {
         std::ignore = block;
         children_[i]->Select(selection_line);
         i++;
@@ -206,27 +203,27 @@ class Flexbox : public Node {
     }
   }
 
-  void Check(Status* status) override {
-    for (auto& child : children_) {
+  void Check(Status *status) override {
+    for (auto &child : children_) {
       child->Check(status);
     }
 
     if (status->iteration == 0) {
-      asked_ = 6000;  // NOLINT
+      asked_ = 6000; // NOLINT
       need_iteration_ = true;
     }
 
     status->need_iteration |= need_iteration_;
   }
 
-  int asked_ = 6000;  // NOLINT
+  int asked_ = 6000; // NOLINT
   bool need_iteration_ = true;
   const FlexboxConfig config_;
   const FlexboxConfig config_normalized_;
   flexbox_helper::Global global_;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief A container displaying elements on row/columns and capable of
 /// wrapping on the next column/row when full.
@@ -291,4 +288,4 @@ Element vflow(Elements children) {
                  FlexboxConfig().Set(FlexboxConfig::Direction::Column));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

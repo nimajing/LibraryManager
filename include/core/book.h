@@ -5,14 +5,14 @@
 #include <vector>
 
 class Book {
-private:
+  private:
   std::string m_title;
   std::vector<std::string> m_authors;
   std::string m_isbn;
   int m_copies;
   std::string m_thumbnail;
 
-public:
+  public:
   Book(std::string title = "", std::vector<std::string> authors = {},
        std::string isbn = "", int copies = 0, std::string thumbnail = "") {
     m_title = title;
@@ -67,10 +67,10 @@ public:
 };
 
 class BookManager {
-private:
+  private:
   std::vector<Book> m_books;
 
-public:
+  public:
   bool take(std::string isbn, int copies, BookManager &rec);
   void bring(const Book &b);
   bool remove(std::string isbn);

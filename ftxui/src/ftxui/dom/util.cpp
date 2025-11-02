@@ -1,17 +1,17 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>   // for min
-#include <functional>  // for function
-#include <memory>      // for __shared_ptr_access, make_unique
-#include <utility>     // for move
+#include <algorithm>  // for min
+#include <functional> // for function
+#include <memory>     // for __shared_ptr_access, make_unique
+#include <utility>    // for move
 
-#include "ftxui/dom/elements.hpp"  // for Element, Decorator, Elements, operator|, Fit, emptyElement, nothing, operator|=
-#include "ftxui/dom/node.hpp"      // for Node, Node::Status
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/screen/box.hpp"       // for Box
-#include "ftxui/screen/screen.hpp"    // for Full
-#include "ftxui/screen/terminal.hpp"  // for Dimensions
+#include "ftxui/dom/elements.hpp" // for Element, Decorator, Elements, operator|, Fit, emptyElement, nothing, operator|=
+#include "ftxui/dom/node.hpp"     // for Node, Node::Status
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/screen/box.hpp"      // for Box
+#include "ftxui/screen/screen.hpp"   // for Full
+#include "ftxui/screen/terminal.hpp" // for Dimensions
 
 namespace ftxui {
 
@@ -21,13 +21,11 @@ Decorator compose(Decorator a, Decorator b) {
     return b(a(std::move(element)));
   };
 }
-}  // namespace
+} // namespace
 
 /// @brief A decoration doing absolutely nothing.
 /// @ingroup dom
-Element nothing(Element element) {
-  return element;
-}
+Element nothing(Element element) { return element; }
 
 /// @brief Compose two decorator into one.
 /// @ingroup dom
@@ -38,17 +36,17 @@ Element nothing(Element element) {
 /// auto decorator = bold | blink;
 /// ```
 Decorator operator|(Decorator a, Decorator b) {
-  return compose(std::move(a),  //
+  return compose(std::move(a), //
                  std::move(b));
 }
 
 /// @brief From a set of element, apply a decorator to every elements.
 /// @return the set of decorated element.
 /// @ingroup dom
-Elements operator|(Elements elements, Decorator decorator) {  // NOLINT
+Elements operator|(Elements elements, Decorator decorator) { // NOLINT
   Elements output;
   output.reserve(elements.size());
-  for (auto& it : elements) {
+  for (auto &it : elements) {
     output.push_back(std::move(it) | decorator);
   }
   return output;
@@ -67,7 +65,7 @@ Elements operator|(Elements elements, Decorator decorator) {  // NOLINT
 /// ```cpp
 /// text("Hello") | bold;
 /// ```
-Element operator|(Element element, Decorator decorator) {  // NOLINT
+Element operator|(Element element, Decorator decorator) { // NOLINT
   return decorator(std::move(element));
 }
 
@@ -82,7 +80,7 @@ Element operator|(Element element, Decorator decorator) {  // NOLINT
 /// auto element = text("Hello");
 /// element |= bold;
 /// ```
-Element& operator|=(Element& e, Decorator d) {
+Element &operator|=(Element &e, Decorator d) {
   e = e | std::move(d);
   return e;
 }
@@ -90,7 +88,7 @@ Element& operator|=(Element& e, Decorator d) {
 /// The minimal dimension that will fit the given element.
 /// @see Fixed
 /// @see Full
-Dimensions Dimension::Fit(Element& e, bool extend_beyond_screen) {
+Dimensions Dimension::Fit(Element &e, bool extend_beyond_screen) {
   const Dimensions fullsize = Dimension::Full();
   Box box;
   box.x_min = 0;
@@ -147,4 +145,4 @@ Element emptyElement() {
   return std::make_unique<Impl>();
 }
 
-}  // namespace ftxui
+} // namespace ftxui

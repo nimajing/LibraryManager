@@ -1,15 +1,15 @@
 // Copyright 2021 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <functional>  // for function
-#include <utility>     // for move
+#include <functional> // for function
+#include <utility>    // for move
 
-#include "ftxui/component/component.hpp"       // for Make, Renderer
-#include "ftxui/component/component_base.hpp"  // for Component, ComponentBase
-#include "ftxui/component/event.hpp"           // for Event
-#include "ftxui/component/mouse.hpp"           // for Mouse
-#include "ftxui/dom/elements.hpp"  // for Element, operator|, reflect
-#include "ftxui/screen/box.hpp"    // for Box
+#include "ftxui/component/component.hpp"      // for Make, Renderer
+#include "ftxui/component/component_base.hpp" // for Component, ComponentBase
+#include "ftxui/component/event.hpp"          // for Event
+#include "ftxui/component/mouse.hpp"          // for Mouse
+#include "ftxui/dom/elements.hpp"             // for Element, operator|, reflect
+#include "ftxui/screen/box.hpp"               // for Box
 
 namespace ftxui {
 
@@ -28,7 +28,7 @@ namespace ftxui {
 /// ```
 Component Renderer(std::function<Element()> render) {
   class Impl : public ComponentBase {
-   public:
+public:
     explicit Impl(std::function<Element()> render)
         : render_(std::move(render)) {}
     Element OnRender() override { return render_(); }
@@ -83,11 +83,11 @@ Component Renderer(Component child, std::function<Element()> render) {
 /// ```
 Component Renderer(std::function<Element(bool)> render) {
   class Impl : public ComponentBase {
-   public:
+public:
     explicit Impl(std::function<Element(bool)> render)
         : render_(std::move(render)) {}
 
-   private:
+private:
     Element OnRender() override { return render_(Focused()) | reflect(box_); }
     bool Focusable() const override { return true; }
     bool OnEvent(Event event) override {
@@ -122,12 +122,12 @@ Component Renderer(std::function<Element(bool)> render) {
 ///  | Renderer(inverted);
 /// screen.Loop(renderer);
 /// ```
-ComponentDecorator Renderer(ElementDecorator decorator) {  // NOLINT
-  return [decorator](Component component) {                // NOLINT
+ComponentDecorator Renderer(ElementDecorator decorator) { // NOLINT
+  return [decorator](Component component) {               // NOLINT
     return Renderer(component, [component, decorator] {
       return component->Render() | decorator;
     });
   };
 }
 
-}  // namespace ftxui
+} // namespace ftxui

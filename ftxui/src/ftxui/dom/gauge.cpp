@@ -1,15 +1,15 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <ftxui/dom/direction.hpp>  // for Direction, Direction::Down, Direction::Left, Direction::Right, Direction::Up
-#include <memory>                   // for allocator, make_shared
-#include <string>                   // for string
+#include <ftxui/dom/direction.hpp> // for Direction, Direction::Down, Direction::Left, Direction::Right, Direction::Up
+#include <memory>                  // for allocator, make_shared
+#include <string>                  // for string
 
-#include "ftxui/dom/elements.hpp"  // for Element, gauge, gaugeDirection, gaugeDown, gaugeLeft, gaugeRight, gaugeUp
-#include "ftxui/dom/node.hpp"         // for Node
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/screen/box.hpp"       // for Box
-#include "ftxui/screen/screen.hpp"    // for Screen, Pixel
+#include "ftxui/dom/elements.hpp" // for Element, gauge, gaugeDirection, gaugeDown, gaugeLeft, gaugeRight, gaugeUp
+#include "ftxui/dom/node.hpp"        // for Node
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/screen/box.hpp"      // for Box
+#include "ftxui/screen/screen.hpp"   // for Screen, Pixel
 
 namespace ftxui {
 
@@ -44,7 +44,7 @@ static const std::string charset_vertical[10] = {
 };
 
 class Gauge : public Node {
- public:
+  public:
   Gauge(float progress, Direction direction)
       : progress_(progress), direction_(direction) {
     // This handle NAN correctly:
@@ -58,43 +58,43 @@ class Gauge : public Node {
 
   void ComputeRequirement() override {
     switch (direction_) {
-      case Direction::Right:
-      case Direction::Left:
-        requirement_.flex_grow_x = 1;
-        requirement_.flex_grow_y = 0;
-        requirement_.flex_shrink_x = 1;
-        requirement_.flex_shrink_y = 0;
-        break;
-      case Direction::Up:
-      case Direction::Down:
-        requirement_.flex_grow_x = 0;
-        requirement_.flex_grow_y = 1;
-        requirement_.flex_shrink_x = 0;
-        requirement_.flex_shrink_y = 1;
-        break;
+    case Direction::Right:
+    case Direction::Left:
+      requirement_.flex_grow_x = 1;
+      requirement_.flex_grow_y = 0;
+      requirement_.flex_shrink_x = 1;
+      requirement_.flex_shrink_y = 0;
+      break;
+    case Direction::Up:
+    case Direction::Down:
+      requirement_.flex_grow_x = 0;
+      requirement_.flex_grow_y = 1;
+      requirement_.flex_shrink_x = 0;
+      requirement_.flex_shrink_y = 1;
+      break;
     }
     requirement_.min_x = 1;
     requirement_.min_y = 1;
   }
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     switch (direction_) {
-      case Direction::Right:
-        RenderHorizontal(screen, /*invert=*/false);
-        break;
-      case Direction::Up:
-        RenderVertical(screen, /*invert=*/false);
-        break;
-      case Direction::Left:
-        RenderHorizontal(screen, /*invert=*/true);
-        break;
-      case Direction::Down:
-        RenderVertical(screen, /*invert=*/true);
-        break;
+    case Direction::Right:
+      RenderHorizontal(screen, /*invert=*/false);
+      break;
+    case Direction::Up:
+      RenderVertical(screen, /*invert=*/false);
+      break;
+    case Direction::Left:
+      RenderHorizontal(screen, /*invert=*/true);
+      break;
+    case Direction::Down:
+      RenderVertical(screen, /*invert=*/true);
+      break;
     }
   }
 
-  void RenderHorizontal(Screen& screen, bool invert) {
+  void RenderHorizontal(Screen &screen, bool invert) {
     const int y = box_.y_min;
     if (y > box_.y_max) {
       return;
@@ -108,7 +108,7 @@ class Gauge : public Node {
       const int limit_int = static_cast<int>(limit);
       int x = box_.x_min;
       while (x < limit_int) {
-        screen.at(x++, y) = charset_horizontal[9];  // NOLINT
+        screen.at(x++, y) = charset_horizontal[9]; // NOLINT
       }
       // NOLINTNEXTLINE
       screen.at(x++, y) = charset_horizontal[int(9 * (limit - limit_int))];
@@ -124,7 +124,7 @@ class Gauge : public Node {
     }
   }
 
-  void RenderVertical(Screen& screen, bool invert) {
+  void RenderVertical(Screen &screen, bool invert) {
     const int x = box_.x_min;
     if (x > box_.x_max) {
       return;
@@ -138,7 +138,7 @@ class Gauge : public Node {
       const int limit_int = static_cast<int>(limit);
       int y = box_.y_min;
       while (y < limit_int) {
-        screen.at(x, y++) = charset_vertical[8];  // NOLINT
+        screen.at(x, y++) = charset_vertical[8]; // NOLINT
       }
       // NOLINTNEXTLINE
       screen.at(x, y++) = charset_vertical[int(8 * (limit - limit_int))];
@@ -154,12 +154,12 @@ class Gauge : public Node {
     }
   }
 
- private:
+  private:
   float progress_;
   Direction direction_;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief Draw a high definition progress bar progressing in specified
 /// direction.
@@ -290,8 +290,6 @@ Element gaugeDown(float progress) {
 /// │█████████████████████████████████████                                     │
 /// └──────────────────────────────────────────────────────────────────────────┘
 /// ~~~
-Element gauge(float progress) {
-  return gaugeRight(progress);
-}
+Element gauge(float progress) { return gaugeRight(progress); }
 
-}  // namespace ftxui
+} // namespace ftxui

@@ -44,29 +44,25 @@ void Box::Shift(int x, int y) {
 /// @return whether (x,y) is contained inside the box.
 /// @ingroup screen
 bool Box::Contain(int x, int y) const {
-  return x_min <= x &&  //
-         x_max >= x &&  //
-         y_min <= y &&  //
+  return x_min <= x && //
+         x_max >= x && //
+         y_min <= y && //
          y_max >= y;
 }
 
 /// @return whether the box is empty.
 /// @ingroup screen
-bool Box::IsEmpty() const {
-  return x_min > x_max || y_min > y_max;
-}
+bool Box::IsEmpty() const { return x_min > x_max || y_min > y_max; }
 
 /// @return whether |other| is the same as |this|
 /// @ingroup screen
-bool Box::operator==(const Box& other) const {
+bool Box::operator==(const Box &other) const {
   return (x_min == other.x_min) && (x_max == other.x_max) &&
          (y_min == other.y_min) && (y_max == other.y_max);
 }
 
 /// @return whether |other| and |this| are different.
 /// @ingroup screen
-bool Box::operator!=(const Box& other) const {
-  return !operator==(other);
-}
+bool Box::operator!=(const Box &other) const { return !operator==(other); }
 
-}  // namespace ftxui
+} // namespace ftxui

@@ -1,36 +1,36 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <array>    // for array, array<>::value_type
-#include <memory>   // for make_shared, allocator
-#include <string>   // for basic_string, string
-#include <utility>  // for move
+#include <array>   // for array, array<>::value_type
+#include <memory>  // for make_shared, allocator
+#include <string>  // for basic_string, string
+#include <utility> // for move
 
-#include "ftxui/dom/elements.hpp"  // for Element, BorderStyle, LIGHT, separator, DOUBLE, EMPTY, HEAVY, separatorCharacter, separatorDouble, separatorEmpty, separatorHSelector, separatorHeavy, separatorLight, separatorStyled, separatorVSelector
-#include "ftxui/dom/node.hpp"      // for Node
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/screen/box.hpp"       // for Box
-#include "ftxui/screen/color.hpp"     // for Color
-#include "ftxui/screen/pixel.hpp"     // for Pixel
-#include "ftxui/screen/screen.hpp"    // for Pixel, Screen
+#include "ftxui/dom/elements.hpp" // for Element, BorderStyle, LIGHT, separator, DOUBLE, EMPTY, HEAVY, separatorCharacter, separatorDouble, separatorEmpty, separatorHSelector, separatorHeavy, separatorLight, separatorStyled, separatorVSelector
+#include "ftxui/dom/node.hpp"     // for Node
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/screen/box.hpp"      // for Box
+#include "ftxui/screen/color.hpp"    // for Color
+#include "ftxui/screen/pixel.hpp"    // for Pixel
+#include "ftxui/screen/screen.hpp"   // for Pixel, Screen
 
 namespace ftxui {
 
 namespace {
-using Charset = std::array<std::string, 2>;  // NOLINT
-using Charsets = std::array<Charset, 6>;     // NOLINT
+using Charset = std::array<std::string, 2>; // NOLINT
+using Charsets = std::array<Charset, 6>;    // NOLINT
 // NOLINTNEXTLINE
 const Charsets charsets = {
-    Charset{"│", "─"},  // LIGHT
-    Charset{"╏", "╍"},  // DASHED
-    Charset{"┃", "━"},  // HEAVY
-    Charset{"║", "═"},  // DOUBLE
-    Charset{"│", "─"},  // ROUNDED
-    Charset{" ", " "},  // EMPTY
+    Charset{"│", "─"}, // LIGHT
+    Charset{"╏", "╍"}, // DASHED
+    Charset{"┃", "━"}, // HEAVY
+    Charset{"║", "═"}, // DOUBLE
+    Charset{"│", "─"}, // ROUNDED
+    Charset{" ", " "}, // EMPTY
 };
 
 class Separator : public Node {
- public:
+  public:
   explicit Separator(std::string value) : value_(std::move(value)) {}
 
   void ComputeRequirement() override {
@@ -38,10 +38,10 @@ class Separator : public Node {
     requirement_.min_y = 1;
   }
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     for (int y = box_.y_min; y <= box_.y_max; ++y) {
       for (int x = box_.x_min; x <= box_.x_max; ++x) {
-        Pixel& pixel = screen.PixelAt(x, y);
+        Pixel &pixel = screen.PixelAt(x, y);
         pixel.character = value_;
         pixel.automerge = true;
       }
@@ -52,7 +52,7 @@ class Separator : public Node {
 };
 
 class SeparatorAuto : public Node {
- public:
+  public:
   explicit SeparatorAuto(BorderStyle style) : style_(style) {}
 
   void ComputeRequirement() override {
@@ -60,16 +60,16 @@ class SeparatorAuto : public Node {
     requirement_.min_y = 1;
   }
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     const bool is_column = (box_.x_max == box_.x_min);
     const bool is_line = (box_.y_min == box_.y_max);
 
     const std::string c =
-        charsets[style_][int(is_line && !is_column)];  // NOLINT
+        charsets[style_][int(is_line && !is_column)]; // NOLINT
 
     for (int y = box_.y_min; y <= box_.y_max; ++y) {
       for (int x = box_.x_min; x <= box_.x_max; ++x) {
-        Pixel& pixel = screen.PixelAt(x, y);
+        Pixel &pixel = screen.PixelAt(x, y);
         pixel.character = c;
         pixel.automerge = true;
       }
@@ -80,12 +80,12 @@ class SeparatorAuto : public Node {
 };
 
 class SeparatorWithPixel : public SeparatorAuto {
- public:
+  public:
   explicit SeparatorWithPixel(Pixel pixel)
       : SeparatorAuto(LIGHT), pixel_(std::move(pixel)) {
     pixel_.automerge = true;
   }
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     for (int y = box_.y_min; y <= box_.y_max; ++y) {
       for (int x = box_.x_min; x <= box_.x_max; ++x) {
         screen.PixelAt(x, y) = pixel_;
@@ -93,10 +93,10 @@ class SeparatorWithPixel : public SeparatorAuto {
     }
   }
 
- private:
+  private:
   Pixel pixel_;
 };
-}  // namespace
+} // namespace
 
 /// @brief Draw a vertical or horizontal separation in between two other
 /// elements.
@@ -131,9 +131,7 @@ class SeparatorWithPixel : public SeparatorAuto {
 /// ────
 /// down
 /// ```
-Element separator() {
-  return std::make_shared<SeparatorAuto>(LIGHT);
-}
+Element separator() { return std::make_shared<SeparatorAuto>(LIGHT); }
 
 /// @brief Draw a vertical or horizontal separation in between two other
 /// elements.
@@ -206,9 +204,7 @@ Element separatorStyled(BorderStyle style) {
 /// ────
 /// down
 /// ```
-Element separatorLight() {
-  return std::make_shared<SeparatorAuto>(LIGHT);
-}
+Element separatorLight() { return std::make_shared<SeparatorAuto>(LIGHT); }
 
 /// @brief Draw a vertical or horizontal separation in between two other
 /// elements, using the DASHED style.
@@ -243,9 +239,7 @@ Element separatorLight() {
 /// ╍╍╍╍
 /// down
 /// ```
-Element separatorDashed() {
-  return std::make_shared<SeparatorAuto>(DASHED);
-}
+Element separatorDashed() { return std::make_shared<SeparatorAuto>(DASHED); }
 
 /// @brief Draw a vertical or horizontal separation in between two other
 /// elements, using the HEAVY style.
@@ -280,9 +274,7 @@ Element separatorDashed() {
 /// ━━━━
 /// down
 /// ```
-Element separatorHeavy() {
-  return std::make_shared<SeparatorAuto>(HEAVY);
-}
+Element separatorHeavy() { return std::make_shared<SeparatorAuto>(HEAVY); }
 
 /// @brief Draw a vertical or horizontal separation in between two other
 /// elements, using the DOUBLE style.
@@ -317,9 +309,7 @@ Element separatorHeavy() {
 /// ════
 /// down
 /// ```
-Element separatorDouble() {
-  return std::make_shared<SeparatorAuto>(DOUBLE);
-}
+Element separatorDouble() { return std::make_shared<SeparatorAuto>(DOUBLE); }
 
 /// @brief Draw a vertical or horizontal separation in between two other
 /// elements, using the EMPTY style.
@@ -354,9 +344,7 @@ Element separatorDouble() {
 ///
 /// down
 /// ```
-Element separatorEmpty() {
-  return std::make_shared<SeparatorAuto>(EMPTY);
-}
+Element separatorEmpty() { return std::make_shared<SeparatorAuto>(EMPTY); }
 
 /// @brief Draw a vertical or horizontal separation in between two other
 /// elements.
@@ -439,34 +427,30 @@ Element separator(Pixel pixel) {
 /// ```cpp
 /// Element document = separatorHSelector(2,5, Color::White, Color::Blue);
 /// ```
-Element separatorHSelector(float left,
-                           float right,
-                           Color unselected_color,
+Element separatorHSelector(float left, float right, Color unselected_color,
                            Color selected_color) {
   class Impl : public Node {
-   public:
+public:
     Impl(float left, float right, Color selected_color, Color unselected_color)
-        : left_(left),
-          right_(right),
-          unselected_color_(unselected_color),
+        : left_(left), right_(right), unselected_color_(unselected_color),
           selected_color_(selected_color) {}
     void ComputeRequirement() override {
       requirement_.min_x = 1;
       requirement_.min_y = 1;
     }
 
-    void Render(Screen& screen) override {
+    void Render(Screen &screen) override {
       if (box_.y_max < box_.y_min) {
         return;
       }
 
       // This are the two location with an empty demi-cell.
-      int demi_cell_left = int(left_ * 2.F - 1.F);    // NOLINT
-      int demi_cell_right = int(right_ * 2.F + 2.F);  // NOLINT
+      int demi_cell_left = int(left_ * 2.F - 1.F);   // NOLINT
+      int demi_cell_right = int(right_ * 2.F + 2.F); // NOLINT
 
       const int y = box_.y_min;
       for (int x = box_.x_min; x <= box_.x_max; ++x) {
-        Pixel& pixel = screen.PixelAt(x, y);
+        Pixel &pixel = screen.PixelAt(x, y);
 
         const int a = (x - box_.x_min) * 2;
         const int b = a + 1;
@@ -477,7 +461,7 @@ Element separatorHSelector(float left,
           pixel.character = "─";
           pixel.automerge = true;
         } else {
-          pixel.character = a_empty ? "╶" : "╴";  // NOLINT
+          pixel.character = a_empty ? "╶" : "╴"; // NOLINT
           pixel.automerge = false;
         }
 
@@ -509,23 +493,19 @@ Element separatorHSelector(float left,
 /// ```cpp
 /// Element document = separatorHSelector(2,5, Color::White, Color::Blue);
 /// ```
-Element separatorVSelector(float up,
-                           float down,
-                           Color unselected_color,
+Element separatorVSelector(float up, float down, Color unselected_color,
                            Color selected_color) {
   class Impl : public Node {
-   public:
+public:
     Impl(float up, float down, Color unselected_color, Color selected_color)
-        : up_(up),
-          down_(down),
-          unselected_color_(unselected_color),
+        : up_(up), down_(down), unselected_color_(unselected_color),
           selected_color_(selected_color) {}
     void ComputeRequirement() override {
       requirement_.min_x = 1;
       requirement_.min_y = 1;
     }
 
-    void Render(Screen& screen) override {
+    void Render(Screen &screen) override {
       if (box_.x_max < box_.x_min) {
         return;
       }
@@ -536,7 +516,7 @@ Element separatorVSelector(float up,
 
       const int x = box_.x_min;
       for (int y = box_.y_min; y <= box_.y_max; ++y) {
-        Pixel& pixel = screen.PixelAt(x, y);
+        Pixel &pixel = screen.PixelAt(x, y);
 
         const int a = (y - box_.y_min) * 2;
         const int b = a + 1;
@@ -547,7 +527,7 @@ Element separatorVSelector(float up,
           pixel.character = "│";
           pixel.automerge = true;
         } else {
-          pixel.character = a_empty ? "╷" : "╵";  // NOLINT
+          pixel.character = a_empty ? "╷" : "╵"; // NOLINT
           pixel.automerge = false;
         }
 
@@ -567,4 +547,4 @@ Element separatorVSelector(float up,
   return std::make_shared<Impl>(up, down, unselected_color, selected_color);
 }
 
-}  // namespace ftxui
+} // namespace ftxui

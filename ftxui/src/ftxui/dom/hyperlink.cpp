@@ -1,25 +1,25 @@
 // Copyright 2023 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <cstdint>  // for uint8_t
-#include <memory>   // for make_shared
-#include <string>   // for string
-#include <utility>  // for move
+#include <cstdint> // for uint8_t
+#include <memory>  // for make_shared
+#include <string>  // for string
+#include <utility> // for move
 
-#include "ftxui/dom/elements.hpp"        // for Element, Decorator, hyperlink
-#include "ftxui/dom/node_decorator.hpp"  // for NodeDecorator
-#include "ftxui/screen/box.hpp"          // for Box
-#include "ftxui/screen/screen.hpp"       // for Screen, Pixel
+#include "ftxui/dom/elements.hpp"       // for Element, Decorator, hyperlink
+#include "ftxui/dom/node_decorator.hpp" // for NodeDecorator
+#include "ftxui/screen/box.hpp"         // for Box
+#include "ftxui/screen/screen.hpp"      // for Screen, Pixel
 
 namespace ftxui {
 
 namespace {
 class Hyperlink : public NodeDecorator {
- public:
+  public:
   Hyperlink(Element child, std::string link)
       : NodeDecorator(std::move(child)), link_(std::move(link)) {}
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     const uint8_t hyperlink_id = screen.RegisterHyperlink(link_);
     for (int y = box_.y_min; y <= box_.y_max; ++y) {
       for (int x = box_.x_min; x <= box_.x_max; ++x) {
@@ -31,7 +31,7 @@ class Hyperlink : public NodeDecorator {
 
   std::string link_;
 };
-}  // namespace
+} // namespace
 
 /// @brief Make the rendered area clickable using a web browser.
 ///        The link will be opened when the user click on it.
@@ -71,4 +71,4 @@ Decorator hyperlink(std::string link) {
   return [link](Element child) { return hyperlink(link, std::move(child)); };
 }
 
-}  // namespace ftxui
+} // namespace ftxui

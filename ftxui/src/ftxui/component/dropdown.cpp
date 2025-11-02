@@ -2,16 +2,16 @@
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
 #include <ftxui/component/event.hpp>
-#include <functional>  // for function
-#include <string>      // for string
+#include <functional> // for function
+#include <string>     // for string
 
+#include "ftxui/component/component.hpp" // for Maybe, Checkbox, Make, Radiobox, Vertical, Dropdown
+#include "ftxui/component/component_base.hpp"    // for Component, ComponentBase
+#include "ftxui/component/component_options.hpp" // for CheckboxOption, EntryState
+#include "ftxui/dom/elements.hpp" // for operator|, Element, border, filler, operator|=, separator, size, text, vbox, frame, vscroll_indicator, hbox, HEIGHT, LESS_THAN, bold, inverted
+#include "ftxui/screen/util.hpp"  // for clamp
+#include "ftxui/util/ref.hpp"     // for ConstStringListRef
 #include <utility>
-#include "ftxui/component/component.hpp"  // for Maybe, Checkbox, Make, Radiobox, Vertical, Dropdown
-#include "ftxui/component/component_base.hpp"  // for Component, ComponentBase
-#include "ftxui/component/component_options.hpp"  // for CheckboxOption, EntryState
-#include "ftxui/dom/elements.hpp"  // for operator|, Element, border, filler, operator|=, separator, size, text, vbox, frame, vscroll_indicator, hbox, HEIGHT, LESS_THAN, bold, inverted
-#include "ftxui/screen/util.hpp"   // for clamp
-#include "ftxui/util/ref.hpp"      // for ConstStringListRef
 
 namespace ftxui {
 
@@ -19,7 +19,7 @@ namespace ftxui {
 /// @ingroup component
 /// @param entries The list of entries to display.
 /// @param selected The index of the selected entry.
-Component Dropdown(ConstStringListRef entries, int* selected) {
+Component Dropdown(ConstStringListRef entries, int *selected) {
   DropdownOption option;
   option.radiobox.entries = std::move(entries);
   option.radiobox.selected = selected;
@@ -32,7 +32,7 @@ Component Dropdown(ConstStringListRef entries, int* selected) {
 // NOLINTNEXTLINE
 Component Dropdown(DropdownOption option) {
   class Impl : public ComponentBase, public DropdownOption {
-   public:
+public:
     explicit Impl(DropdownOption option) : DropdownOption(std::move(option)) {
       FillDefault();
       checkbox_ = Checkbox(checkbox);
@@ -71,10 +71,10 @@ Component Dropdown(DropdownOption option) {
       // it the same as the previous one.
       if (open_old && open_()) {
         const bool should_close =
-            (selected_() != selected_old) ||     //
-            (event == Event::Return) ||          //
-            (event == Event::Character(' ')) ||  //
-            (event == Event::Escape) ||          //
+            (selected_() != selected_old) ||    //
+            (event == Event::Return) ||         //
+            (event == Event::Character(' ')) || //
+            (event == Event::Escape) ||         //
             (event.is_mouse() && event.mouse().button == Mouse::Left &&
              event.mouse().motion == Mouse::Pressed);
 
@@ -96,8 +96,8 @@ Component Dropdown(DropdownOption option) {
       checkbox.label = &title_;
 
       if (!checkbox.transform) {
-        checkbox.transform = [](const EntryState& s) {
-          auto prefix = text(s.state ? "↓ " : "→ ");  // NOLINT
+        checkbox.transform = [](const EntryState &s) {
+          auto prefix = text(s.state ? "↓ " : "→ "); // NOLINT
           auto t = text(s.label);
           if (s.active) {
             t |= bold;
@@ -127,7 +127,7 @@ Component Dropdown(DropdownOption option) {
       }
     }
 
-   private:
+private:
     Ref<bool> open_;
     Ref<int> selected_;
     Component checkbox_;
@@ -138,4 +138,4 @@ Component Dropdown(DropdownOption option) {
   return Make<Impl>(option);
 }
 
-}  // namespace ftxui
+} // namespace ftxui

@@ -1,20 +1,20 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>  // for min
-#include <memory>     // for make_shared
+#include <algorithm> // for min
+#include <memory>    // for make_shared
 #include <sstream>
-#include <string>   // for string, wstring
-#include <utility>  // for move
+#include <string>  // for string, wstring
+#include <utility> // for move
 
-#include "ftxui/dom/deprecated.hpp"   // for text, vtext
-#include "ftxui/dom/elements.hpp"     // for Element, text, vtext
-#include "ftxui/dom/node.hpp"         // for Node
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/dom/selection.hpp"    // for Selection
-#include "ftxui/screen/box.hpp"       // for Box
-#include "ftxui/screen/screen.hpp"    // for Pixel, Screen
-#include "ftxui/screen/string.hpp"  // for string_width, Utf8ToGlyphs, to_string
+#include "ftxui/dom/deprecated.hpp"  // for text, vtext
+#include "ftxui/dom/elements.hpp"    // for Element, text, vtext
+#include "ftxui/dom/node.hpp"        // for Node
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/dom/selection.hpp"   // for Selection
+#include "ftxui/screen/box.hpp"      // for Box
+#include "ftxui/screen/screen.hpp"   // for Pixel, Screen
+#include "ftxui/screen/string.hpp" // for string_width, Utf8ToGlyphs, to_string
 
 namespace ftxui {
 
@@ -22,7 +22,7 @@ namespace {
 using ftxui::Screen;
 
 class Text : public Node {
- public:
+  public:
   explicit Text(std::string text) : text_(std::move(text)) {}
 
   void ComputeRequirement() override {
@@ -31,7 +31,7 @@ class Text : public Node {
     has_selection = false;
   }
 
-  void Select(Selection& selection) override {
+  void Select(Selection &selection) override {
     if (Box::Intersection(selection.GetBox(), box_).IsEmpty()) {
       return;
     }
@@ -44,7 +44,7 @@ class Text : public Node {
 
     std::stringstream ss;
     int x = box_.x_min;
-    for (const auto& cell : Utf8ToGlyphs(text_)) {
+    for (const auto &cell : Utf8ToGlyphs(text_)) {
       if (cell == "\n") {
         continue;
       }
@@ -56,7 +56,7 @@ class Text : public Node {
     selection.AddPart(ss.str(), box_.y_min, selection_start_, selection_end_);
   }
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     int x = box_.x_min;
     const int y = box_.y_min;
 
@@ -64,7 +64,7 @@ class Text : public Node {
       return;
     }
 
-    for (const auto& cell : Utf8ToGlyphs(text_)) {
+    for (const auto &cell : Utf8ToGlyphs(text_)) {
       if (x > box_.x_max) {
         break;
       }
@@ -84,7 +84,7 @@ class Text : public Node {
     }
   }
 
- private:
+  private:
   std::string text_;
   bool has_selection = false;
   int selection_start_ = 0;
@@ -92,7 +92,7 @@ class Text : public Node {
 };
 
 class VText : public Node {
- public:
+  public:
   explicit VText(std::string text)
       : text_(std::move(text)), width_{std::min(string_width(text_), 1)} {}
 
@@ -101,13 +101,13 @@ class VText : public Node {
     requirement_.min_y = string_width(text_);
   }
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     const int x = box_.x_min;
     int y = box_.y_min;
     if (x + width_ - 1 > box_.x_max) {
       return;
     }
-    for (const auto& it : Utf8ToGlyphs(text_)) {
+    for (const auto &it : Utf8ToGlyphs(text_)) {
       if (y > box_.y_max) {
         return;
       }
@@ -116,12 +116,12 @@ class VText : public Node {
     }
   }
 
- private:
+  private:
   std::string text_;
   int width_ = 1;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief Display a piece of UTF8 encoded unicode text.
 /// @ingroup dom
@@ -157,7 +157,7 @@ Element text(std::string text) {
 /// ```bash
 /// Hello world!
 /// ```
-Element text(std::wstring text) {  // NOLINT
+Element text(std::wstring text) { // NOLINT
   return std::make_shared<Text>(to_string(text));
 }
 
@@ -217,8 +217,8 @@ Element vtext(std::string text) {
 /// d
 /// !
 /// ```
-Element vtext(std::wstring text) {  // NOLINT
+Element vtext(std::wstring text) { // NOLINT
   return std::make_shared<VText>(to_string(text));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

@@ -1,22 +1,22 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>  // for max, min
-#include <memory>     // for make_shared, __shared_ptr_access
-#include <utility>    // for move
+#include <algorithm> // for max, min
+#include <memory>    // for make_shared, __shared_ptr_access
+#include <utility>   // for move
 
-#include "ftxui/dom/elements.hpp"  // for Element, unpack, Elements, focus, frame, select, xframe, yframe
-#include "ftxui/dom/node.hpp"         // for Node, Elements
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/screen/box.hpp"       // for Box
-#include "ftxui/screen/screen.hpp"    // for Screen, Screen::Cursor
-#include "ftxui/util/autoreset.hpp"   // for AutoReset
+#include "ftxui/dom/elements.hpp" // for Element, unpack, Elements, focus, frame, select, xframe, yframe
+#include "ftxui/dom/node.hpp"        // for Node, Elements
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/screen/box.hpp"      // for Box
+#include "ftxui/screen/screen.hpp"   // for Screen, Screen::Cursor
+#include "ftxui/util/autoreset.hpp"  // for AutoReset
 
 namespace ftxui {
 
 namespace {
 class Focus : public Node {
- public:
+  public:
   explicit Focus(Elements children) : Node(std::move(children)) {}
 
   void ComputeRequirement() override {
@@ -37,13 +37,13 @@ class Focus : public Node {
 };
 
 class Frame : public Node {
- public:
+  public:
   Frame(Elements children, bool x_frame, bool y_frame)
       : Node(std::move(children)), x_frame_(x_frame), y_frame_(y_frame) {}
 
   void SetBox(Box box) override {
     Node::SetBox(box);
-    auto& focused_box = requirement_.focused.box;
+    auto &focused_box = requirement_.focused.box;
     Box children_box = box;
 
     if (x_frame_) {
@@ -69,31 +69,31 @@ class Frame : public Node {
     children_[0]->SetBox(children_box);
   }
 
-  void Render(Screen& screen) override {
+  void Render(Screen &screen) override {
     const AutoReset<Box> stencil(&screen.stencil,
                                  Box::Intersection(box_, screen.stencil));
     children_[0]->Render(screen);
   }
 
- private:
+  private:
   bool x_frame_;
   bool y_frame_;
 };
 
 class FocusCursor : public Focus {
- public:
+  public:
   FocusCursor(Elements children, Screen::Cursor::Shape shape)
       : Focus(std::move(children)), shape_(shape) {}
 
- private:
+  private:
   void ComputeRequirement() override {
-    Focus::ComputeRequirement();  // NOLINT
+    Focus::ComputeRequirement(); // NOLINT
     requirement_.focused.cursor_shape = shape_;
   }
   Screen::Cursor::Shape shape_;
 };
 
-}  // namespace
+} // namespace
 
 /// @brief Set the `child` to be the one focused among its siblings.
 /// @param child The element to be focused.
@@ -105,9 +105,7 @@ Element focus(Element child) {
 /// This is deprecated. Use `focus` instead.
 /// @brief Set the `child` to be the one focused among its siblings.
 /// @param child The element to be focused.
-Element select(Element child) {
-  return focus(std::move(child));
-}
+Element select(Element child) { return focus(std::move(child)); }
 
 /// @brief Allow an element to be displayed inside a 'virtual' area. It size can
 /// be larger than its container. In this case only a smaller portion is
@@ -219,4 +217,4 @@ Element focusCursorUnderlineBlinking(Element child) {
                                        Screen::Cursor::UnderlineBlinking);
 }
 
-}  // namespace ftxui
+} // namespace ftxui

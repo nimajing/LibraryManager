@@ -1,4 +1,3 @@
-#include <iostream>
 #include "core/librarian.h"
 #include "core/book.h"
 #include <algorithm>
@@ -9,34 +8,40 @@ using json = nlohmann::json;
 
 // Initialize static member
 Librarian *Librarian::m_instance = nullptr;
-std::string Librarian::save_location = "assets/program_data/users.json";
+std::string Librarian::save_location = "";
 
 Librarian::Librarian() { loadUsers(); }
+
 Librarian::~Librarian() { saveUsers(); }
 
 void CreateDirectories(std::string filename) {
-  std::filesystem::create_directories(std::filesystem::current_path() / std::filesystem::path(filename));
+  std::string::iterator it = filename.end() - 1;
+  for (; it > filename.begin(); --it) {
+    if (*it == '/') {
+      --it;
+      break;
+    }
+  }
+  std::filesystem::create_directories(
+      std::filesystem::current_path() /
+      std::filesystem::path(std::string(filename.begin(), it)));
 }
 
 void Librarian::saveUsers() {
-//  CreateDirectories(save_location);
+  CreateDirectories(save_location);
   std::ofstream file(save_location);
   if (!file.is_open()) {
     throw std::runtime_error("Unable to open file for writing: " +
                              save_location);
   }
   json data = {
-    {"version", 1},
-    {"librarian", {
-                            {"books", m_books.log()},
-						    {"users", {}}
-                          }
-    }
+      {  "version",                                         1},
+      {"librarian", {{"books", m_books.log()}, {"users", {}}}}
   };
   for (const auto &i : m_users) {
     json user = {
-      {"username", i->getUsername()}, 
-      {"books", i->m_books.log()}
+        {"username", i->getUsername()},
+        {   "books", i->m_books.log()}
     };
     data["librarian"]["users"].push_back(user);
   }
@@ -52,11 +57,12 @@ void Librarian::loadUsers() {
     return;
   }
   json data = json::parse(file);
-  if(data.contains("librarian"))
+  if (data.contains("librarian"))
     m_books.read(data["librarian"]["books"].dump());
-  for (size_t i = 1; i < data["librarian"]["users"].size(); ++i) {
+  for (size_t i = 0; i < data["librarian"]["users"].size(); ++i) {
     addUser(data["librarian"]["users"][i].value("username", ""));
-    findUser(data["librarian"]["users"][i].value("username", ""))->m_books.read(data["librarian"]["users"][i]["books"].dump());
+    findUser(data["librarian"]["users"][i].value("username", ""))
+        ->m_books.read(data["librarian"]["users"][i]["books"].dump());
   }
 }
 

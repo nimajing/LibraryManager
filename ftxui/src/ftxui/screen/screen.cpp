@@ -1,19 +1,19 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <cstddef>  // for size_t
+#include <cstddef> // for size_t
 #include <cstdint>
-#include <iostream>  // for operator<<, stringstream, basic_ostream, flush, cout, ostream
+#include <iostream> // for operator<<, stringstream, basic_ostream, flush, cout, ostream
 #include <limits>
-#include <map>      // for _Rb_tree_const_iterator, map, operator!=, operator==
-#include <sstream>  // IWYU pragma: keep
-#include <utility>  // for pair
+#include <map>     // for _Rb_tree_const_iterator, map, operator!=, operator==
+#include <sstream> // IWYU pragma: keep
+#include <utility> // for pair
 
-#include "ftxui/screen/image.hpp"  // for Image
-#include "ftxui/screen/pixel.hpp"  // for Pixel
+#include "ftxui/screen/image.hpp" // for Image
+#include "ftxui/screen/pixel.hpp" // for Pixel
 #include "ftxui/screen/screen.hpp"
-#include "ftxui/screen/string.hpp"    // for string_width
-#include "ftxui/screen/terminal.hpp"  // for Dimensions, Size
+#include "ftxui/screen/string.hpp"   // for string_width
+#include "ftxui/screen/terminal.hpp" // for Dimensions, Size
 
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
@@ -29,16 +29,16 @@
 #define FTXUI_UNLIKELY(x) __builtin_expect(!!(x), 0)
 #else
 #define FTXUI_UNLIKELY(x) (x)
-#endif  // defined(COMPILER_GCC)
-#endif  // !defined(FTXUI_UNLIKELY)
+#endif // defined(COMPILER_GCC)
+#endif // !defined(FTXUI_UNLIKELY)
 
 #if !defined(FTXUI_LIKELY)
 #if defined(COMPILER_GCC) || defined(__clang__)
 #define FTXUI_LIKELY(x) __builtin_expect(!!(x), 1)
 #else
 #define FTXUI_LIKELY(x) (x)
-#endif  // defined(COMPILER_GCC)
-#endif  // !defined(FTXUI_LIKELY)
+#endif // defined(COMPILER_GCC)
+#endif // !defined(FTXUI_LIKELY)
 
 namespace ftxui {
 
@@ -68,10 +68,8 @@ void WindowsEmulateVT100Terminal() {
 #endif
 
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void UpdatePixelStyle(const Screen* screen,
-                      std::stringstream& ss,
-                      const Pixel& prev,
-                      const Pixel& next) {
+void UpdatePixelStyle(const Screen *screen, std::stringstream &ss,
+                      const Pixel &prev, const Pixel &next) {
   // See https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
   if (FTXUI_UNLIKELY(next.hyperlink != prev.hyperlink)) {
     ss << "\x1B]8;;" << screen->Hyperlink(next.hyperlink) << "\x1B\\";
@@ -82,40 +80,40 @@ void UpdatePixelStyle(const Screen* screen,
     // BOLD_AND_DIM_RESET:
     ss << ((prev.bold && !next.bold) || (prev.dim && !next.dim) ? "\x1B[22m"
                                                                 : "");
-    ss << (next.bold ? "\x1B[1m" : "");  // BOLD_SET
-    ss << (next.dim ? "\x1B[2m" : "");   // DIM_SET
+    ss << (next.bold ? "\x1B[1m" : ""); // BOLD_SET
+    ss << (next.dim ? "\x1B[2m" : "");  // DIM_SET
   }
 
   // Underline
   if (FTXUI_UNLIKELY(next.underlined != prev.underlined ||
                      next.underlined_double != prev.underlined_double)) {
-    ss << (next.underlined          ? "\x1B[4m"     // UNDERLINE
-           : next.underlined_double ? "\x1B[21m"    // UNDERLINE_DOUBLE
-                                    : "\x1B[24m");  // UNDERLINE_RESET
+    ss << (next.underlined          ? "\x1B[4m"    // UNDERLINE
+           : next.underlined_double ? "\x1B[21m"   // UNDERLINE_DOUBLE
+                                    : "\x1B[24m"); // UNDERLINE_RESET
   }
 
   // Blink
   if (FTXUI_UNLIKELY(next.blink != prev.blink)) {
-    ss << (next.blink ? "\x1B[5m"     // BLINK_SET
-                      : "\x1B[25m");  // BLINK_RESET
+    ss << (next.blink ? "\x1B[5m"    // BLINK_SET
+                      : "\x1B[25m"); // BLINK_RESET
   }
 
   // Inverted
   if (FTXUI_UNLIKELY(next.inverted != prev.inverted)) {
-    ss << (next.inverted ? "\x1B[7m"     // INVERTED_SET
-                         : "\x1B[27m");  // INVERTED_RESET
+    ss << (next.inverted ? "\x1B[7m"    // INVERTED_SET
+                         : "\x1B[27m"); // INVERTED_RESET
   }
 
   // Italics
   if (FTXUI_UNLIKELY(next.italic != prev.italic)) {
-    ss << (next.italic ? "\x1B[3m"     // ITALIC_SET
-                       : "\x1B[23m");  // ITALIC_RESET
+    ss << (next.italic ? "\x1B[3m"    // ITALIC_SET
+                       : "\x1B[23m"); // ITALIC_RESET
   }
 
   // StrikeThrough
   if (FTXUI_UNLIKELY(next.strikethrough != prev.strikethrough)) {
-    ss << (next.strikethrough ? "\x1B[9m"     // CROSSED_OUT
-                              : "\x1B[29m");  // CROSSED_OUT_RESET
+    ss << (next.strikethrough ? "\x1B[9m"    // CROSSED_OUT
+                              : "\x1B[29m"); // CROSSED_OUT_RESET
   }
 
   if (FTXUI_UNLIKELY(next.foreground_color != prev.foreground_color ||
@@ -296,16 +294,16 @@ const std::map<std::string, TileEncoding> tile_encoding = { // NOLINT
 template <class A, class B>
 std::map<B, A> InvertMap(const std::map<A, B> input) {
   std::map<B, A> output;
-  for (const auto& it : input) {
+  for (const auto &it : input) {
     output[it.second] = it.first;
   }
   return output;
 }
 
-const std::map<TileEncoding, std::string> tile_encoding_inverse =  // NOLINT
+const std::map<TileEncoding, std::string> tile_encoding_inverse = // NOLINT
     InvertMap(tile_encoding);
 
-void UpgradeLeftRight(std::string& left, std::string& right) {
+void UpgradeLeftRight(std::string &left, std::string &right) {
   const auto it_left = tile_encoding.find(left);
   if (it_left == tile_encoding.end()) {
     return;
@@ -334,7 +332,7 @@ void UpgradeLeftRight(std::string& left, std::string& right) {
   }
 }
 
-void UpgradeTopDown(std::string& top, std::string& down) {
+void UpgradeTopDown(std::string &top, std::string &down) {
   const auto it_top = tile_encoding.find(top);
   if (it_top == tile_encoding.end()) {
     return;
@@ -363,25 +361,21 @@ void UpgradeTopDown(std::string& top, std::string& down) {
   }
 }
 
-bool ShouldAttemptAutoMerge(Pixel& pixel) {
+bool ShouldAttemptAutoMerge(Pixel &pixel) {
   return pixel.automerge && pixel.character.size() == 3;
 }
 
-}  // namespace
+} // namespace
 
 /// A fixed dimension.
 /// @see Fit
 /// @see Full
-Dimensions Dimension::Fixed(int v) {
-  return {v, v};
-}
+Dimensions Dimension::Fixed(int v) { return {v, v}; }
 
 /// Use the terminal dimensions.
 /// @see Fixed
 /// @see Fit
-Dimensions Dimension::Full() {
-  return Terminal::Size();
-}
+Dimensions Dimension::Full() { return Terminal::Size(); }
 
 // static
 /// Create a screen with the given dimension along the x-axis and y-axis.
@@ -416,7 +410,7 @@ std::string Screen::ToString() const {
   std::stringstream ss;
 
   const Pixel default_pixel;
-  const Pixel* previous_pixel_ref = &default_pixel;
+  const Pixel *previous_pixel_ref = &default_pixel;
 
   for (int y = 0; y < dimy_; ++y) {
     // New line in between two lines.
@@ -428,7 +422,7 @@ std::string Screen::ToString() const {
 
     // After printing a fullwith character, we need to skip the next cell.
     bool previous_fullwidth = false;
-    for (const auto& pixel : pixels_[y]) {
+    for (const auto &pixel : pixels_[y]) {
       if (!previous_fullwidth) {
         UpdatePixelStyle(this, ss, *previous_pixel_ref, pixel);
         previous_pixel_ref = &pixel;
@@ -449,9 +443,7 @@ std::string Screen::ToString() const {
 }
 
 // Print the Screen to the terminal.
-void Screen::Print() const {
-  std::cout << ToString() << '\0' << std::flush;
-}
+void Screen::Print() const { std::cout << ToString() << '\0' << std::flush; }
 
 /// @brief Return a string to be printed in order to reset the cursor position
 ///        to the beginning of the screen.
@@ -475,16 +467,16 @@ void Screen::Print() const {
 std::string Screen::ResetPosition(bool clear) const {
   std::stringstream ss;
   if (clear) {
-    ss << "\r";       // MOVE_LEFT;
-    ss << "\x1b[2K";  // CLEAR_SCREEN;
+    ss << "\r";      // MOVE_LEFT;
+    ss << "\x1b[2K"; // CLEAR_SCREEN;
     for (int y = 1; y < dimy_; ++y) {
-      ss << "\x1B[1A";  // MOVE_UP;
-      ss << "\x1B[2K";  // CLEAR_LINE;
+      ss << "\x1B[1A"; // MOVE_UP;
+      ss << "\x1B[2K"; // CLEAR_LINE;
     }
   } else {
-    ss << "\r";  // MOVE_LEFT;
+    ss << "\r"; // MOVE_LEFT;
     for (int y = 1; y < dimy_; ++y) {
-      ss << "\x1B[1A";  // MOVE_UP;
+      ss << "\x1B[1A"; // MOVE_UP;
     }
   }
   return ss.str();
@@ -530,7 +522,7 @@ void Screen::ApplyShader() {
 }
 // clang-format on
 
-std::uint8_t Screen::RegisterHyperlink(const std::string& link) {
+std::uint8_t Screen::RegisterHyperlink(const std::string &link) {
   for (std::size_t i = 0; i < hyperlinks_.size(); ++i) {
     if (hyperlinks_[i] == link) {
       return i;
@@ -543,7 +535,7 @@ std::uint8_t Screen::RegisterHyperlink(const std::string& link) {
   return hyperlinks_.size() - 1;
 }
 
-const std::string& Screen::Hyperlink(std::uint8_t id) const {
+const std::string &Screen::Hyperlink(std::uint8_t id) const {
   if (id >= hyperlinks_.size()) {
     return hyperlinks_[0];
   }
@@ -552,7 +544,7 @@ const std::string& Screen::Hyperlink(std::uint8_t id) const {
 
 /// @brief Return the current selection style.
 /// @see SetSelectionStyle
-const Screen::SelectionStyle& Screen::GetSelectionStyle() const {
+const Screen::SelectionStyle &Screen::GetSelectionStyle() const {
   return selection_style_;
 }
 
@@ -562,4 +554,4 @@ void Screen::SetSelectionStyle(SelectionStyle decorator) {
   selection_style_ = std::move(decorator);
 }
 
-}  // namespace ftxui
+} // namespace ftxui

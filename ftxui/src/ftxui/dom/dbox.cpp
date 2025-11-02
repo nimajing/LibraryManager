@@ -1,28 +1,28 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <algorithm>  // for max
-#include <cstddef>    // for size_t
-#include <memory>     // for __shared_ptr_access, shared_ptr, make_shared
-#include <utility>    // for move
+#include <algorithm> // for max
+#include <cstddef>   // for size_t
+#include <memory>    // for __shared_ptr_access, shared_ptr, make_shared
+#include <utility>   // for move
 #include <vector>
 
-#include "ftxui/dom/elements.hpp"     // for Element, Elements, dbox
-#include "ftxui/dom/node.hpp"         // for Node, Elements
-#include "ftxui/dom/requirement.hpp"  // for Requirement
-#include "ftxui/screen/box.hpp"       // for Box
-#include "ftxui/screen/pixel.hpp"     // for Pixel
+#include "ftxui/dom/elements.hpp"    // for Element, Elements, dbox
+#include "ftxui/dom/node.hpp"        // for Node, Elements
+#include "ftxui/dom/requirement.hpp" // for Requirement
+#include "ftxui/screen/box.hpp"      // for Box
+#include "ftxui/screen/pixel.hpp"    // for Pixel
 
 namespace ftxui {
 
 namespace {
 class DBox : public Node {
- public:
+  public:
   explicit DBox(Elements children) : Node(std::move(children)) {}
 
   void ComputeRequirement() override {
     requirement_ = Requirement{};
-    for (auto& child : children_) {
+    for (auto &child : children_) {
       child->ComputeRequirement();
 
       // Propagate the focused requirement.
@@ -41,12 +41,12 @@ class DBox : public Node {
   void SetBox(Box box) override {
     Node::SetBox(box);
 
-    for (auto& child : children_) {
+    for (auto &child : children_) {
       child->SetBox(box);
     }
   }
 };
-}  // namespace
+} // namespace
 
 /// @brief Stack several element on top of each other.
 /// @param children_ The input element.
@@ -56,4 +56,4 @@ Element dbox(Elements children_) {
   return std::make_shared<DBox>(std::move(children_));
 }
 
-}  // namespace ftxui
+} // namespace ftxui

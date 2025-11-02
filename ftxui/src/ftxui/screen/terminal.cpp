@@ -1,8 +1,8 @@
 // Copyright 2020 Arthur Sonzogni. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
-#include <cstdlib>  // for getenv
-#include <string>   // for string, allocator
+#include <cstdlib> // for getenv
+#include <string>  // for string, allocator
 
 #include "ftxui/screen/terminal.hpp"
 
@@ -15,18 +15,18 @@
 
 #include <windows.h>
 #else
-#include <sys/ioctl.h>  // for winsize, ioctl, TIOCGWINSZ
-#include <unistd.h>     // for STDOUT_FILENO
+#include <sys/ioctl.h> // for winsize, ioctl, TIOCGWINSZ
+#include <unistd.h>    // for STDOUT_FILENO
 #endif
 
 namespace ftxui {
 
 namespace {
 
-bool g_cached = false;                     // NOLINT
-Terminal::Color g_cached_supported_color;  // NOLINT
+bool g_cached = false;                    // NOLINT
+Terminal::Color g_cached_supported_color; // NOLINT
 
-Dimensions& FallbackSize() {
+Dimensions &FallbackSize() {
 #if defined(__EMSCRIPTEN__)
   // This dimension was chosen arbitrarily to be able to display:
   // https://arthursonzogni.com/FTXUI/examples
@@ -48,11 +48,9 @@ Dimensions& FallbackSize() {
   return g_fallback_size;
 }
 
-const char* Safe(const char* c) {
-  return (c != nullptr) ? c : "";
-}
+const char *Safe(const char *c) { return (c != nullptr) ? c : ""; }
 
-bool Contains(const std::string& s, const char* key) {
+bool Contains(const std::string &s, const char *key) {
   return s.find(key) != std::string::npos;
 }
 
@@ -61,12 +59,12 @@ Terminal::Color ComputeColorSupport() {
   return Terminal::Color::TrueColor;
 #endif
 
-  std::string COLORTERM = Safe(std::getenv("COLORTERM"));  // NOLINT
+  std::string COLORTERM = Safe(std::getenv("COLORTERM")); // NOLINT
   if (Contains(COLORTERM, "24bit") || Contains(COLORTERM, "truecolor")) {
     return Terminal::Color::TrueColor;
   }
 
-  std::string TERM = Safe(std::getenv("TERM"));  // NOLINT
+  std::string TERM = Safe(std::getenv("TERM")); // NOLINT
   if (Contains(COLORTERM, "256") || Contains(TERM, "256")) {
     return Terminal::Color::Palette256;
   }
@@ -84,7 +82,7 @@ Terminal::Color ComputeColorSupport() {
   return Terminal::Color::Palette16;
 }
 
-}  // namespace
+} // namespace
 
 namespace Terminal {
 
@@ -109,7 +107,7 @@ Dimensions Size() {
   return FallbackSize();
 #else
   winsize w{};
-  const int status = ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);  // NOLINT
+  const int status = ioctl(STDOUT_FILENO, TIOCGWINSZ, &w); // NOLINT
   // The ioctl return value result should be checked. Some operating systems
   // don't support TIOCGWINSZ.
   if (w.ws_col == 0 || w.ws_row == 0 || status < 0) {
@@ -121,7 +119,7 @@ Dimensions Size() {
 
 /// @brief Override terminal size in case auto-detection fails
 /// @param fallbackSize Terminal dimensions to fallback to
-void SetFallbackSize(const Dimensions& fallbackSize) {
+void SetFallbackSize(const Dimensions &fallbackSize) {
   FallbackSize() = fallbackSize;
 }
 
@@ -142,5 +140,5 @@ void SetColorSupport(Color color) {
   g_cached_supported_color = color;
 }
 
-}  // namespace Terminal
-}  // namespace ftxui
+} // namespace Terminal
+} // namespace ftxui

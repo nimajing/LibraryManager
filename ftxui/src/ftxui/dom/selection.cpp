@@ -2,26 +2,26 @@
 // Use of this source code is governed by the MIT license that can be found in
 // the LICENSE file.
 
-#include "ftxui/dom/selection.hpp"  // for Selection
-#include <algorithm>                // for max, min
-#include <string>                   // for string
-#include <tuple>                    // for ignore
+#include "ftxui/dom/selection.hpp" // for Selection
+#include <algorithm>               // for max, min
+#include <string>                  // for string
+#include <tuple>                   // for ignore
 
-#include "ftxui/dom/node_decorator.hpp"  // for NodeDecorator
+#include "ftxui/dom/node_decorator.hpp" // for NodeDecorator
 
 namespace ftxui {
 
 namespace {
 class Unselectable : public NodeDecorator {
- public:
+  public:
   using NodeDecorator::NodeDecorator;
 
-  void Select(Selection& ignored) override {
+  void Select(Selection &ignored) override {
     std::ignore = ignored;
     // Overwrite the select method to do nothing.
   }
 };
-}  // namespace
+} // namespace
 
 /// @brief Create an empty selection.
 Selection::Selection() = default;
@@ -32,10 +32,7 @@ Selection::Selection() = default;
 /// @param end_x The x coordinate of the end of the selection.
 /// @param end_y The y coordinate of the end of the selection.
 Selection::Selection(int start_x, int start_y, int end_x, int end_y)
-    : start_x_(start_x),
-      start_y_(start_y),
-      end_x_(end_x),
-      end_y_(end_y),
+    : start_x_(start_x), start_y_(start_y), end_x_(end_x), end_y_(end_y),
       box_{
           std::min(start_x, end_x),
           std::max(start_x, end_x),
@@ -44,29 +41,20 @@ Selection::Selection(int start_x, int start_y, int end_x, int end_y)
       },
       empty_(false) {}
 
-Selection::Selection(int start_x,
-                     int start_y,
-                     int end_x,
-                     int end_y,
-                     Selection* parent)
-    : start_x_(start_x),
-      start_y_(start_y),
-      end_x_(end_x),
-      end_y_(end_y),
+Selection::Selection(int start_x, int start_y, int end_x, int end_y,
+                     Selection *parent)
+    : start_x_(start_x), start_y_(start_y), end_x_(end_x), end_y_(end_y),
       box_{
           std::min(start_x, end_x),
           std::max(start_x, end_x),
           std::min(start_y, end_y),
           std::max(start_y, end_y),
       },
-      parent_(parent),
-      empty_(false) {}
+      parent_(parent), empty_(false) {}
 
 /// @brief Get the box of the selection.
 /// @return The box of the selection.
-const Box& Selection::GetBox() const {
-  return box_;
-}
+const Box &Selection::GetBox() const { return box_; }
 
 /// @brief Saturate the selection to be inside the box.
 /// This is called by `hbox` to propagate the selection to its children.
@@ -143,7 +131,7 @@ Selection Selection::SaturateVertical(Box box) {
   return {start_x, start_y, end_x, end_y, parent_};
 }
 
-void Selection::AddPart(const std::string& part, int y, int left, int right) {
+void Selection::AddPart(const std::string &part, int y, int left, int right) {
   if (parent_ != this) {
     parent_->AddPart(part, y, left, right);
     return;
@@ -170,4 +158,4 @@ void Selection::AddPart(const std::string& part, int y, int left, int right) {
   x_ = right;
 }
 
-}  // namespace ftxui
+} // namespace ftxui

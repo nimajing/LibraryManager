@@ -8,7 +8,7 @@ namespace lms {
 namespace ui {
 
 class ExplorerBase : public UIComponent {
-public:
+  public:
   ExplorerBase(const std::string &title)
       : title(title), selectedIndex(0), cursor(0) {}
 
@@ -21,7 +21,7 @@ public:
     UpdateFilteredItems();
   }
 
-protected:
+  protected:
   // Common member variables
   std::string title;
   std::string searchText;

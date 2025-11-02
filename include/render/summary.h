@@ -3,17 +3,16 @@
 #include "ui_component.h"
 #include <string>
 
-
 namespace lms {
 namespace ui {
 
 class Summary : public UIComponent {
-public:
+  public:
   Summary();
   ftxui::Component Render() override;
   void SetContent(const std::string &content);
 
-private:
+  private:
   std::string content;
   ftxui::Component display;
   void CreateComponents();

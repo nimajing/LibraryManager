@@ -7,7 +7,7 @@ namespace lms {
 namespace ui {
 
 class Editor : public UIComponent {
-public:
+  public:
   enum class Mode { SELECT, ADD_BOOK, EDIT_BOOK, ADD_USER, EDIT_USER };
 
   Editor();
@@ -17,12 +17,15 @@ public:
   void setReadOnly() { readonly = true; }
   struct {
     std::string title, isbn, thumbnail, copies;
+    int author;
+    bool authors_dropdown;
     std::vector<std::string> authors = {};
   } book;
   struct {
     std::string username, thumbnail;
   } user;
-private:
+
+  private:
   Mode currentMode = Mode::SELECT;
   std::vector<ftxui::Component> inputs;
   std::string title;

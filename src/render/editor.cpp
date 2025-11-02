@@ -14,7 +14,8 @@ void Editor::CreateComponents() {
 
 void Editor::UpdateLayout() {
   using namespace ftxui;
-  if(!container) container = Container::Vertical({});
+  if (!container)
+    container = Container::Vertical({});
   inputs.clear();
 
   // Add a submit button
@@ -26,17 +27,21 @@ void Editor::UpdateLayout() {
   switch (currentMode) {
   case Mode::ADD_BOOK:
     title = "Add book";
-  case Mode::EDIT_BOOK:
+  case Mode::EDIT_BOOK: {
     title = "Edit book";
     inputs.push_back(Input(&book.title, "Title"));
-    for(size_t i = 0; i < book.authors.size(); ++i) {
-      inputs.push_back(Input(&book.authors[i], "author"));
-    }
     inputs.push_back(Input(&book.isbn, "ISBN"));
+    bool shown = false;
+    Component show = {};
+    inputs.push_back(
+        Container::Horizontal({Input(&book.authors[book.author], "Author")}));
+    if (shown)
+      inputs.push_back(show);
     inputs.push_back(Input(&book.copies, "Copies"));
     inputs.push_back(Input(&book.thumbnail, "Thumbnail"));
     inputs.push_back(submitButton);
     break;
+  }
   case Mode::ADD_USER:
     title = "Add User";
   case Mode::EDIT_USER:
@@ -47,16 +52,14 @@ void Editor::UpdateLayout() {
     break;
   case Mode::SELECT:
     title = "Select Mode";
-    inputs.push_back(Button("-> Add user", [this] {
-          SetMode(Mode::ADD_USER);
-    }));
-    inputs.push_back(Button("-> Add book", [this] {
-          SetMode(Mode::ADD_BOOK);
-    }));
+    inputs.push_back(
+        Button("-> Add user", [this] { SetMode(Mode::ADD_USER); }));
+    inputs.push_back(
+        Button("-> Add book", [this] { SetMode(Mode::ADD_BOOK); }));
     break;
   }
 
-  for(const auto& i : inputs)
+  for (const auto &i : inputs)
     container->Add(i);
 }
 
@@ -65,7 +68,8 @@ ftxui::Component Editor::Render() {
 
   return Renderer(container, [this] {
     Elements inputElements;
-    for(const auto& i : inputs) inputElements.push_back(i->Render());
+    for (const auto &i : inputs)
+      inputElements.push_back(i->Render());
     return window(text(title) | hcenter, vbox(inputElements) | flex);
   });
 }

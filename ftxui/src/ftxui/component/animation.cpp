@@ -1,5 +1,5 @@
-#include <cmath>    // for sin, pow, sqrt, cos
-#include <utility>  // for move
+#include <cmath>   // for sin, pow, sqrt, cos
+#include <utility> // for move
 
 #include "ftxui/component/animation.hpp"
 
@@ -11,7 +11,7 @@ namespace easing {
 namespace {
 constexpr float kPi = 3.14159265358979323846f;
 constexpr float kPi2 = kPi / 2.f;
-}  // namespace
+} // namespace
 
 // Easing function have been taken out of:
 // https://github.com/warrenm/AHEasing/blob/master/AHEasing/easing.c
@@ -26,19 +26,13 @@ constexpr float kPi2 = kPi / 2.f;
 //  http://sam.zoy.org/wtfpl/COPYING for more details.
 
 /// @brief Modeled after the line y = x
-float Linear(float p) {
-  return p;
-}
+float Linear(float p) { return p; }
 
 /// @brief Modeled after the parabola y = x^2
-float QuadraticIn(float p) {
-  return p * p;
-}
+float QuadraticIn(float p) { return p * p; }
 
 // @brief Modeled after the parabola y = -x^2 + 2x
-float QuadraticOut(float p) {
-  return -(p * (p - 2.f));
-}
+float QuadraticOut(float p) { return -(p * (p - 2.f)); }
 
 // @brief Modeled after the piecewise quadratic
 // y = (1/2)((2x)^2)             ; [0, 0.5)
@@ -48,9 +42,7 @@ float QuadraticInOut(float p) {
 }
 
 // @brief Modeled after the cubic y = x^3
-float CubicIn(float p) {
-  return p * p * p;
-}
+float CubicIn(float p) { return p * p * p; }
 
 // @brief Modeled after the cubic y = (x - 1)^3 + 1
 float CubicOut(float p) {
@@ -70,9 +62,7 @@ float CubicInOut(float p) {
 }
 
 // @brief Modeled after the quartic x^4
-float QuarticIn(float p) {
-  return p * p * p * p;
-}
+float QuarticIn(float p) { return p * p * p * p; }
 
 // @brief Modeled after the quartic y = 1 - (x - 1)^4
 float QuarticOut(float p) {
@@ -92,9 +82,7 @@ float QuarticInOut(float p) {
 }
 
 // @brief Modeled after the quintic y = x^5
-float QuinticIn(float p) {
-  return p * p * p * p * p;
-}
+float QuinticIn(float p) { return p * p * p * p * p; }
 
 // @brief Modeled after the quintic y = (x - 1)^5 + 1
 float QuinticOut(float p) {
@@ -114,29 +102,19 @@ float QuinticInOut(float p) {
 }
 
 // @brief Modeled after quarter-cycle of sine wave
-float SineIn(float p) {
-  return std::sin((p - 1.f) * kPi2) + 1.f;
-}
+float SineIn(float p) { return std::sin((p - 1.f) * kPi2) + 1.f; }
 
 // @brief Modeled after quarter-cycle of sine wave (different phase)
-float SineOut(float p) {
-  return std::sin(p * kPi2);
-}
+float SineOut(float p) { return std::sin(p * kPi2); }
 
 // @brief Modeled after half sine wave
-float SineInOut(float p) {
-  return 0.5f * (1.f - std::cos(p * kPi));
-}
+float SineInOut(float p) { return 0.5f * (1.f - std::cos(p * kPi)); }
 
 // @brief Modeled after shifted quadrant IV of unit circle
-float CircularIn(float p) {
-  return 1.f - std::sqrt(1.f - (p * p));
-}
+float CircularIn(float p) { return 1.f - std::sqrt(1.f - (p * p)); }
 
 // @brief Modeled after shifted quadrant II of unit circle
-float CircularOut(float p) {
-  return std::sqrt((2.f - p) * p);
-}
+float CircularOut(float p) { return std::sqrt((2.f - p) * p); }
 
 // @brief Modeled after the piecewise circular function
 // y = (1/2)(1 - sqrt(1 - 4x^2))           ; [0, 0.5)
@@ -199,9 +177,7 @@ float ElasticInOut(float p) {
 }
 
 // @brief Modeled after the overshooting cubic y = x^3-x*sin(x*pi)
-float BackIn(float p) {
-  return p * p * p - p * std::sin(p * kPi);
-}
+float BackIn(float p) { return p * p * p - p * std::sin(p * kPi); }
 
 // @brief Modeled after overshooting cubic y = 1-((1-x)^3-(1-x)*sin((1-x)*pi))
 float BackOut(float p) {
@@ -221,9 +197,7 @@ float BackInOut(float p) {
   return 0.5f * (1.f - (f * f * f - f * std::sin(f * kPi))) + 0.5f;
 }
 
-float BounceIn(float p) {
-  return 1.f - BounceOut(1.f - p);
-}
+float BounceIn(float p) { return 1.f - BounceOut(1.f - p); }
 
 float BounceOut(float p) {
   if (p < 4.f / 11.f) {
@@ -248,23 +222,16 @@ float BounceInOut(float p) {
   return 0.5f * BounceOut(p * 2.f - 1.f) + 0.5f;
 }
 
-}  // namespace easing
+} // namespace easing
 
-Animator::Animator(float* from,
-                   float to,
-                   Duration duration,
-                   easing::Function easing_function,
-                   Duration delay)
-    : value_(from),
-      from_(*from),
-      to_(to),
-      duration_(duration),
-      easing_function_(std::move(easing_function)),
-      current_(-delay) {
+Animator::Animator(float *from, float to, Duration duration,
+                   easing::Function easing_function, Duration delay)
+    : value_(from), from_(*from), to_(to), duration_(duration),
+      easing_function_(std::move(easing_function)), current_(-delay) {
   RequestAnimationFrame();
 }
 
-void Animator::OnAnimation(Params& params) {
+void Animator::OnAnimation(Params &params) {
   current_ += params.duration();
 
   if (current_ >= duration_) {
@@ -281,6 +248,6 @@ void Animator::OnAnimation(Params& params) {
   RequestAnimationFrame();
 }
 
-}  // namespace ftxui::animation
+} // namespace ftxui::animation
 
 // NOLINTEND(*-magic-numbers)

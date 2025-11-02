@@ -5,17 +5,16 @@
 #include "summary.h"
 #include "user_explorer.h"
 
-
 namespace lms {
 namespace ui {
 
 class MainLayout {
-public:
+  public:
   MainLayout(ftxui::ScreenInteractive &screen);
   void Run();
   void Exit();
 
-private:
+  private:
   ftxui::ScreenInteractive &screen;
   std::unique_ptr<UserExplorer> userExplorer;
   std::unique_ptr<BookExplorer> bookExplorer;
